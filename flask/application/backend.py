@@ -1,20 +1,16 @@
 import secrets
 
-from Database import ConnectionDB
+from application.Database import ConnectionDB
 
 from flask import Flask, render_template, session
 from flask_socketio import SocketIO
 
 
 class App:
-
-    connected = False
-    scanning = False
-
     def __init__(self) -> None:
         # app
         self.app = Flask(__name__)
-        self.app.secret_key = secrets.token_urlsafe(16)
+        self.app.secret_key = secrets.token_urlsafe(25)
         self.socket = SocketIO(self.app)
 
         self.register_routes()

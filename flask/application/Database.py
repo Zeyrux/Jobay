@@ -24,7 +24,8 @@ class ConnectionDB:
         return self._execute(f"SELECT * FROM {table} WHERE {key} = '{where}'", fetch_one)
     
     def insert(self, table: str, keys: list[str], values: list[str], fetch_one: bool):
-        values = [value.replace("'", "\\'") for value in values]
-        self._execute(f"INSERT INTO {table} (\'{'\', \''.join([key for key in keys])}\') "
-                      + f"VALUES (\'{'\', \''.join([value for value in values])}\')", fetch_one)
+        values = '\', \''.join([value for value in [value.replace("'", "\\'") for value in values]])
+        keys = "', '".join([key for key in keys])
+        self._execute(f"INSERT INTO {table} (\'{keys}\') "
+                      + f"VALUES (\'{values}\')", fetch_one)
  
