@@ -2,17 +2,18 @@ CREATE DATABASE IF NOT EXISTS Jobay;
 USE Jobay;
 CREATE TABLE IF NOT EXISTS Timeblock (
     id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    start_time FLOAT UNSIGNED NOT NULL,
-    end_time FLOAT UNSIGNED NOT NULL
+    start_time FLOAT NOT NULL,
+    end_time FLOAT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS User (
     id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
     image INT UNSIGNED UNIQUE KEY NOT NULL,
     first_name VARCHAR(32) NOT NULL,
     last_name VARCHAR(16) NOT NULL,
+    password VARCHAR(64) NOT NULL,
     location INT UNSIGNED NOT NULL,
     completed_jobs INT UNSIGNED NOT NULL,
-    rating FLOAT UNSINGED NOT NULL,
+    rating FLOAT NOT NULL,
     cnt_ratings SMALLINT UNSIGNED NOT NULL,
     description VARCHAR(1024) NOT NULL
 );
@@ -20,14 +21,14 @@ CREATE TABLE IF NOT EXISTS ReadyTimeblock (
     id_user INT UNSIGNED NOT NULL,
     id_timeblock INT UNSIGNED NOT NULL,
     FOREIGN KEY (id_user) REFERENCES User(id),
-    FOREIGN KEY (id_timeblock) REFERENCES Timeblocks(id)
+    FOREIGN KEY (id_timeblock) REFERENCES Timeblock(id)
 );
 CREATE TABLE IF NOT EXISTS Message (
     id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
     user_send INT UNSIGNED NOT NULL,
     user_receive INT UNSIGNED NOT NULL,
     content VARCHAR(512) NOT NULL,
-    time float UNSIGNED NOT NULL,
+    time float NOT NULL,
     FOREIGN KEY(user_send) REFERENCES User(id),
     FOREIGN KEY(user_receive) REFERENCES User(id)
 );
@@ -49,12 +50,12 @@ CREATE TABLE IF NOT EXISTS Status (
 );
 CREATE TABLE IF NOT EXISTS Job (
     id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    image UNIQUE KEY NOT NULL,
+    image INT UNIQUE KEY NOT NULL,
     status TINYINT UNSIGNED NOT NULL,
     name VARCHAR(32) NOT NULL,
     duration SMALLINT UNSIGNED NOT NULL,
-    time_start FLOAT UNSINGED NOT NULL,
-    payment FLOAT UNSIGNED NOT NULL,
+    time_start FLOAT NOT NULL,
+    payment FLOAT NOT NULL,
     employer INT UNSIGNED NOT NULL,
     FOREIGN KEY (status) REFERENCES Status(id),
     FOREIGN KEY (employer) REFERENCES User(id)

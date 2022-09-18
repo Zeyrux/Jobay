@@ -1,0 +1,76 @@
+{% extends "base.html" %} {% block title %}Sign Up{% endblock %} {% block
+content %}
+<form method="POST">
+  <h3 align="center">Account Erstellen</h3>
+  <!-- Email -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Email</span>
+      </div>
+      <input
+        type="email"
+        class="form-control"
+        name="email"
+        placeholder="Enter email"
+      />
+    </div>
+  </div>
+  <!-- Name -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Vorname(n) und Nachname</span>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="first_name"
+        placeholder="Vorname(n)"
+      />
+      <input
+        type="text"
+        class="form-control"
+        name="last_name"
+        placeholder="Nachname"
+      />
+    </div>
+  </div>
+  <!-- Password -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Passwort</span>
+      </div>
+      <input
+        type="password"
+        class="form-control"
+        name="password"
+        placeholder="Passwort"
+      />
+      <input
+        type="password"
+        class="form-control"
+        name="password_confirm"
+        placeholder="Passwort Bestätigen"
+      />
+    </div>
+  </div>
+  <!-- Location -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Wohnort</span>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="post_code"
+        placeholder="Postleitzahl"
+      />
+      <input type="text" class="form-control" name="city" placeholder="Stadt" />
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Account Erstellen</button>
+</form>
+{% endblock %}

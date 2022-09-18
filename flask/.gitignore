@@ -1,0 +1,8 @@
+# directories
+venv
+.vscode
+website/__pycache__
+
+# files
+website/database.db
+test.py
