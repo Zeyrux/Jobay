@@ -1,0 +1,104 @@
+{% extends "base.html" %} {% block title %}Angebot Erstellen{% endblock %} {%
+block content %}
+<form method="post">
+  <h1 class="m-lg-5 m-3 text-center">Angebot Erstellen</h1>
+  <!-- name -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Name</span>
+      </div>
+      <input type="text" class="form-control" name="name" placeholder="Name" />
+    </div>
+  </div>
+  <!-- duration -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Dauer</span>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="duration_hour"
+        placeholder="Stunden"
+      />
+      <div class="input-group-prepend">
+        <span class="input-group-text">H</span>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="duration_minute"
+        placeholder="Minuten"
+      />
+      <div class="input-group-prepend">
+        <span class="input-group-text">M</span>
+      </div>
+    </div>
+  </div>
+  <!-- time start -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Start Datum</span>
+      </div>
+      <input
+        type="datetime-local"
+        class="form-control"
+        name="time_start"
+        placeholder="Start Zeit"
+      />
+    </div>
+  </div>
+  <!-- payment -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Bezahlung</span>
+      </div>
+      <input
+        type="number"
+        class="form-control"
+        name="payment_euro"
+        placeholder="Euro"
+      />
+      <div class="input-group-prepend">
+        <span class="input-group-text">€</span>
+      </div>
+      <input
+        type="number"
+        class="form-control"
+        name="payment_cent"
+        placeholder="Cent"
+      />
+      <div class="input-group-prepend">
+        <span class="input-group-text">ct</span>
+      </div>
+    </div>
+  </div>
+  <!-- Location -->
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Ort</span>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="post_code"
+        placeholder="Postleitzahl"
+        value="{{ user.location.post_code }}"
+      />
+      <input
+        type="text"
+        class="form-control"
+        name="city"
+        placeholder="Stadt"
+        value="{{ user.location.city.name }}"
+      />
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Account Erstellen</button>
+</form>
+{% endblock %}

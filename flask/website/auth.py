@@ -20,13 +20,17 @@ def login():
             flash("Bitte Password eingeben!", category="error")
         else:
             user = User.query.filter_by(email=email).first()
-            if check_password_hash(user.password, password):
-                login_user(user, remember=True)
-                return redirect(url_for("views.home"))
+            if user:
+                if check_password_hash(user.password, password):
+                    login_user(user, remember=True)
+                    return redirect(url_for("views.home"))
+                else:
+                    flash(
+                        "Flasches Passwort oder flasche Email addresse!",
+                        category="error",
+                    )
             else:
-                flash(
-                    "Flasches Passwort oder flasche Email addresse!", category="error"
-                )
+                flash("Email nicht registriert!", category="error")
     return render_template("login.html", user=current_user)
 
 

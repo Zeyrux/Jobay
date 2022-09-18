@@ -167,3 +167,14 @@ def create_user(
     db.session.add(user)
     db.session.commit()
     return user
+
+
+def create_job(
+    employer: User,
+    name: str,
+    duration: int,
+    time_start: float,
+    payment: float,
+    location: Location,
+) -> Job:
+    pass
