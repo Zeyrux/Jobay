@@ -176,5 +176,17 @@ def create_job(
     time_start: float,
     payment: float,
     location: Location,
+    status=Status.query.filter_by(name="Nicht Vergeben"),
 ) -> Job:
-    pass
+    job = Job(
+        employer=employer,
+        name=name,
+        duration=duration,
+        time_start=time_start,
+        payment=payment,
+        location=location,
+        status=status,
+    )
+    db.session.add(job)
+    db.session.commit()
+    return job
