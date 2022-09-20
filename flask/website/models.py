@@ -1,13 +1,12 @@
 from . import db
 from flask_login import UserMixin
-from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, SMALLINT, FLOAT
+from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, SMALLINT, FLOAT, TINYINT
 
 
 job_tag = db.Table(
     "job_tag",
-    # db.Column("id_tag", TINYINT(unsigned=True), db.ForeignKey("tag.id"), nullable=False),
     db.Column(
-        "id_tag", SMALLINT(unsigned=True), db.ForeignKey("tag.id"), nullable=False
+        "id_tag", TINYINT(unsigned=True), db.ForeignKey("tag.id"), nullable=False
     ),
     db.Column(
         "id_job", INTEGER(unsigned=True), db.ForeignKey("job.id"), nullable=False
@@ -20,7 +19,7 @@ user_tag = db.Table(
         "id_user", INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
     ),
     db.Column(
-        "id_tag", INTEGER(unsigned=True), db.ForeignKey("tag.id"), nullable=False
+        "id_tag", TINYINT(unsigned=True), db.ForeignKey("tag.id"), nullable=False
     ),
 )
 
@@ -45,9 +44,8 @@ class City(db.Model):
 
 class Job(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
-    # id_status = db.Column(TINYINT(unsigned=True), db.ForeignKey('job.id'), nullable=False)
     id_status = db.Column(
-        SMALLINT(unsigned=True), db.ForeignKey("status.id"), nullable=False
+        TINYINT(unsigned=True), db.ForeignKey("status.id"), nullable=False
     )
     name = db.Column(VARCHAR(32), nullable=False)
     duration = db.Column(SMALLINT(unsigned=True), nullable=False)
@@ -81,16 +79,14 @@ class Message(db.Model):
 
 
 class Status(db.Model):
-    # id = db.Column(TINYINT(unsigned=True), primary_key=True)
-    id = db.Column(SMALLINT(unsigned=True), primary_key=True)
+    id = db.Column(TINYINT(unsigned=True), primary_key=True)
     name = db.Column(VARCHAR(16), nullable=False)
     description = db.Column(VARCHAR(1024), default="")
     jobs = db.relationship("Job", backref="status", lazy="dynamic")
 
 
 class Tag(db.Model):
-    # id = db.Column(TINYINT(unsigned=True), primary_key=True)
-    id = db.Column(SMALLINT(unsigned=True), primary_key=True)
+    id = db.Column(TINYINT(unsigned=True), primary_key=True)
     name = db.Column(VARCHAR(16), nullable=False)
     description = db.Column(VARCHAR(1024), default="")
 
@@ -176,8 +172,10 @@ def create_job(
     time_start: float,
     payment: float,
     location: Location,
-    status=Status.query.filter_by(name="Nicht Vergeben"),
+    status: Status = None,
 ) -> Job:
+    if not status:
+        status = Status.query.filter_by(name="Nicht Vergeben")
     job = Job(
         employer=employer,
         name=name,

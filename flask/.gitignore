@@ -2,6 +2,7 @@
 venv
 .vscode
 website/__pycache__
+db_credentials
 
 # files
 website/database.db
