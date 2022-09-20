@@ -1,4 +1,4 @@
-from .models import create_user, User
+from .models import create_user_db, User
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
@@ -92,7 +92,7 @@ def sign_up():
                 category="error",
             )
         else:
-            user = create_user(
+            user = create_user_db(
                 email,
                 first_name,
                 last_name,

@@ -50,7 +50,7 @@ class Job(db.Model):
     name = db.Column(VARCHAR(32), nullable=False)
     duration = db.Column(SMALLINT(unsigned=True), nullable=False)
     time_start = db.Column(FLOAT(unsigned=True), nullable=False)
-    payment = db.Column(FLOAT(unsigned=True), nullable=False)
+    payment = db.Column(SMALLINT(unsigned=True), nullable=False)
     id_employer = db.Column(
         INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
     )
@@ -129,7 +129,25 @@ class User(db.Model, UserMixin):
     employs = db.relationship("Job", backref="employer", lazy="dynamic")
 
 
-def create_user(
+def create_city(name: str) -> City:
+    city = City.query.filter_by(name=name).first()
+    if not city:
+        city = City(name=name)
+        db.session.add(city)
+        db.session.commit()
+    return city
+
+
+def create_location(post_code: str, city: City) -> Location:
+    location = city.locations.filter_by(post_code=post_code).first()
+    if not location:
+        location = Location(post_code=post_code, city=city)
+        db.session.add(location)
+        db.session.commit()
+    return location
+
+
+def create_user_db(
     email: str,
     first_name: str,
     last_name: str,
@@ -140,19 +158,8 @@ def create_user(
     # check if user exists
     if User.query.filter_by(email=email).first():
         raise Exception("User already exists")
-    # check if city exists
-    city_db = City.query.filter_by(name=city).first()
-    if not city_db:
-        city_db = City(name=city)
-        db.session.add(city_db)
-        db.session.commit()
-    # check if location exists
-    location = city_db.locations.filter_by(post_code=post_code).first()
-    if not location:
-        location = Location(post_code=post_code, city=city_db)
-        db.session.add(location)
-        db.session.commit()
-    # create new user
+    city = create_city(city)
+    location = create_location(post_code, city)
     user = User(
         email=email,
         first_name=first_name,
@@ -165,17 +172,20 @@ def create_user(
     return user
 
 
-def create_job(
+def create_job_db(
     employer: User,
     name: str,
     duration: int,
-    time_start: float,
-    payment: float,
-    location: Location,
+    time_start: int,
+    payment: int,
+    post_code: str,
+    city: str,
     status: Status = None,
 ) -> Job:
     if not status:
-        status = Status.query.filter_by(name="Nicht Vergeben")
+        status = Status.query.filter_by(name="Nicht Vergeben").first()
+    city = create_city(city)
+    location = create_location(post_code, city)
     job = Job(
         employer=employer,
         name=name,

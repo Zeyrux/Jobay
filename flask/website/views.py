@@ -1,6 +1,9 @@
 from datetime import datetime
 
-from flask import Blueprint, render_template, request, flash
+from . import db
+from .models import create_job_db
+
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 views = Blueprint("views", __name__)
@@ -31,7 +34,6 @@ def create_job():
         payment_cent = request.form.get("payment_cent", "")
         post_code = request.form.get("post_code", "")
         city = request.form.get("city", "")
-        print(time_start)
         if not name:
             flash("Bitte Name des Jobs einfügen!", category="error")
         elif not duration_hour and not duration_minute:
@@ -54,6 +56,15 @@ def create_job():
                 category="error",
             )
         else:
-            pass
-
+            create_job_db(
+                current_user,
+                name,
+                int(duration_hour) * 60 + int(duration_minute),
+                int(time_start.timestamp()),
+                int(payment_euro) * 100 + int(payment_cent),
+                post_code,
+                city,
+            )
+            flash("Job erstellt", category="success")
+            return redirect(url_for("views.home"))
     return render_template("create_job.html", user=current_user)

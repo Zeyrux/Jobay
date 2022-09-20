@@ -37,6 +37,8 @@ def create_app():
     # login manager
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
+    login_manager.login_message = "Um diese Seite zu nutzen musst du dich einloggen"
+    login_manager.login_message_category = "error"
     login_manager.init_app(app)
 
     @login_manager.user_loader
@@ -51,7 +53,6 @@ def create_app():
 
 
 def create_database(app: Flask):
-    print("TABLES", db.engine.table_names())
     if len(db.engine.table_names()) == 0:
         db.create_all(app=app)
         print("Created Database!")
