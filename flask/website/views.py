@@ -22,9 +22,11 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route("/profile")
+@views.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
+    if request.method == "POST":
+        pass
     return render_template("profile.html", user=current_user)
 
 

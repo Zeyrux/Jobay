@@ -1,9 +1,59 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
-<div class="container m-5">
-  <div class="row">
-    <div class="col"><h4>Name</h4></div>
-    <div class="col"><h4>{{ user.first_name }} {{ user.last_name }}</h4></div>
-  </div>
+<div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <td><h4>Name</h4></td>
+        <td>
+          <input
+            type="text"
+            name="name"
+            value="{{ user.first_name }} {{ user.last_name }}"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><h4>Email</h4></td>
+        <td>
+          <input type="text" name="email" value="{{ user.email }}" />
+        </td>
+      </tr>
+      <tr>
+        <td><h4>Wohnort</h4></td>
+        <td>
+          <input
+            type="text"
+            name="location"
+            value="{{ user.location.post_code }} {{user.location.city.name }}"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><h4>Deine Beschreibung</h4></td>
+      </tr>
+    </tbody>
+  </table>
+  <textarea class="textarea"></textarea>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <td scope="col">Montag</td>
+        <td scope="col">Dienstag</td>
+        <td scope="col">Mittwoch</td>
+        <td scope="col">Donnerstag</td>
+        <td scope="col">Freitag</td>
+        <td scope="col">Samstag</td>
+        <td scope="col">Sonntag</td>
+      </tr>
+    </thead>
+    <tbody id="timeblock_body"></tbody>
+    <script type="text/javascript">
+      let tobody = document.getElementById("timeblock_body");
+    </script>
+  </table>
 </div>
+<script>
+  // for button with that you can svae
+</script>
 {% endblock %}
