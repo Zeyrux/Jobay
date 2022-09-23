@@ -1,9 +1,19 @@
+from pathlib import Path
 from datetime import datetime
 
 from . import db
-from .models import create_job_db
+from .models import create_job_db, User, create_city, create_location
 
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from validate_email_address import validate_email
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    flash,
+    redirect,
+    url_for,
+    send_from_directory,
+)
 from flask_login import login_required, current_user
 
 views = Blueprint("views", __name__)
@@ -16,6 +26,13 @@ def str_to_datetime(string: str) -> datetime | None:
         return None
 
 
+@views.route("/favicon.ico", methods=["GET"])
+def favicon():
+    return send_from_directory(
+        Path("images"), "favicon.ico", mimetype="image/vnd.microsoft.ico"
+    )
+
+
 @views.route("/", methods=["GET", "POST"])
 @login_required
 def home():
@@ -26,7 +43,50 @@ def home():
 @login_required
 def profile():
     if request.method == "POST":
-        pass
+        # email
+        if "email" in request.form:
+            if validate_email(request.form["email"]):
+                if User.query.filter_by(email=request.form["email"]).first():
+                    flash("Email ist schon registriert!", category="error")
+                else:
+                    current_user.email = request.form["email"]
+                    db.session.commit()
+            else:
+                flash("Bitte existierende Email angeben!", category="error")
+        # name
+        elif "name" in request.form:
+            if " " in request.form["name"]:
+                first_name, last_name = request.form["name"].rsplit(" ", 1)
+                current_user.first_name = first_name
+                current_user.last_name = last_name
+                db.session.commit()
+            else:
+                flash(
+                    "Bitte Vor- und Nachname eingeben und mit einem Leerzeichen trennen!",
+                    category="error",
+                )
+        # location
+        elif "location" in request.form:
+            if " " in request.form["location"]:
+                post_code, city = request.form["location"].split(" ", 1)
+                if not post_code.replace("-", "").isdigit():
+                    flash(
+                        "Postleitzahl muss aus Zahlen und/oder Bindestrichen bestehen!",
+                        category="error",
+                    )
+                else:
+                    city = create_city(city)
+                    location = create_location(post_code, city)
+                    current_user.location = location
+                    db.session.commit()
+            else:
+                flash(
+                    "Bitte Postleitzahl und Stadt mit einem Leerzeichen trennen!",
+                    category="error",
+                )
+        elif "description" in request.form:
+            current_user.description = request.form["description"]
+            db.session.commit()
     return render_template("profile.html", user=current_user)
 
 
