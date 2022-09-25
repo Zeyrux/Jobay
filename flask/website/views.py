@@ -1,8 +1,9 @@
+from json import dumps
 from pathlib import Path
 from datetime import datetime
 
 from . import db
-from .models import create_job_db, User, create_city, create_location
+from .models import create_job_db, User, create_city, create_location, create_timeblock
 
 from validate_email_address import validate_email
 from flask import (
@@ -84,10 +85,51 @@ def profile():
                     "Bitte Postleitzahl und Stadt mit einem Leerzeichen trennen!",
                     category="error",
                 )
+        # description
         elif "description" in request.form:
             current_user.description = request.form["description"]
             db.session.commit()
-    return render_template("profile.html", user=current_user)
+        # timeblock
+        elif "day" in request.form:
+            start = request.form.get("start", "")
+            end = request.form.get("end", "")
+            day = request.form.get("day", "")
+            if not start:
+                flash("Bitte Start Zeit angeben!", category="error")
+            elif not end:
+                flash("Bitte Endzeit angeben!", category="error")
+            elif (
+                not day
+                or not ":" in start
+                or not ":" in end
+                or not len(day) == 1
+                or not day.isdigit()
+            ):
+                flash(
+                    "Fehler: Daten konnten nicht ausgelesen werden. Bitte versuchen Sie es erneut!",
+                    category="error",
+                )
+            elif (
+                not 0 < int(day) < 8
+                or not start.split(":")[0].isdigit()
+                or not end.split(":")[1].isdigit()
+            ):
+                flash(
+                    "Fehler: Daten konnten nicht ausgelesen werden. Bitte versuchen Sie es erneut!",
+                    category="error",
+                )
+            else:
+                current_user.timeblocks.append(
+                    create_timeblock(int(day), start, int(day), end)
+                )
+                db.session.commit()
+    return render_template(
+        "profile.html",
+        user=current_user,
+        timeblocks=dumps(
+            [timeblock.to_dict() for timeblock in current_user.timeblocks]
+        ),
+    )
 
 
 @views.route("/create-job", methods=["GET", "POST"])

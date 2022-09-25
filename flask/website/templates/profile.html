@@ -1,8 +1,9 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
 <div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
-  <table class="table table-striped">
+  <table class="table table-striped mb-0">
     <tbody>
+      <!-- Name -->
       <tr>
         <td><h4>Name</h4></td>
         <td>
@@ -16,6 +17,7 @@
           </form>
         </td>
       </tr>
+      <!-- Email -->
       <tr>
         <td><h4>Email</h4></td>
         <td>
@@ -29,6 +31,7 @@
           </form>
         </td>
       </tr>
+      <!-- Location -->
       <tr>
         <td><h4>Wohnort</h4></td>
         <td>
@@ -42,6 +45,7 @@
           </form>
         </td>
       </tr>
+      <!-- description-->
       <tr>
         <td><h4>Deine Beschreibung</h4></td>
       </tr>
@@ -55,6 +59,8 @@
 {{ user.description }}</textarea
     >
   </form>
+  <!-- timeblocks -->
+  <!-- days -->
   <table class="table table-striped">
     <thead>
       <tr>
@@ -67,42 +73,97 @@
         <td scope="col">Sonntag</td>
       </tr>
     </thead>
+    <!-- timeblocks form db-->
     <tbody id="timeblock_body"></tbody>
-    <script type="text/javascript">
-      let tobody = document.getElementById("timeblock_body");
-    </script>
+    <!-- edit timeblocks -->
+    <tfoot id="timeblock_foot">
+      <tr>
+        <!-- monday -->
+        <td class="d-none">
+          <form method="POST" class="d-flex flex-column">
+            <label for="start">Start Zeit</label>
+            <input type="time" name="start" />
+            <label for="start">End Zeit</label>
+            <input type="time" name="end" />
+            <input type="hidden" name="day" value="1" />
+            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+          </form>
+        </td>
+        <!-- thuesday -->
+        <td class="d-none">
+          <form method="POST" class="d-flex flex-column">
+            <label for="start">Start Zeit</label>
+            <input type="time" name="start" />
+            <label for="start">End Zeit</label>
+            <input type="time" name="end" />
+            <input type="hidden" name="day" value="2" />
+            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+          </form>
+        </td>
+        <!-- wendsday -->
+        <td class="d-none">
+          <form method="POST" class="d-flex flex-column">
+            <label for="start">Start Zeit</label>
+            <input type="time" name="start" />
+            <label for="start">End Zeit</label>
+            <input type="time" name="end" />
+            <input type="hidden" name="day" value="3" />
+            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+          </form>
+        </td>
+        <!-- thuresday-->
+        <td class="d-none">
+          <form method="POST" class="d-flex flex-column">
+            <label for="start">Start Zeit</label>
+            <input type="time" name="start" />
+            <label for="start">End Zeit</label>
+            <input type="time" name="end" />
+            <input type="hidden" name="day" value="4" />
+            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+          </form>
+        </td>
+        <!-- friday -->
+        <td class="d-none">
+          <form method="POST" class="d-flex flex-column">
+            <label for="start">Start Zeit</label>
+            <input type="time" name="start" />
+            <label for="start">End Zeit</label>
+            <input type="time" name="end" />
+            <input type="hidden" name="day" value="5" />
+            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+          </form>
+        </td>
+        <!-- saturday -->
+        <td class="d-none">
+          <form method="POST" class="d-flex flex-column">
+            <label for="start">Start Zeit</label>
+            <input type="time" name="start" />
+            <label for="start">End Zeit</label>
+            <input type="time" name="end" />
+            <input type="hidden" name="day" value="6" />
+            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+          </form>
+        </td>
+        <!-- sunday -->
+        <td class="d-none">
+          <form method="POST" class="d-flex flex-column">
+            <label for="start">Start Zeit</label>
+            <input type="time" name="start" />
+            <label for="start">End Zeit</label>
+            <input type="time" name="end" />
+            <input type="hidden" name="day" value="7" />
+            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+          </form>
+        </td>
+      </tr>
+    </tfoot>
   </table>
+  <button id="timeblock_edit" class="btn btn-primary">Editieren</button>
+  <script
+    src="{{ url_for('static', filename='scripts/profile.js') }}"
+    id="timeblock_creater"
+    type="text/javascript"
+    timeblocks="{{ timeblocks }}"
+  ></script>
 </div>
-<script>
-  let create_submit = function create_submit() {
-    let submit = document.createElement("input");
-    submit.type = "submit";
-    submit.value = "Speichern";
-    submit.classList.add("btn", "btn-primary");
-    return submit;
-  };
-  let inputs = document.getElementsByClassName("form-control-plaintext");
-  for (let input of inputs) {
-    input.addEventListener(
-      "input",
-      function add_submit() {
-        input.parentElement.appendChild(create_submit());
-      },
-      { once: true }
-    );
-  }
-  let description_textarea = document.getElementById("description");
-  description_textarea.addEventListener(
-    "input",
-    function () {
-      let hidden = document.createElement("input");
-      hidden.type = "hidden";
-      hidden.name = "description";
-      let submit = create_submit();
-      description_textarea.parentElement.appendChild(hidden);
-      description_textarea.parentElement.appendChild(submit);
-    },
-    { once: true }
-  );
-</script>
 {% endblock %}
