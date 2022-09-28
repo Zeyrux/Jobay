@@ -1,35 +1,37 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
-<form method="post">
-  <h3 align="center">Login</h3>
-  <!-- Email -->
-  <div class="form-group">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Email</span>
+<div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
+  <form method="post">
+    <h3 align="center">Login</h3>
+    <!-- Email -->
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Email</span>
+        </div>
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          placeholder="Enter email"
+        />
       </div>
-      <input
-        type="email"
-        class="form-control"
-        name="email"
-        placeholder="Enter email"
-      />
     </div>
-  </div>
-  <!-- Password -->
-  <div class="form-group">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Passwort</span>
+    <!-- Password -->
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Passwort</span>
+        </div>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          placeholder="Passwort"
+        />
       </div>
-      <input
-        type="password"
-        class="form-control"
-        name="password"
-        placeholder="Passwort"
-      />
     </div>
-  </div>
-  <button type="submit" class="btn btn-primary">Einloggen</button>
-</form>
+    <button type="submit" class="btn btn-primary">Einloggen</button>
+  </form>
+</div>
 {% endblock %}

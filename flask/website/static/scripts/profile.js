@@ -11,25 +11,64 @@ function create_timeblocks() {
   let timeblocks = JSON.parse(
     document.getElementById("timeblock_creater").getAttribute("timeblocks")
   );
-  timeblocks.forEach((timeblock) => {
-    start = new Date(timeblock.start);
-    end = new Date(timeblock.end);
-    console.log(end);
+  timeblocks.sort(function (a, b) {
+    return a.start - b.end;
   });
-}
-
-function display_edit_timeblock() {
-  let tfoot = document.getElementById("timeblock_foot");
-  let timeblock_edit = document.getElementById("timeblock_edit");
-  timeblock_edit.addEventListener("click", function () {
-    for (let td of tfoot.children[0].children) {
-      if (td.className == "d-none") {
-        td.className = "";
-      } else {
-        td.className = "d-none";
-      }
+  // get max count of rows
+  let last_date = new Date();
+  let cnt_max_rows = 0;
+  let cur_cnt_rows = 0;
+  for (let i = 0; i < timeblocks.length; i++) {
+    const timeblock = timeblocks[i];
+    let start = new Date(timeblock.start * 1000);
+    let end = new Date(timeblock.end * 1000);
+    timeblocks[i] = [start, end];
+    if (last_date.getDay() != start.getDay()) {
+      cur_cnt_rows = 1;
+    } else {
+      cur_cnt_rows++;
     }
-  });
+    if (cur_cnt_rows > cnt_max_rows) {
+      cnt_max_rows = cur_cnt_rows;
+    }
+    last_date = start;
+  }
+  // create rows
+  let rows = [];
+  for (i = 0; i < cnt_max_rows; i++) {
+    let tr = document.createElement("tr");
+    for (j = 0; j < 7; j++) {
+      tr.appendChild(document.createElement("td"));
+    }
+    tbody.appendChild(tr);
+    rows[i] = tr;
+  }
+  // create timeblocks
+  for (let i = 0; i < timeblocks.length; i++) {
+    let timeblock = timeblocks[i];
+    let p_start = document.createElement("p");
+    p_start.innerHTML =
+      ("00" + timeblock[0].getHours()).slice(-2) +
+      ":" +
+      ("00" + timeblock[0].getMinutes()).slice(-2);
+    let p_end = document.createElement("p");
+    p_end.innerHTML =
+      ("00" + timeblock[1].getHours()).slice(-2) +
+      ":" +
+      ("00" + timeblock[1].getMinutes()).slice(-2);
+    let cur_cnt = 0;
+    while (true) {
+      if (
+        rows[cur_cnt].children[timeblock[0].getDate() - 1].children.length == 0
+      ) {
+        console.log(timeblock[0].getDate(), timeblock);
+        rows[cur_cnt].children[timeblock[0].getDate() - 1].appendChild(p_start);
+        rows[cur_cnt].children[timeblock[0].getDate() - 1].appendChild(p_end);
+        break;
+      }
+      cur_cnt++;
+    }
+  }
 }
 
 function create_add_buttons() {
@@ -59,6 +98,21 @@ function create_submit_for_description() {
     },
     { once: true }
   );
+}
+
+function display_edit_timeblock() {
+  let tds = document.getElementById("timeblock_foot").children[0].children;
+  let button_edit = document.getElementById("timeblock_edit");
+  button_edit.addEventListener("click", function () {
+    for (let i = 0; i < 7; i++) {
+      let td = tds[i];
+      if (td.classList.contains("d-none")) {
+        td.className = "";
+      } else {
+        td.className = "d-none";
+      }
+    }
+  });
 }
 
 function init() {

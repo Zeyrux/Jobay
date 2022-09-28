@@ -53,10 +53,6 @@ def create_app():
 
 
 def create_database(app: Flask):
-    # from .models import User, Timeblock
-
-    # user = User.query.all()[1]
-    # user.timeblocks.append(Timeblock.query.first())
     if len(db.engine.table_names()) == 0:
         db.create_all(app=app)
         print("Created Database!")

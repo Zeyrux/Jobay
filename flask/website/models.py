@@ -96,8 +96,8 @@ class Tag(db.Model):
 
 class Timeblock(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
-    start = db.Column(FLOAT(unsigned=True), nullable=False)
-    end = db.Column(FLOAT(unsigned=True), nullable=False)
+    start = db.Column(INTEGER(unsigned=True), nullable=False)
+    end = db.Column(INTEGER(unsigned=True), nullable=False)
 
     def to_dict(self) -> str:
         return {"start": self.start, "end": self.end}
@@ -156,12 +156,20 @@ def create_location(post_code: str, city: City) -> Location:
 def create_timeblock(
     start_day: int, start_time: str, end_day: int, end_time: str
 ) -> Timeblock:
-    start = datetime(
-        2000, 1, start_day, int(start_time.split(":")[0]), int(start_time.split(":")[1])
-    ).timestamp()
-    end = datetime(
-        2000, 1, end_day, int(end_time.split(":")[0]), int(end_time.split(":")[1])
-    ).timestamp()
+    start = int(
+        datetime(
+            2000,
+            1,
+            start_day,
+            int(start_time.split(":")[0]),
+            int(start_time.split(":")[1]),
+        ).timestamp()
+    )
+    end = int(
+        datetime(
+            2000, 1, end_day, int(end_time.split(":")[0]), int(end_time.split(":")[1])
+        ).timestamp()
+    )
     timeblock = Timeblock.query.filter_by(start=start, end=end).first()
     if not timeblock:
         timeblock = Timeblock(start=start, end=end)

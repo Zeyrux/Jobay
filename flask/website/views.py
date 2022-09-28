@@ -86,9 +86,16 @@ def profile():
                     category="error",
                 )
         # description
+        # check lenght of description (maybe to long)
         elif "description" in request.form:
-            current_user.description = request.form["description"]
-            db.session.commit()
+            if len(request.form["description"]) > 2048:
+                flash(
+                    "Bitte eine Beschreibung mit weniger als 2048 Zeichen eingeben!",
+                    category="error",
+                )
+            else:
+                current_user.description = request.form["description"]
+                db.session.commit()
         # timeblock
         elif "day" in request.form:
             start = request.form.get("start", "")
