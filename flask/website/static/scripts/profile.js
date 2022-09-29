@@ -6,6 +6,22 @@ function create_submit(value) {
   return submit;
 }
 
+delete_timeblock = function (parent) {
+  let form = document.createElement("form");
+  form.className = "d-none";
+  let submit = create_submit("Löschen");
+  form.appendChild(submit);
+  submit.onsubmit = function () {
+    for (let i = 0; i < 2; i++) {
+      let hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.value = parent.children[i];
+      form.appendChild(hidden);
+    }
+  };
+  return form;
+};
+
 function create_timeblocks() {
   let tbody = document.getElementById("timeblock_body");
   let timeblocks = JSON.parse(
@@ -61,9 +77,11 @@ function create_timeblocks() {
       if (
         rows[cur_cnt].children[timeblock[0].getDate() - 1].children.length == 0
       ) {
-        console.log(timeblock[0].getDate(), timeblock);
         rows[cur_cnt].children[timeblock[0].getDate() - 1].appendChild(p_start);
         rows[cur_cnt].children[timeblock[0].getDate() - 1].appendChild(p_end);
+        rows[cur_cnt].children[timeblock[0].getDate() - 1].appendChild(
+          delete_timeblock()
+        );
         break;
       }
       cur_cnt++;
@@ -104,12 +122,29 @@ function display_edit_timeblock() {
   let tds = document.getElementById("timeblock_foot").children[0].children;
   let button_edit = document.getElementById("timeblock_edit");
   button_edit.addEventListener("click", function () {
+    // show add timeblock
     for (let i = 0; i < 7; i++) {
       let td = tds[i];
       if (td.classList.contains("d-none")) {
         td.className = "";
       } else {
         td.className = "d-none";
+      }
+    }
+    // show delete timeblock
+    let tbody = document.getElementById("timeblock_body");
+    console.log(tbody.children);
+    for (let tr of tbody.children) {
+      for (let td of tr.children) {
+        for (let child of td.children) {
+          if (child.tagName == "FORM") {
+            if (child.classList.contains("d-none")) {
+              child.className = "";
+            } else {
+              child.className = "d-none";
+            }
+          }
+        }
       }
     }
   });
