@@ -3,7 +3,13 @@ from pathlib import Path
 from datetime import datetime
 
 from . import db
-from .models import create_job_db, User, create_city, create_location, create_timeblock
+from .models import (
+    User,
+    create_job_db,
+    create_city,
+    create_location,
+    create_timeblock,
+)
 
 from validate_email_address import validate_email
 from flask import (
@@ -13,11 +19,15 @@ from flask import (
     flash,
     redirect,
     url_for,
+    send_file,
     send_from_directory,
+    current_app,
 )
 from flask_login import login_required, current_user
 
+
 views = Blueprint("views", __name__)
+ALLOWED_FILE_EXTENSIONS = ["jpg", "jpeg", "png", "ico"]
 
 
 def str_to_datetime(string: str) -> datetime | None:
@@ -43,6 +53,10 @@ def home():
 @views.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
+    path_image_profile = Path(
+        current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE_WEBSITE"],
+        f"{current_user.id}.png",
+    )
     if request.method == "POST":
         # email
         if "email" in request.form:
@@ -130,12 +144,77 @@ def profile():
                     create_timeblock(int(day), start, int(day), end)
                 )
                 db.session.commit()
+        # delete timeblock
+        elif "delete_timeblock" in request.form:
+            timeblock = request.form.get("delete_timeblock", "")
+            day = request.form.get("timeblock_delete_day", "")
+            if not timeblock:
+                flash("Bitte einen Zeitblock angeben!", category="error")
+            elif not (";" in timeblock and timeblock.count(":") == 2 and day):
+                flash(
+                    "Fehler bei der Datenübertragung. Bitte erneut versuche!",
+                    category="error",
+                )
+            elif not (
+                ("".join(("".join(timeblock.split(";"))).split(":"))).isdigit()
+                and day.isdigit()
+            ):
+                flash(
+                    "Fehler bei der Datenübertragung. Bitte erneut versuche!",
+                    category="error",
+                )
+            else:
+                timeblock = current_user.timeblocks.filter_by(
+                    start=datetime(
+                        2000,
+                        1,
+                        int(day),
+                        int(timeblock.split(";")[0].split(":")[0]),
+                        int(timeblock.split(";")[0].split(":")[1]),
+                    ).timestamp(),
+                    end=datetime(
+                        2000,
+                        1,
+                        int(day),
+                        int(timeblock.split(";")[1].split(":")[0]),
+                        int(timeblock.split(";")[1].split(":")[1]),
+                    ).timestamp(),
+                ).first()
+                if timeblock:
+                    current_user.timeblocks.remove(timeblock)
+                    db.session.commit()
+        # profile image
+        elif "profile_image" in request.files:
+            image = request.files["profile_image"]
+            if not image.filename:
+                flash("Bitte Bild auswählen!", category="error")
+            elif not (
+                "." in image.filename
+                and image.filename.rsplit(".", 1)[1] in ALLOWED_FILE_EXTENSIONS
+            ):
+                flash("Fehler beim Dateinamen!", category="error")
+            else:
+                if path_image_profile.exists():
+                    path_image_profile.unlink()
+                image.save(path_image_profile)
+                flash("Profilbild gespeichern!", category="success")
     return render_template(
         "profile.html",
         user=current_user,
         timeblocks=dumps(
             [timeblock.to_dict() for timeblock in current_user.timeblocks]
         ),
+    )
+
+
+@views.route("/profile-image", methods=["GET"])
+@login_required
+def profile_image():
+    return send_file(
+        Path(
+            current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE"],
+            f"{current_user.id}.png",
+        )
     )
 
 

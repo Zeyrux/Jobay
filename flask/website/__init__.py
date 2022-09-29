@@ -14,6 +14,10 @@ def create_app():
     # app
     app = Flask(__name__)
     app.config["SECRET_KEY"] = token_urlsafe(25)
+    app.config["UPLOAD_FOLDER_PROFILE_IMAGE"] = Path("static", "images")
+    app.config["UPLOAD_FOLDER_PROFILE_IMAGE_WEBSITE"] = Path(
+        "website", "static", "images"
+    )
     db_credentials = load(
         open(Path("website", "db_credentials", "db_credentials.json"), "r")
     )

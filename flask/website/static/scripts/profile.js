@@ -6,19 +6,25 @@ function create_submit(value) {
   return submit;
 }
 
-delete_timeblock = function (parent) {
+delete_timeblock = function (parent, day) {
   let form = document.createElement("form");
   form.className = "d-none";
+  form.method = "POST";
   let submit = create_submit("Löschen");
   form.appendChild(submit);
-  submit.onsubmit = function () {
-    for (let i = 0; i < 2; i++) {
-      let hidden = document.createElement("input");
-      hidden.type = "hidden";
-      hidden.value = parent.children[i];
-      form.appendChild(hidden);
-    }
-  };
+  form.addEventListener("submit", function () {
+    let hidden_hours = document.createElement("input");
+    hidden_hours.type = "hidden";
+    hidden_hours.name = "delete_timeblock";
+    hidden_hours.value =
+      parent.children[0].innerHTML + ";" + parent.children[1].innerHTML;
+    let hidden_day = document.createElement("input");
+    hidden_day.type = "hidden";
+    hidden_day.name = "timeblock_delete_day";
+    hidden_day.value = day;
+    form.appendChild(hidden_hours);
+    form.appendChild(hidden_day);
+  });
   return form;
 };
 
@@ -74,14 +80,11 @@ function create_timeblocks() {
       ("00" + timeblock[1].getMinutes()).slice(-2);
     let cur_cnt = 0;
     while (true) {
-      if (
-        rows[cur_cnt].children[timeblock[0].getDate() - 1].children.length == 0
-      ) {
-        rows[cur_cnt].children[timeblock[0].getDate() - 1].appendChild(p_start);
-        rows[cur_cnt].children[timeblock[0].getDate() - 1].appendChild(p_end);
-        rows[cur_cnt].children[timeblock[0].getDate() - 1].appendChild(
-          delete_timeblock()
-        );
+      let td = rows[cur_cnt].children[timeblock[0].getDate() - 1];
+      if (td.children.length == 0) {
+        td.appendChild(p_start);
+        td.appendChild(p_end);
+        td.appendChild(delete_timeblock(td, timeblock[0].getDate()));
         break;
       }
       cur_cnt++;
@@ -133,7 +136,6 @@ function display_edit_timeblock() {
     }
     // show delete timeblock
     let tbody = document.getElementById("timeblock_body");
-    console.log(tbody.children);
     for (let tr of tbody.children) {
       for (let td of tr.children) {
         for (let child of td.children) {

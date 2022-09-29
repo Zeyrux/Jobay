@@ -1,12 +1,25 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
 <div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
-  <div class="d-flex flex-row justify-content-center container">
-    <div class=row">
-      <div class="column-1">
-        <img src="./websites/images/favicoon.ico" alt="this is a image" />
+  <div class="">
+    <div class="row">
+      <div class="col-3">
+        <img
+          src="{{ url_for('views.profile_image') }}"
+          alt="this is a image"
+          style="
+            max-width: 100%;
+            max-height: 100%;
+            min-width: 100%;
+            max-width: 100%;
+          "
+        />
+        <form method="post" enctype="multipart/form-data">
+          <input type="file" name="profile_image" />
+          <input type="submit" value="Profilbild ändern" class="btn-primary" />
+        </form>
       </div>
-      <div class="column-2">
+      <div class="col">
         <table class="table table-striped mb-0">
           <tbody>
             <!-- Name -->
