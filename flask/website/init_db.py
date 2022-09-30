@@ -10,11 +10,6 @@ def init_db(db):
         )
         db.session.add(status_untaken)
     tags = [tag.name for tag in Tag.query.all()]
-    tag = Tag(
-        name="Software",
-        description="Für Personen mit Kenntnissen in der Software entwicklung.",
-    )
-    print("TAG", tag.to_dict())
     if not "Software" in tags:
         tag = Tag(
             name="Software",

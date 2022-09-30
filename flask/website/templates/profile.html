@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
 <div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
+  <h3 class="text-center">Profil</h3>
   <div class="">
     <div class="row">
       <div class="col-3">
@@ -67,7 +68,9 @@
             <!-- Tags -->
             <tr>
               <td><h4>Deine Tags</h4></td>
-              <td id="tag_td"></td>
+              <td id="tag_td">
+                <form id="tag_form" method="post"></form>
+              </td>
             </tr>
             <!-- description-->
             <tr>
@@ -191,8 +194,7 @@
     id="script"
     type="text/javascript"
     timeblocks="{{ timeblocks }}"
-    user_tags="{{ user.tags.all() }}"
-    ,
+    user_tags="{{ user_tags }}"
     all_tags="{{ all_tags }}"
   ></script>
 </div>

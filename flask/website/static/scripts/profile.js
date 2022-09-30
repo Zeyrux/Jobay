@@ -153,9 +153,42 @@ function display_edit_timeblock() {
 }
 
 function create_tags() {
-  let user_tags = document.getElementById("script").getAttribute("user_tags");
-  let all_tags = document.getElementById("script").getAttribute("all_tags");
-  console.log(all_tags, user_tags);
+  let user_tags = JSON.parse(
+    document.getElementById("script").getAttribute("user_tags")
+  );
+  console.log(user_tags);
+  let all_tags = JSON.parse(
+    document.getElementById("script").getAttribute("all_tags")
+  );
+  let td = document.getElementById("tag_td");
+  td.className = "d-flex";
+  // show user tags
+  user_tags.forEach((tag) => {
+    let p = document.createElement("p");
+    p.innerHTML = tag.name;
+    td.appendChild(p);
+  });
+  // create options
+  let select = document.createElement("select");
+  select.className = "form-select";
+  let option = document.createElement("option");
+  option.innerHTML = "+";
+  select.appendChild(option);
+  all_tags.forEach((tag) => {
+    let option = document.createElement("option");
+    option.innerHTML = tag.name;
+    select.appendChild(option);
+  });
+  // add select event
+  select.addEventListener("change", function () {
+    let hidden = document.createElement("input");
+    hidden.type = "hidden";
+    hidden.value = select.value;
+    hidden.name = "add_tag";
+    document.getElementById("tag_form").appendChild(hidden);
+    document.getElementById("tag_form").submit();
+  });
+  td.appendChild(select);
 }
 
 function init() {

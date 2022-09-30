@@ -2,55 +2,42 @@ from json import dumps
 from pathlib import Path
 from datetime import datetime
 
-from . import db
-from .models import (
+from .. import db
+from ..models import (
     User,
-    create_job_db,
+    Tag,
     create_city,
     create_location,
     create_timeblock,
 )
 
-from validate_email_address import validate_email
 from flask import (
     Blueprint,
     render_template,
     request,
     flash,
-    redirect,
-    url_for,
-    send_file,
-    send_from_directory,
     current_app,
+    send_file,
 )
-from flask_login import login_required, current_user
+from validate_email_address import validate_email
+from flask_login import current_user, login_required
 
-
-views = Blueprint("views", __name__)
+profile = Blueprint("profile", __name__)
 ALLOWED_FILE_EXTENSIONS = ["jpg", "jpeg", "png", "ico"]
 
 
-def str_to_datetime(string: str) -> datetime | None:
-    try:
-        return datetime.strptime(string, "%Y-%m-%dT%H:%M")
-    except ValueError:
-        return None
-
-
-@views.route("/favicon.ico", methods=["GET"])
-def favicon():
-    return send_from_directory(
-        Path("images"), "favicon.ico", mimetype="image/vnd.microsoft.ico"
+@profile.route("/profile-image", methods=["GET"])
+@login_required
+def profile_image():
+    return send_file(
+        Path(
+            current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE"],
+            f"{current_user.id}.png",
+        )
     )
 
 
-@views.route("/", methods=["GET", "POST"])
-@login_required
-def home():
-    return render_template("home.html", user=current_user)
-
-
-@views.route("/profile", methods=["GET", "POST"])
+@profile.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
     path_image_profile = Path(
@@ -99,8 +86,18 @@ def profile():
                     "Bitte Postleitzahl und Stadt mit einem Leerzeichen trennen!",
                     category="error",
                 )
+        # tags
+        elif "add_tag" in request.form:
+            tag = request.form.get("add_tag", "")
+            if not tag:
+                flash("Bitte Tag angeben!", category="error")
+            elif not tag in current_app.config["TAGS_NAME"]:
+                flash("Tag existiert nicht!", category="error")
+            else:
+                tag = Tag.query.filter_by(name=tag).first()
+                current_user.tags.append(tag)
+                db.session.commit()
         # description
-        # check lenght of description (maybe to long)
         elif "description" in request.form:
             if len(request.form["description"]) > 2048:
                 flash(
@@ -204,64 +201,6 @@ def profile():
         timeblocks=dumps(
             [timeblock.to_dict() for timeblock in current_user.timeblocks]
         ),
+        user_tags=dumps([tag.to_dict() for tag in current_user.tags]),
         all_tags=current_app.config["TAGS"],
     )
-
-
-@views.route("/profile-image", methods=["GET"])
-@login_required
-def profile_image():
-    return send_file(
-        Path(
-            current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE"],
-            f"{current_user.id}.png",
-        )
-    )
-
-
-@views.route("/create-job", methods=["GET", "POST"])
-@login_required
-def create_job():
-    if request.method == "POST":
-        name = request.form.get("name", "")
-        duration_hour = request.form.get("duration_hour", "")
-        duration_minute = request.form.get("duration_minute", "")
-        time_start = str_to_datetime(request.form.get("time_start", ""))
-        payment_euro = request.form.get("payment_euro", "")
-        payment_cent = request.form.get("payment_cent", "")
-        post_code = request.form.get("post_code", "")
-        city = request.form.get("city", "")
-        if not name:
-            flash("Bitte Name des Jobs einfügen!", category="error")
-        elif not duration_hour and not duration_minute:
-            flash("Bitte die Dauer eingeben!", category="error")
-        elif not time_start:
-            flash("Bitte die Start Zeit eingeben!", category="error")
-        elif not payment_euro and not payment_cent:
-            flash("Bitte eine Bezahlung eingeben!", category="error")
-        elif not post_code:
-            flash("Bitte eine Postleitzahl eingeben!", category="error")
-        elif not city:
-            flash("Bitte eine Stadt eingeben!", category="error")
-        elif not duration_minute.isdigit() or not duration_hour.isdigit():
-            flash("Bitte die Dauer in Zahlen angeben!", category="error")
-        elif not payment_euro.isdigit() or not payment_cent.isdigit():
-            flash("Bitte die Bezahlung in Zahlen angeben!", category="error")
-        elif not post_code.replace("-", "").isdigit():
-            flash(
-                "Postleitzahl muss aus Zahlen und/oder Bindestrichen bestehen!",
-                category="error",
-            )
-        else:
-            create_job_db(
-                current_user,
-                name,
-                int(duration_hour) * 60 + int(duration_minute),
-                int(time_start.timestamp()),
-                int(payment_euro) * 100 + int(payment_cent),
-                post_code,
-                city,
-            )
-            flash("Job erstellt", category="success")
-            return redirect(url_for("views.home"))
-    return render_template("create_job.html", user=current_user)

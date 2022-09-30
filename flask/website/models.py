@@ -129,9 +129,6 @@ class Timeblock(db.Model):
     start = db.Column(INTEGER(unsigned=True), nullable=False)
     end = db.Column(INTEGER(unsigned=True), nullable=False)
 
-    def to_dict(self) -> str:
-        return {"start": self.start, "end": self.end}
-
     def to_dict(self) -> dict:
         dict = self.__dict__
         dict.pop("_sa_instance_state")

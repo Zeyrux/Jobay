@@ -1,4 +1,4 @@
-from json import load
+from json import load, dumps
 from pathlib import Path
 from secrets import token_urlsafe
 
@@ -29,7 +29,7 @@ def create_app():
 
     # routes
     db.init_app(app)
-    from .views import views
+    from .routes import views
     from .auth import auth
 
     app.register_blueprint(views, url_prefix="/")
@@ -54,7 +54,8 @@ def create_app():
         create_database(app)
         from .models import Tag
 
-        app.config["TAGS"] = Tag.query.all()
+        app.config["TAGS"] = dumps([tag.to_dict() for tag in Tag.query.all()])
+        app.config["TAGS_NAME"] = [tag.name for tag in Tag.query.all()]
 
     return app, SocketIO(app)
 
