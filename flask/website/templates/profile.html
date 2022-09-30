@@ -68,8 +68,25 @@
             <!-- Tags -->
             <tr>
               <td><h4>Deine Tags</h4></td>
-              <td id="tag_td">
+              <td id="tag_td" class="d-flex">
                 <form id="tag_form" method="post"></form>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle ml-2"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    ➕
+                  </button>
+                  <div
+                    id="tag_dropdown"
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  ></div>
+                </div>
               </td>
             </tr>
             <!-- description-->

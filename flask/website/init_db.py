@@ -19,4 +19,10 @@ def init_db(db):
     if not "Gärtner" in tags:
         tag = Tag(name="Gärtner", description="Gärtner halt")
         db.session.add(tag)
+    if not "Testiger9101234" in tags:
+        tag = Tag(name="Testiger9101234", description="Testiger9101234")
+        db.session.add(tag)
+    if not "Testiger1234567" in tags:
+        tag = Tag(name="Testiger1234567", description="Testiger1234567")
+        db.session.add(tag)
     db.session.commit()

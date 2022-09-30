@@ -8,16 +8,15 @@ function show_tags() {
     let button = document.createElement("input");
     button.type = "button";
     button.value = tag.name;
-    button.classList.add("btn-secondary");
-    button.classList.add("form-control");
+    button.classList.add("btn-outline-secondary", "form-control");
     button.addEventListener("click", function () {
-      if (button.classList.contains("btn-secondary")) {
-        button.classList.remove("btn-secondary");
-        button.classList.add("btn-primary");
+      if (button.classList.contains("btn-outline-secondary")) {
+        button.classList.remove("btn-outline-secondary");
+        button.classList.add("btn-secondary");
         hidden.name = "tag_" + tag.name;
       } else {
-        button.classList.remove("btn-primary");
-        button.classList.add("btn-secondary");
+        button.classList.remove("btn-secondary");
+        button.classList.add("btn-outline-secondary");
         hidden.name = "";
       }
     });

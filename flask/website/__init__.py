@@ -61,11 +61,11 @@ def create_app():
 
 
 def create_database(app: Flask):
-    fill_db()
-    print("Filled Database!")
     if len(db.engine.table_names()) == 0:
         db.create_all(app=app)
         print("Created Database!")
+    fill_db()
+    print("Filled Database!")
 
 
 def fill_db():

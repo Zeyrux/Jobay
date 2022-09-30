@@ -95,8 +95,11 @@ def profile():
                 flash("Tag existiert nicht!", category="error")
             else:
                 tag = Tag.query.filter_by(name=tag).first()
-                current_user.tags.append(tag)
-                db.session.commit()
+                if tag in current_user.tags:
+                    flash("Du besitzt diesen Tag bereits", category="error")
+                else:
+                    current_user.tags.append(tag)
+                    db.session.commit()
         # remove tags
         elif "remove_tag" in request.form:
             tag = request.form.get("remove_tag", "")

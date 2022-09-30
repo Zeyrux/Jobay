@@ -8,7 +8,7 @@ function create_submit(value) {
 
 delete_timeblock = function (parent, day) {
   let form = document.createElement("form");
-  form.className = "d-none";
+  form.classList.add("d-none");
   form.method = "POST";
   let submit = create_submit("Löschen");
   form.appendChild(submit);
@@ -129,9 +129,9 @@ function display_edit_timeblock() {
     for (let i = 0; i < 7; i++) {
       let td = tds[i];
       if (td.classList.contains("d-none")) {
-        td.className = "";
+        td.classList.remove("d-none");
       } else {
-        td.className = "d-none";
+        td.classList.add("d-none");
       }
     }
     // show delete timeblock
@@ -141,9 +141,9 @@ function display_edit_timeblock() {
         for (let child of td.children) {
           if (child.tagName == "FORM") {
             if (child.classList.contains("d-none")) {
-              child.className = "";
+              child.classList.remove("d-none");
             } else {
-              child.className = "d-none";
+              child.classList.add("d-none");
             }
           }
         }
@@ -161,12 +161,28 @@ function create_tags() {
     document.getElementById("script").getAttribute("all_tags")
   );
   let td = document.getElementById("tag_td");
-  td.className = "d-flex";
   // show user tags
   user_tags.forEach((tag) => {
     let div = document.createElement("div");
+    div.classList.add(
+      "d-flex",
+      "border-primary",
+      "border",
+      "rounded-circle",
+      "pl-2",
+      "pr-0",
+      "mr-1",
+      "ml-1"
+    );
     let p = document.createElement("p");
     p.innerHTML = tag.name;
+    p.classList.add(
+      "row",
+      "justify-content-center",
+      "align-self-center",
+      "text-center",
+      "m-0"
+    );
     div.appendChild(p);
     let form = document.createElement("form");
     form.method = "post";
@@ -176,33 +192,57 @@ function create_tags() {
     hidden.name = "remove_tag";
     let submit = document.createElement("input");
     submit.type = "submit";
-    submit.value = "X";
+    submit.classList.add(
+      "btn-outline-danger",
+      "form-control",
+      "btn-sm",
+      "m-0",
+      "ml-1",
+      "rounded-circle"
+    );
+    submit.value = "⌫";
     form.appendChild(hidden);
     form.appendChild(submit);
     div.appendChild(form);
-    td.appendChild(div);
+    td.prepend(div);
   });
   // create options
-  let select = document.createElement("select");
-  select.className = "form-select";
-  let option = document.createElement("option");
-  option.innerHTML = "+";
-  select.appendChild(option);
   all_tags.forEach((tag) => {
-    let option = document.createElement("option");
-    option.innerHTML = tag.name;
-    select.appendChild(option);
+    let button = document.createElement("button");
+    button.innerHTML = tag.name;
+    button.classList.add("dropdown-item");
+    button.addEventListener("click", function () {
+      let hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.value = button.innerHTML;
+      hidden.name = "add_tag";
+      document.getElementById("tag_form").appendChild(hidden);
+      document.getElementById("tag_form").submit();
+    });
+    document.getElementById("tag_dropdown").appendChild(button);
   });
-  // add select event
-  select.addEventListener("change", function () {
-    let hidden = document.createElement("input");
-    hidden.type = "hidden";
-    hidden.value = select.value;
-    hidden.name = "add_tag";
-    document.getElementById("tag_form").appendChild(hidden);
-    document.getElementById("tag_form").submit();
-  });
-  td.appendChild(select);
+
+  // let select = document.createElement("select");
+  // select.classList.add("form-select", "ml-2");
+  // let option = document.createElement("option");
+  // option.innerHTML = "➕";
+  // option.classList.add("d-none");
+  // select.appendChild(option);
+  // all_tags.forEach((tag) => {
+  //   let option = document.createElement("option");
+  //   option.innerHTML = tag.name;
+  //   select.appendChild(option);
+  // });
+  // // add select event
+  // select.addEventListener("change", function () {
+  //   let hidden = document.createElement("input");
+  //   hidden.type = "hidden";
+  //   hidden.value = select.value;
+  //   hidden.name = "add_tag";
+  //   document.getElementById("tag_form").appendChild(hidden);
+  //   document.getElementById("tag_form").submit();
+  // });
+  // td.appendChild(select);
 }
 
 function init() {
