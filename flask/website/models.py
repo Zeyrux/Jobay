@@ -44,6 +44,11 @@ class City(db.Model):
     name = db.Column(VARCHAR(32), primary_key=True)
     locations = db.relationship("Location", backref="city", lazy="dynamic")
 
+    def to_dict(self) -> dict:
+        dict = self.__dict__
+        dict.pop("_sa_instance_state")
+        return dict
+
 
 class Job(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
@@ -62,6 +67,11 @@ class Job(db.Model):
     )
     tags = db.relationship("Tag", secondary=job_tag, backref="jobs", lazy="dynamic")
 
+    def to_dict(self) -> dict:
+        dict = self.__dict__
+        dict.pop("_sa_instance_state")
+        return dict
+
 
 class Location(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
@@ -69,6 +79,11 @@ class Location(db.Model):
     id_city = db.Column(VARCHAR(32), db.ForeignKey("city.name"), nullable=False)
     users = db.relationship("User", backref="location", lazy="dynamic")
     jobs = db.relationship("Job", backref="location", lazy="dynamic")
+
+    def to_dict(self) -> dict:
+        dict = self.__dict__
+        dict.pop("_sa_instance_state")
+        return dict
 
 
 class Message(db.Model):
@@ -80,6 +95,11 @@ class Message(db.Model):
         INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
     )
 
+    def to_dict(self) -> dict:
+        dict = self.__dict__
+        dict.pop("_sa_instance_state")
+        return dict
+
 
 class Status(db.Model):
     id = db.Column(TINYINT(unsigned=True), primary_key=True)
@@ -87,11 +107,21 @@ class Status(db.Model):
     description = db.Column(VARCHAR(1024), default="")
     jobs = db.relationship("Job", backref="status", lazy="dynamic")
 
+    def to_dict(self) -> dict:
+        dict = self.__dict__
+        dict.pop("_sa_instance_state")
+        return dict
+
 
 class Tag(db.Model):
     id = db.Column(TINYINT(unsigned=True), primary_key=True)
     name = db.Column(VARCHAR(16), nullable=False)
     description = db.Column(VARCHAR(1024), default="")
+
+    def to_dict(self) -> dict:
+        dict = self.__dict__
+        dict.pop("_sa_instance_state")
+        return dict
 
 
 class Timeblock(db.Model):
@@ -101,6 +131,11 @@ class Timeblock(db.Model):
 
     def to_dict(self) -> str:
         return {"start": self.start, "end": self.end}
+
+    def to_dict(self) -> dict:
+        dict = self.__dict__
+        dict.pop("_sa_instance_state")
+        return dict
 
 
 class User(db.Model, UserMixin):
@@ -133,6 +168,11 @@ class User(db.Model, UserMixin):
     )
     tags = db.relationship("Tag", secondary=user_tag, backref="users", lazy="dynamic")
     employs = db.relationship("Job", backref="employer", lazy="dynamic")
+
+    def to_dict(self) -> dict:
+        dict = self.__dict__
+        dict.pop("_sa_instance_state")
+        return dict
 
 
 def create_city(name: str) -> City:

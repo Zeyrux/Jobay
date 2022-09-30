@@ -31,7 +31,7 @@ delete_timeblock = function (parent, day) {
 function create_timeblocks() {
   let tbody = document.getElementById("timeblock_body");
   let timeblocks = JSON.parse(
-    document.getElementById("timeblock_creater").getAttribute("timeblocks")
+    document.getElementById("script").getAttribute("timeblocks")
   );
   timeblocks.sort(function (a, b) {
     return a.start - b.end;
@@ -152,11 +152,18 @@ function display_edit_timeblock() {
   });
 }
 
+function create_tags() {
+  let user_tags = document.getElementById("script").getAttribute("user_tags");
+  let all_tags = document.getElementById("script").getAttribute("all_tags");
+  console.log(all_tags, user_tags);
+}
+
 function init() {
   create_timeblocks();
   display_edit_timeblock();
   create_add_buttons();
   create_submit_for_description();
+  create_tags();
 }
 
 init();

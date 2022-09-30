@@ -204,6 +204,7 @@ def profile():
         timeblocks=dumps(
             [timeblock.to_dict() for timeblock in current_user.timeblocks]
         ),
+        all_tags=current_app.config["TAGS"],
     )
 
 

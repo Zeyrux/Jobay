@@ -52,16 +52,19 @@ def create_app():
     @app.before_first_request
     def init_app():
         create_database(app)
+        from .models import Tag
+
+        app.config["TAGS"] = Tag.query.all()
 
     return app, SocketIO(app)
 
 
 def create_database(app: Flask):
+    fill_db()
+    print("Filled Database!")
     if len(db.engine.table_names()) == 0:
         db.create_all(app=app)
         print("Created Database!")
-        fill_db()
-        print("Filled Database!")
 
 
 def fill_db():
