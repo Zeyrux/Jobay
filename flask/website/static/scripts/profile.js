@@ -164,9 +164,23 @@ function create_tags() {
   td.className = "d-flex";
   // show user tags
   user_tags.forEach((tag) => {
+    let div = document.createElement("div");
     let p = document.createElement("p");
     p.innerHTML = tag.name;
-    td.appendChild(p);
+    div.appendChild(p);
+    let form = document.createElement("form");
+    form.method = "post";
+    let hidden = document.createElement("input");
+    hidden.type = "hidden";
+    hidden.value = tag.name;
+    hidden.name = "remove_tag";
+    let submit = document.createElement("input");
+    submit.type = "submit";
+    submit.value = "X";
+    form.appendChild(hidden);
+    form.appendChild(submit);
+    div.appendChild(form);
+    td.appendChild(div);
   });
   // create options
   let select = document.createElement("select");

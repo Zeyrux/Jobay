@@ -248,10 +248,13 @@ def create_job_db(
     payment: int,
     post_code: str,
     city: str,
+    tags: list[str],
     status: Status = None,
 ) -> Job:
     if not status:
         status = Status.query.filter_by(name="Nicht Vergeben").first()
+    for i, tag in enumerate(tags):
+        tags[i] = Tag.query.filter_by(name=tag).first()
     city = create_city(city)
     location = create_location(post_code, city)
     job = Job(
@@ -261,6 +264,7 @@ def create_job_db(
         time_start=time_start,
         payment=payment,
         location=location,
+        tags=tags,
         status=status,
     )
     db.session.add(job)

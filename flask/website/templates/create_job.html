@@ -105,7 +105,20 @@ block content %}
         />
       </div>
     </div>
+    <!-- tags -->
+    <div class="form-group">
+      <div id="div_tags" class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Wähle die passenden Tags</span>
+        </div>
+      </div>
+    </div>
     <button type="submit" class="btn btn-primary">Angebot Erstellen</button>
   </form>
 </div>
+<script
+  id="script"
+  src="{{ url_for('static', filename='scripts/create_job.js') }}"
+  tags=" {{ tags }}"
+></script>
 {% endblock %}

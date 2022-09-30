@@ -22,11 +22,11 @@ from flask import (
 from validate_email_address import validate_email
 from flask_login import current_user, login_required
 
-profile = Blueprint("profile", __name__)
+profile_bp = Blueprint("profile", __name__)
 ALLOWED_FILE_EXTENSIONS = ["jpg", "jpeg", "png", "ico"]
 
 
-@profile.route("/profile-image", methods=["GET"])
+@profile_bp.route("/profile-image", methods=["GET"])
 @login_required
 def profile_image():
     return send_file(
@@ -37,7 +37,7 @@ def profile_image():
     )
 
 
-@profile.route("/profile", methods=["GET", "POST"])
+@profile_bp.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
     path_image_profile = Path(
@@ -96,6 +96,17 @@ def profile():
             else:
                 tag = Tag.query.filter_by(name=tag).first()
                 current_user.tags.append(tag)
+                db.session.commit()
+        # remove tags
+        elif "remove_tag" in request.form:
+            tag = request.form.get("remove_tag", "")
+            if not tag:
+                flash("Tag konnte nicht ausgelesen werden!", category="error")
+            elif not tag in current_app.config["TAGS_NAME"]:
+                flash("Tag existiert nicht!", category="error")
+            else:
+                tag = Tag.query.filter_by(name=tag).first()
+                current_user.tags.remove(tag)
                 db.session.commit()
         # description
         elif "description" in request.form:

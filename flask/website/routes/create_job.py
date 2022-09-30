@@ -9,11 +9,12 @@ from flask import (
     flash,
     redirect,
     url_for,
+    current_app,
 )
 from flask_login import current_user, login_required
 
 
-create_job = Blueprint("create_job", __name__)
+create_job_bp = Blueprint("create_job", __name__)
 
 
 def str_to_datetime(string: str) -> datetime | None:
@@ -23,7 +24,7 @@ def str_to_datetime(string: str) -> datetime | None:
         return None
 
 
-@create_job.route("/create-job", methods=["GET", "POST"])
+@create_job_bp.route("/create-job", methods=["GET", "POST"])
 @login_required
 def create_job():
     if request.method == "POST":
@@ -35,6 +36,11 @@ def create_job():
         payment_cent = request.form.get("payment_cent", "")
         post_code = request.form.get("post_code", "")
         city = request.form.get("city", "")
+        tags = [
+            argument[1]
+            for argument in request.form.items()
+            if "tag_" in argument[0] and argument[1] in current_app.config["TAGS_NAME"]
+        ]
         if not name:
             flash("Bitte Name des Jobs einfügen!", category="error")
         elif not duration_hour and not duration_minute:
@@ -47,6 +53,8 @@ def create_job():
             flash("Bitte eine Postleitzahl eingeben!", category="error")
         elif not city:
             flash("Bitte eine Stadt eingeben!", category="error")
+        elif not tags:
+            flash("Bitte Tags eingeben!", category="error")
         elif not duration_minute.isdigit() or not duration_hour.isdigit():
             flash("Bitte die Dauer in Zahlen angeben!", category="error")
         elif not payment_euro.isdigit() or not payment_cent.isdigit():
@@ -65,7 +73,10 @@ def create_job():
                 int(payment_euro) * 100 + int(payment_cent),
                 post_code,
                 city,
+                tags,
             )
             flash("Job erstellt", category="success")
             return redirect(url_for("views.home"))
-    return render_template("create_job.html", user=current_user)
+    return render_template(
+        "create_job.html", user=current_user, tags=current_app.config["TAGS"]
+    )
