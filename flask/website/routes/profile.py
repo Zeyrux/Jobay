@@ -29,12 +29,26 @@ ALLOWED_FILE_EXTENSIONS = ["jpg", "jpeg", "png", "ico"]
 @profile_bp.route("/profile-image", methods=["GET"])
 @login_required
 def profile_image():
-    return send_file(
-        Path(
-            current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE"],
-            f"{current_user.id}.png",
+    user_id = request.args.get("user_id", "")
+    if user_id:
+        if user_id.isdigit():
+            user_id = int(user_id)
+        else:
+            flash("Fehler bei der Benutzer ID!", category="error")
+            return send_file(current_app.config["PROFILE_IMAGE_EMPTY"])
+    else:
+        user_id = current_user.id
+    if Path(
+        current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE_WEBSITE"],
+        f"{user_id}.png",
+    ).exists():
+        return send_file(
+            Path(
+                current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE"],
+                f"{user_id}.png",
+            )
         )
-    )
+    return send_file(current_app.config["PROFILE_IMAGE_EMPTY"])
 
 
 @profile_bp.route("/profile", methods=["GET", "POST"])
@@ -109,8 +123,9 @@ def profile():
                 flash("Tag existiert nicht!", category="error")
             else:
                 tag = Tag.query.filter_by(name=tag).first()
-                current_user.tags.remove(tag)
-                db.session.commit()
+                if tag in current_user.tags:
+                    current_user.tags.remove(tag)
+                    db.session.commit()
         # description
         elif "description" in request.form:
             if len(request.form["description"]) > 2048:

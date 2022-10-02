@@ -174,6 +174,7 @@ function create_tags() {
       "mr-1",
       "ml-1"
     );
+    div.style.backgroundColor = "#b5c8ff";
     let p = document.createElement("p");
     p.innerHTML = tag.name;
     p.classList.add(
@@ -221,28 +222,6 @@ function create_tags() {
     });
     document.getElementById("tag_dropdown").appendChild(button);
   });
-
-  // let select = document.createElement("select");
-  // select.classList.add("form-select", "ml-2");
-  // let option = document.createElement("option");
-  // option.innerHTML = "➕";
-  // option.classList.add("d-none");
-  // select.appendChild(option);
-  // all_tags.forEach((tag) => {
-  //   let option = document.createElement("option");
-  //   option.innerHTML = tag.name;
-  //   select.appendChild(option);
-  // });
-  // // add select event
-  // select.addEventListener("change", function () {
-  //   let hidden = document.createElement("input");
-  //   hidden.type = "hidden";
-  //   hidden.value = select.value;
-  //   hidden.name = "add_tag";
-  //   document.getElementById("tag_form").appendChild(hidden);
-  //   document.getElementById("tag_form").submit();
-  // });
-  // td.appendChild(select);
 }
 
 function init() {

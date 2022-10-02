@@ -59,6 +59,7 @@ class Job(db.Model):
     duration = db.Column(SMALLINT(unsigned=True), nullable=False)
     time_start = db.Column(FLOAT(unsigned=True), nullable=False)
     payment = db.Column(SMALLINT(unsigned=True), nullable=False)
+    rating = db.Column(FLOAT(unsigned=True), nullable=False)
     id_employer = db.Column(
         INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
     )
@@ -240,6 +241,23 @@ def create_user_db(
     return user
 
 
+def get_rating_job(payment: int, duration: int, employer: User) -> float:
+    # salery = payment / duration [min: 1, max: 50]
+    # employer_score = employer.rating * (10 + employer.cnt_rating) [min: 10, max: 100++]
+    # score = salery * employer_score
+
+    salery = payment / duration
+    if salery < 1:
+        salery = 1
+    elif salery > 50:
+        salery = 50
+    employer_rating = employer.rating
+    if employer_rating < 1:
+        employer_rating = 1
+    employer_score = employer_rating * (10 + employer.cnt_ratings)
+    return salery * employer_score
+
+
 def create_job_db(
     employer: User,
     name: str,
@@ -263,6 +281,7 @@ def create_job_db(
         duration=duration,
         time_start=time_start,
         payment=payment,
+        rating=get_rating_job(payment, duration, employer),
         location=location,
         tags=tags,
         status=status,

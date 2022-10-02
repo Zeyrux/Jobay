@@ -23,7 +23,7 @@ def login():
             if user:
                 if check_password_hash(user.password, password):
                     login_user(user, remember=True)
-                    return redirect(url_for("views.home"))
+                    return redirect(url_for("views.home.home"))
                 else:
                     flash(
                         "Flasches Passwort oder flasche Email addresse!",
@@ -102,5 +102,5 @@ def sign_up():
             )
             flash("Profil Erstellt!", category="success")
             login_user(user, remember=True)
-            return redirect(url_for("views.home"))
+            return redirect(url_for("views.home.home"))
     return render_template("sign_up.html", user=current_user)

@@ -1,26 +1,43 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
-<div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
-  <h3 class="text-center">Profil</h3>
+<div
+  class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1 p-0"
+>
+  <h1 class="text-center">Profil</h1>
   <div class="">
     <div class="row">
-      <div class="col-3">
+      <div class="col-3 pr-0">
         <img
           src="{{ url_for('views.profile.profile_image') }}"
           alt="Profilbild"
-          style="
-            max-width: 100%;
-            max-height: 100%;
-            min-width: 100%;
-            max-width: 100%;
-          "
+          class="mw-100 mh-100"
         />
         <form method="post" enctype="multipart/form-data">
-          <input type="file" name="profile_image" />
-          <input type="submit" value="Profilbild ändern" class="btn-primary" />
+          <div class="input-group d-flex flex-column">
+            <div class="custom-file">
+              <input
+                id="input_profile_image"
+                type="file"
+                name="profile_image"
+                class="d-none"
+              />
+              <label
+                class="input-group-text text-center w-100"
+                for="input_profile_image"
+                >Neues Profilbild wählen</label
+              >
+            </div>
+            <div class="input-group-append">
+              <input
+                type="submit"
+                value="Profilbild ändern"
+                class="btn btn-outline-secondary w-100"
+              />
+            </div>
+          </div>
         </form>
       </div>
-      <div class="col">
+      <div class="col pl-0">
         <table class="table table-striped mb-0">
           <tbody>
             <!-- Name -->
@@ -68,7 +85,10 @@
             <!-- Tags -->
             <tr>
               <td><h4>Deine Tags</h4></td>
-              <td id="tag_td" class="d-flex">
+              <td
+                id="tag_td"
+                class="d-inline-flex flex-wrap justify-content-around w-100"
+              >
                 <form id="tag_form" method="post"></form>
                 <div class="dropdown">
                   <button

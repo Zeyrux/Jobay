@@ -76,7 +76,7 @@ def create_job():
                 tags,
             )
             flash("Job erstellt", category="success")
-            return redirect(url_for("views.home"))
+            return redirect(url_for("views.home.home"))
     return render_template(
         "create_job.html", user=current_user, tags=current_app.config["TAGS"]
     )
