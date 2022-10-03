@@ -231,5 +231,5 @@ def profile():
             [timeblock.to_dict() for timeblock in current_user.timeblocks]
         ),
         user_tags=dumps([tag.to_dict() for tag in current_user.tags]),
-        all_tags=current_app.config["TAGS"],
+        all_tags=dumps(current_app.config["TAGS"]),
     )

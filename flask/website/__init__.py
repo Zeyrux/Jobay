@@ -59,7 +59,6 @@ def create_app():
 
         app.config["TAGS"] = [tag.name for tag in Tag.query.all()]
         # TODO: TAGS bei profile page überarbeite (von js in html)
-        # TODO: wochentage bei ready mit for loop machen
 
     return app, SocketIO(app)
 

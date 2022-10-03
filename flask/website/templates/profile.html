@@ -145,83 +145,18 @@
     <!-- edit timeblocks -->
     <tfoot id="timeblock_foot">
       <tr>
-        <!-- monday -->
+        {% for i in range(1, 8) %}
         <td class="d-none">
           <form method="post" class="d-flex flex-column">
             <label for="start">Start Zeit</label>
             <input type="time" name="start" />
             <label for="start">End Zeit</label>
             <input type="time" name="end" />
-            <input type="hidden" name="day" value="1" />
+            <input type="hidden" name="day" value="{{ i }}" />
             <button type="submit" class="btn btn-secondary">Hinzufügen</button>
           </form>
         </td>
-        <!-- thuesday -->
-        <td class="d-none">
-          <form method="post" class="d-flex flex-column">
-            <label for="start">Start Zeit</label>
-            <input type="time" name="start" />
-            <label for="start">End Zeit</label>
-            <input type="time" name="end" />
-            <input type="hidden" name="day" value="2" />
-            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
-          </form>
-        </td>
-        <!-- wendsday -->
-        <td class="d-none">
-          <form method="post" class="d-flex flex-column">
-            <label for="start">Start Zeit</label>
-            <input type="time" name="start" />
-            <label for="start">End Zeit</label>
-            <input type="time" name="end" />
-            <input type="hidden" name="day" value="3" />
-            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
-          </form>
-        </td>
-        <!-- thuresday-->
-        <td class="d-none">
-          <form method="post" class="d-flex flex-column">
-            <label for="start">Start Zeit</label>
-            <input type="time" name="start" />
-            <label for="start">End Zeit</label>
-            <input type="time" name="end" />
-            <input type="hidden" name="day" value="4" />
-            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
-          </form>
-        </td>
-        <!-- friday -->
-        <td class="d-none">
-          <form method="post" class="d-flex flex-column">
-            <label for="start">Start Zeit</label>
-            <input type="time" name="start" />
-            <label for="start">End Zeit</label>
-            <input type="time" name="end" />
-            <input type="hidden" name="day" value="5" />
-            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
-          </form>
-        </td>
-        <!-- saturday -->
-        <td class="d-none">
-          <form method="post" class="d-flex flex-column">
-            <label for="start">Start Zeit</label>
-            <input type="time" name="start" />
-            <label for="start">End Zeit</label>
-            <input type="time" name="end" />
-            <input type="hidden" name="day" value="6" />
-            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
-          </form>
-        </td>
-        <!-- sunday -->
-        <td class="d-none">
-          <form method="post" class="d-flex flex-column">
-            <label for="start">Start Zeit</label>
-            <input type="time" name="start" />
-            <label for="start">End Zeit</label>
-            <input type="time" name="end" />
-            <input type="hidden" name="day" value="7" />
-            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
-          </form>
-        </td>
+        {% endfor %}
       </tr>
     </tfoot>
   </table>

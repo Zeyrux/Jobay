@@ -156,7 +156,6 @@ function create_tags() {
   let user_tags = JSON.parse(
     document.getElementById("script").getAttribute("user_tags")
   );
-  console.log(user_tags);
   let all_tags = JSON.parse(
     document.getElementById("script").getAttribute("all_tags")
   );
@@ -210,7 +209,7 @@ function create_tags() {
   // create options
   all_tags.forEach((tag) => {
     let button = document.createElement("button");
-    button.innerHTML = tag.name;
+    button.innerHTML = tag;
     button.classList.add("dropdown-item");
     button.addEventListener("click", function () {
       let hidden = document.createElement("input");
