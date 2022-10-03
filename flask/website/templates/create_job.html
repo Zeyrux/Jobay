@@ -111,14 +111,35 @@ block content %}
         <div class="input-group-prepend">
           <span class="input-group-text">Wähle die passenden Tags</span>
         </div>
+        {% for tag in tags %}
+        <input
+          type="button"
+          value="{{ tag }}"
+          class="btn-outline-secondary form-control"
+        />
+        <input type="hidden" name="" value="{{ tag }}" />
+        {% endfor %}
       </div>
+      <script>
+        let div_tags = document.getElementById("div_tags").children;
+        for (let i = 1; i < div_tags.length; i += 2) {
+          let button = div_tags[i];
+          let hidden = div_tags[i + 1];
+          button.addEventListener("click", function () {
+            if (button.classList.contains("btn-outline-secondary")) {
+              button.classList.remove("btn-outline-secondary");
+              button.classList.add("btn-secondary");
+              hidden.name = "tag_" + button.value;
+            } else {
+              button.classList.remove("btn-secondary");
+              button.classList.add("btn-outline-secondary");
+              hidden.name = "";
+            }
+          });
+        }
+      </script>
     </div>
     <button type="submit" class="btn btn-primary">Angebot Erstellen</button>
   </form>
 </div>
-<script
-  id="script"
-  src="{{ url_for('static', filename='scripts/create_job.js') }}"
-  tags=" {{ tags }}"
-></script>
 {% endblock %}

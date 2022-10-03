@@ -1,44 +1,60 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
-<div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
+<div class="container-fluid justify-content-center mt-4">
   <div>
     <h3 class="text-center">Jobs für dich</h3>
-    <div>
-      {% for job in jobs %}
-      <div class="container">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th colspan="2">{{ job.name }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>Arbeitgeber</th>
-              <th>
-                <img
-                  src="{{ url_for('views.profile.profile_image', user_id=job.employer.id) }}"
-                  alt="Profilbild"
-                  style="max-width: 5vw; max-height: 5vh"
-                />
-              </th>
-            </tr>
-            <tr>
-              <th>Zeit</th>
-              <th>{{ job.duration // 60 }}:{{ job.duration % 60}}</th>
-            </tr>
-            <tr>
-              <th>Bezahlung</th>
-              <th>{{ job.payment // 100 }},{{ job.payment % 100 }}€</th>
-            </tr>
-            <tr>
-              <th>Start Zeit</th>
-              <th>{{ datetime.fromtimestamp(job.time_start) }}</th>
-            </tr>
-          </tbody>
-        </table>
+    <div class="container-fluid">
+      <div
+        class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-sx-1"
+      >
+        {% for i, job in enumerate(jobs) %}
+        <div id="job-{{ job.id }}" class="col">
+          <script>
+            document
+              .getElementById("job-{{ job.id }}")
+              .addEventListener("click", function () {
+                window.location.href =
+                  "{{ url_for('views.job.job', id=job.id) }}";
+              });
+          </script>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th colspan="2">{{ job.name }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Arbeitgeber</th>
+                <th>
+                  <img
+                    src="{{ url_for('views.profile.profile_image', user_id=job.employer.id) }}"
+                    alt="Profilbild"
+                    class="w-100 hover-overlay"
+                    data-mdb-ripple-color="light"
+                  />
+                </th>
+              </tr>
+              <tr>
+                <th>Dauer</th>
+                <th>{{ job.duration // 60 }}:{{ job.duration % 60}}</th>
+              </tr>
+              <tr>
+                <th>Bezahlung</th>
+                <th>{{ job.payment // 100 }},{{ job.payment % 100 }}€</th>
+              </tr>
+              <tr>
+                <th>Start Zeit</th>
+                <th>
+                  {{ datetime.fromtimestamp(job.time_start).strftime("%H:%M
+                  %d.%m.%Y") }}
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
   </div>
 </div>

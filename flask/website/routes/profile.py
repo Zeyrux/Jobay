@@ -105,7 +105,7 @@ def profile():
             tag = request.form.get("add_tag", "")
             if not tag:
                 flash("Bitte Tag angeben!", category="error")
-            elif not tag in current_app.config["TAGS_NAME"]:
+            elif not tag in current_app.config["TAGS"]:
                 flash("Tag existiert nicht!", category="error")
             else:
                 tag = Tag.query.filter_by(name=tag).first()
@@ -119,7 +119,7 @@ def profile():
             tag = request.form.get("remove_tag", "")
             if not tag:
                 flash("Tag konnte nicht ausgelesen werden!", category="error")
-            elif not tag in current_app.config["TAGS_NAME"]:
+            elif not tag in current_app.config["TAGS"]:
                 flash("Tag existiert nicht!", category="error")
             else:
                 tag = Tag.query.filter_by(name=tag).first()

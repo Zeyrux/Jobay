@@ -57,8 +57,9 @@ def create_app():
         create_database(app)
         from .models import Tag
 
-        app.config["TAGS"] = dumps([tag.to_dict() for tag in Tag.query.all()])
-        app.config["TAGS_NAME"] = [tag.name for tag in Tag.query.all()]
+        app.config["TAGS"] = [tag.name for tag in Tag.query.all()]
+        # TODO: TAGS bei profile page überarbeite (von js in html)
+        # TODO: wochentage bei ready mit for loop machen
 
     return app, SocketIO(app)
 

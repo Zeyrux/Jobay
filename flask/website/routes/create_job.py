@@ -39,7 +39,7 @@ def create_job():
         tags = [
             argument[1]
             for argument in request.form.items()
-            if "tag_" in argument[0] and argument[1] in current_app.config["TAGS_NAME"]
+            if "tag_" in argument[0] and argument[1] in current_app.config["TAGS"]
         ]
         if not name:
             flash("Bitte Name des Jobs einfügen!", category="error")

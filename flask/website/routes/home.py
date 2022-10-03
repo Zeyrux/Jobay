@@ -19,5 +19,10 @@ def get_jobs_for_user(user: User):
 def home():
     jobs = get_jobs_for_user(current_user)
     return render_template(
-        "home.html", user=current_user, jobs=jobs, datetime=datetime, int=int
+        "home.html",
+        user=current_user,
+        jobs=jobs,
+        datetime=datetime,
+        int=int,
+        enumerate=enumerate,
     )
