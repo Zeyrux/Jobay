@@ -89,6 +89,8 @@ class Location(db.Model):
 
 class Message(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
+    text = db.Column(VARCHAR(1024), nullable=False)
+    time = db.Column(FLOAT(unsigned=True), nullable=False)
     id_user_send = db.Column(
         INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
     )

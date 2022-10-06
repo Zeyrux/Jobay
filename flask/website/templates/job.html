@@ -1,4 +1,56 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
-<h1>Job</h1>
+<div class="container-fluid justify-content-center mt-4">
+  <h3 class="text-center">{{ job.name }}</h3>
+  <div class="row">
+    <div class="col-6">
+      <table class="table">
+        <thead>
+          <tr>
+            <th colspan="2" class="text-center">Infos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Arbeitgeber</th>
+            <th>
+              <img
+                src="{{ url_for('views.profile.profile_image', user_id=job.employer.id) }}"
+                alt="Profilbild"
+                class="w-100 hover-overlay"
+                data-mdb-ripple-color="light"
+              />
+            </th>
+          </tr>
+          <tr>
+            <th>Dauer</th>
+            <th>{{ job.duration // 60 }}:{{ job.duration % 60}}</th>
+          </tr>
+          <tr>
+            <th>Bezahlung</th>
+            <th>{{ job.payment // 100 }},{{ job.payment % 100 }}€</th>
+          </tr>
+          <tr>
+            <th>Start Zeit</th>
+            <th>
+              {{ datetime.fromtimestamp(job.time_start).strftime("%H:%M
+              %d.%m.%Y") }}
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-6">
+      <div>
+        {% for i in count() %} {% if msgs.send[-1].time < msgs.receive[-1].time
+        %}
+        <div>msgs.send.pop()</div>
+        {% else %}
+        <div>msgs.receive.pop()</div>
+        {% if not msgs.send and not msgs.receive %} {% break %} {% endif %} {%
+        endif %} {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
