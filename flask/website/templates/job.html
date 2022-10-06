@@ -41,14 +41,26 @@
       </table>
     </div>
     <div class="col-6">
-      <div>
-        {% for i in count() %} {% if msgs.send[-1].time < msgs.receive[-1].time
-        %}
+      <div class="h-100 w-100 border">
+        {% for i in range(cnt_msgs) %} {% if msgs.send[-1].time <
+        msgs.receive[-1].time %}
         <div>msgs.send.pop()</div>
         {% else %}
         <div>msgs.receive.pop()</div>
-        {% if not msgs.send and not msgs.receive %} {% break %} {% endif %} {%
-        endif %} {% endfor %}
+        {% endif %} {% endfor %}
+      </div>
+      <div class="align-bottom input-group">
+        <input
+          type="text"
+          name="message"
+          class="form-control"
+          placeholder="Nachricht..."
+        />
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-primary btn-outline-secondary">
+            ✉
+          </button>
+        </div>
       </div>
     </div>
   </div>

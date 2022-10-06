@@ -37,4 +37,5 @@ def job():
         datetime=datetime,
         count=count,
         msgs=UserMessage(msgs_send, msgs_receive),
+        cnt_msgs=len(msgs_send) + len(msgs_receive),
     )
