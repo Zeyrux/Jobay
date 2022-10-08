@@ -60,7 +60,10 @@ def create_app():
         app.config["TAGS"] = [tag.name for tag in Tag.query.all()]
         # TODO: TAGS bei profile page überarbeite (von js in html)
 
-    return app, SocketIO(app)
+    socket = SocketIO(app)
+    socket.register_blueprint()
+
+    return app, socket
 
 
 def create_database(app: Flask):
