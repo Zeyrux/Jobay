@@ -39,3 +39,7 @@ def job():
         msgs=UserMessage(msgs_send, msgs_receive),
         cnt_msgs=len(msgs_send) + len(msgs_receive),
     )
+
+
+def receive_msg():
+    pass
