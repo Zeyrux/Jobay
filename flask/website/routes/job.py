@@ -1,15 +1,14 @@
 from datetime import datetime
-from collections import namedtuple
 from itertools import count
+from json import dumps
 
-from ..models import Job, Message
-from .. import db
+from ..models import Job, Message, User
+from .. import socket, db
 
 from flask import Blueprint, request, flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
 
 
-UserMessage = namedtuple("Message", ["send", "receive"])
 job_bp = Blueprint("job", __name__)
 
 
@@ -36,10 +35,28 @@ def job():
         job=job,
         datetime=datetime,
         count=count,
-        msgs=UserMessage(msgs_send, msgs_receive),
+        len=len,
+        msgs_send=[msg.to_dict() for msg in msgs_send],
+        msgs_receive=[msg.to_dict() for msg in msgs_receive],
         cnt_msgs=len(msgs_send) + len(msgs_receive),
     )
 
 
+@socket.on("job_msg_send")
+def msg_send(msg, employer_id):
+    if 0 < len(msg) < 2048 and employer_id.isdigit():
+        employer = User.query.filter_by(id=int(employer_id)).first()
+        if employer:
+            msg = Message(
+                content=msg,
+                time=datetime.now().timestamp(),
+                user_send=current_user,
+                user_receive=employer,
+            )
+            db.session.add(msg)
+            db.session.commit()
+
+
+@socket.on("job_msg_receive")
 def receive_msg():
     pass

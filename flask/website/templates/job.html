@@ -42,24 +42,90 @@
     </div>
     <div class="col-6">
       <div class="h-100 w-100 border">
-        {% for i in range(cnt_msgs) %} {% if msgs.send[-1].time <
-        msgs.receive[-1].time %}
-        <div>msgs.send.pop()</div>
-        {% else %}
-        <div>msgs.receive.pop()</div>
-        {% endif %} {% endfor %}
+        <div id="msgs_box" class="d-flex-column">
+          <script>
+            // prettier-ignore
+            let msgs_send = {{ msgs_send|tojson }};
+            let msgs_receive = {{ msgs_receive|tojson }};
+          </script>
+          <script>
+            let msgs_box = document.getElementById("msgs_box");
+            function create_msg(msg, send) {
+              let div_outer = document.createElement("div");
+              let div_inner = document.createElement("div");
+              let p = document.createElement("p");
+              p.innerHTML = msg.content;
+              div_inner.appendChild(p);
+              div_outer.appendChild(div_inner);
+              div_inner.classList.add("border-secondary", "border", "rounded");
+              div_outer.classList.add("d-flex");
+              p.classList.add("m-0", "pr-2", "pl-2");
+              if (send) {
+                div_inner.style = "background-color: #7186a8;";
+              } else {
+                div_outer.classList.add("justify-content-end");
+                div_inner.style = "background-color: #3665b3;";
+              }
+              msgs_box.appendChild(div_outer);
+            }
+            msgs_send.forEach((msg) => {
+              console.log(msg);
+            });
+            while (true) {
+              if (msgs_send.length == 0) {
+                msgs_receive.forEach((msg) => {
+                  create_msg(msg, false);
+                });
+                break;
+              } else if (msgs_receive.length == 0) {
+                msgs_send.forEach((msg) => {
+                  create_msg(msg, true);
+                });
+                break;
+              }
+              if (msgs_send[0].time < msgs_receive[0].time) {
+                create_msg(msgs_send.shift(), true);
+              } else {
+                create_msg(msgs_receive.shift(), false);
+              }
+            }
+          </script>
+        </div>
       </div>
       <div class="align-bottom input-group">
         <input
+          id="input_msg"
           type="text"
           name="message"
           class="form-control"
           placeholder="Nachricht..."
         />
         <div class="input-group-append">
-          <button type="submit" class="btn btn-primary btn-outline-secondary">
+          <button
+            id="send_msg_submit"
+            type="submit"
+            class="btn btn-primary btn-outline-secondary"
+            employer_id="{{ job.employer.id }}"
+          >
             ✉
           </button>
+          <script>
+            let submit = document.getElementById("send_msg_submit");
+            submit.addEventListener("click", function () {
+              let msg = document.getElementById("input_msg").value;
+              if (msg.length < 0) {
+                alert("Nachricht muss mindestens ein Zeichen beinhalten!");
+              } else if (msg.lenght > 2048) {
+                alert("Nachricht darf maximal 2048 Zeichen groß sein!");
+              } else {
+                socket.emit(
+                  "job_msg_send",
+                  msg,
+                  submit.getAttribute("employer_id")
+                );
+              }
+            });
+          </script>
         </div>
       </div>
     </div>

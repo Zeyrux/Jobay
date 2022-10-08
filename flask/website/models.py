@@ -46,7 +46,7 @@ class City(db.Model):
 
     def to_dict(self) -> dict:
         dict = self.__dict__
-        dict.pop("_sa_instance_state")
+        dict.pop("_sa_instance_state", "")
         return dict
 
 
@@ -70,7 +70,7 @@ class Job(db.Model):
 
     def to_dict(self) -> dict:
         dict = self.__dict__
-        dict.pop("_sa_instance_state")
+        dict.pop("_sa_instance_state", "")
         return dict
 
 
@@ -83,13 +83,13 @@ class Location(db.Model):
 
     def to_dict(self) -> dict:
         dict = self.__dict__
-        dict.pop("_sa_instance_state")
+        dict.pop("_sa_instance_state", "")
         return dict
 
 
 class Message(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
-    text = db.Column(VARCHAR(1024), nullable=False)
+    content = db.Column(VARCHAR(2048), nullable=False)
     time = db.Column(FLOAT(unsigned=True), nullable=False)
     id_user_send = db.Column(
         INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
@@ -100,7 +100,7 @@ class Message(db.Model):
 
     def to_dict(self) -> dict:
         dict = self.__dict__
-        dict.pop("_sa_instance_state")
+        dict.pop("_sa_instance_state", "")
         return dict
 
 
@@ -112,7 +112,7 @@ class Status(db.Model):
 
     def to_dict(self) -> dict:
         dict = self.__dict__
-        dict.pop("_sa_instance_state")
+        dict.pop("_sa_instance_state", "")
         return dict
 
 
@@ -123,7 +123,7 @@ class Tag(db.Model):
 
     def to_dict(self) -> dict:
         dict = self.__dict__
-        dict.pop("_sa_instance_state")
+        dict.pop("_sa_instance_state", "")
         return dict
 
 
@@ -134,7 +134,7 @@ class Timeblock(db.Model):
 
     def to_dict(self) -> dict:
         dict = self.__dict__
-        dict.pop("_sa_instance_state")
+        dict.pop("_sa_instance_state", "")
         return dict
 
 

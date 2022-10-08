@@ -8,11 +8,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 db = SQLAlchemy()
+app = Flask(__name__)
+socket = SocketIO(app)
 
 
 def create_app():
     # app
-    app = Flask(__name__)
     app.config["SECRET_KEY"] = token_urlsafe(25)
     app.config["UPLOAD_FOLDER_PROFILE_IMAGE"] = Path("static", "images", "profile")
     app.config["UPLOAD_FOLDER_PROFILE_IMAGE_WEBSITE"] = Path(
@@ -59,9 +60,6 @@ def create_app():
 
         app.config["TAGS"] = [tag.name for tag in Tag.query.all()]
         # TODO: TAGS bei profile page überarbeite (von js in html)
-
-    socket = SocketIO(app)
-    socket.register_blueprint()
 
     return app, socket
 
