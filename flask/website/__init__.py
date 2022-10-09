@@ -10,6 +10,7 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 app = Flask(__name__)
 socket = SocketIO(app)
+online_users = {}
 
 
 def create_app():

@@ -3,11 +3,11 @@ from itertools import count
 from json import dumps
 
 from ..models import Job, Message, User
-from .. import socket, db
+from .. import socket, db, online_users
 
 from flask import Blueprint, request, flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
-
+from flask_socketio import emit
 
 job_bp = Blueprint("job", __name__)
 
@@ -47,16 +47,16 @@ def msg_send(msg, employer_id):
     if 0 < len(msg) < 2048 and employer_id.isdigit():
         employer = User.query.filter_by(id=int(employer_id)).first()
         if employer:
-            msg = Message(
+            msg_db = Message(
                 content=msg,
-                time=datetime.now().timestamp(),
+                time=int(datetime.now().timestamp() * 100),
                 user_send=current_user,
                 user_receive=employer,
             )
-            db.session.add(msg)
+            db.session.add(msg_db)
             db.session.commit()
-
-
-@socket.on("job_msg_receive")
-def receive_msg():
-    pass
+            employer_sid = online_users.get(employer.id, False)
+            if employer_sid:
+                emit("receive_msg", msg, room=employer_sid)
+        else:
+            flash("Fehler bei der Suche des Gesprächspartners!", category="error")

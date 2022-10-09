@@ -54,7 +54,7 @@
               let div_outer = document.createElement("div");
               let div_inner = document.createElement("div");
               let p = document.createElement("p");
-              p.innerHTML = msg.content;
+              p.innerHTML = msg;
               div_inner.appendChild(p);
               div_outer.appendChild(div_inner);
               div_inner.classList.add("border-secondary", "border", "rounded");
@@ -68,25 +68,22 @@
               }
               msgs_box.appendChild(div_outer);
             }
-            msgs_send.forEach((msg) => {
-              console.log(msg);
-            });
             while (true) {
               if (msgs_send.length == 0) {
                 msgs_receive.forEach((msg) => {
-                  create_msg(msg, false);
+                  create_msg(msg.content, false);
                 });
                 break;
               } else if (msgs_receive.length == 0) {
                 msgs_send.forEach((msg) => {
-                  create_msg(msg, true);
+                  create_msg(msg.content, true);
                 });
                 break;
               }
               if (msgs_send[0].time < msgs_receive[0].time) {
-                create_msg(msgs_send.shift(), true);
+                create_msg(msgs_send.shift().content, true);
               } else {
-                create_msg(msgs_receive.shift(), false);
+                create_msg(msgs_receive.shift().content, false);
               }
             }
           </script>
@@ -110,20 +107,27 @@
             ✉
           </button>
           <script>
+            // send msg
             let submit = document.getElementById("send_msg_submit");
             submit.addEventListener("click", function () {
-              let msg = document.getElementById("input_msg").value;
-              if (msg.length < 0) {
+              let input = document.getElementById("input_msg");
+              if (input.value.length < 0) {
                 alert("Nachricht muss mindestens ein Zeichen beinhalten!");
-              } else if (msg.lenght > 2048) {
+              } else if (input.value.lenght > 2048) {
                 alert("Nachricht darf maximal 2048 Zeichen groß sein!");
               } else {
                 socket.emit(
                   "job_msg_send",
-                  msg,
+                  input.value,
                   submit.getAttribute("employer_id")
                 );
+                create_msg(input.value, true);
+                input.value = "";
               }
+            });
+            // receive msg
+            socket.on("receive_msg", function (msg) {
+              create_msg(msg, false);
             });
           </script>
         </div>

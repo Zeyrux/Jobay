@@ -1,4 +1,5 @@
 from .models import create_user_db, User
+from . import online_users, socket
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
@@ -7,6 +8,19 @@ from validate_email_address import validate_email
 
 
 auth = Blueprint("auth", __name__)
+
+
+@socket.on("connect")
+@login_required
+def connect():
+    online_users[current_user.id] = request.sid
+
+
+@socket.on("disconnect")
+@login_required
+def disconnect():
+    print("Disconnect")
+    del online_users[current_user.id]
 
 
 @auth.route("/login", methods=["GET", "POST"])

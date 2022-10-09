@@ -3,7 +3,7 @@ from datetime import datetime
 from . import db
 
 from flask_login import UserMixin
-from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, SMALLINT, FLOAT, TINYINT
+from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, SMALLINT, FLOAT, TINYINT, BIGINT
 
 
 job_tag = db.Table(
@@ -90,7 +90,7 @@ class Location(db.Model):
 class Message(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
     content = db.Column(VARCHAR(2048), nullable=False)
-    time = db.Column(FLOAT(unsigned=True), nullable=False)
+    time = db.Column(BIGINT(unsigned=True), nullable=False)
     id_user_send = db.Column(
         INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
     )
