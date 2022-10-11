@@ -86,7 +86,7 @@
             <tr>
               <td><h4>Deine Tags</h4></td>
               <td
-                id="tag_td"
+                id="tag_item"
                 class="d-inline-flex flex-wrap justify-content-around w-100"
               >
                 <form id="tag_form" method="post"></form>
@@ -162,11 +162,15 @@
   </table>
   <button id="timeblock_edit" class="btn btn-primary">Editieren</button>
   <script
+    id="script_create_tags"
+    src="{{ url_for('static', filename='scripts/create_tags.js') }}"
+    user_tags="{{ user_tags }}"
+  ></script>
+  <script
     src="{{ url_for('static', filename='scripts/profile.js') }}"
     id="script"
     type="text/javascript"
     timeblocks="{{ timeblocks }}"
-    user_tags="{{ user_tags }}"
     all_tags="{{ all_tags }}"
   ></script>
 </div>

@@ -1,3 +1,5 @@
+from json import dumps
+
 from ..models import User
 from .. import online_users
 
@@ -21,5 +23,9 @@ def view_profile():
         return redirect(url_for("views.home.home"))
     online = profile.id in online_users
     return render_template(
-        "view_profile.html", user=current_user, profile=profile, online=online
+        "view_profile.html",
+        user=current_user,
+        profile=profile,
+        online=online,
+        profile_tags=dumps([tag.to_dict() for tag in profile.tags]),
     )

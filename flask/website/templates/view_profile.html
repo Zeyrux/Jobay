@@ -19,7 +19,12 @@
             <th>{{ user.location.post_code }} {{user.location.city.name }}</th>
           </tr>
           <tr>
-            <th>tags mit dem script vom profile generieren</th>
+            <th id="tag_item"></th>
+            <script
+              id="script_create_tags"
+              src="{{ url_for('static', filename='scripts/create_tags.js') }}"
+              user_tags="{{ profile_tags }}"
+            ></script>
           </tr>
         </tbody>
       </table>
