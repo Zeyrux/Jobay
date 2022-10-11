@@ -11,14 +11,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <form id="view_employer_form" action="view-profile" method="get">
+            <input type="hidden" name="id" value="{{ job.employer.id }}" />
+          </form>
+          <tr
+            onclick="document.getElementById('view_employer_form').submit();"
+            onmouseover="this.classList.add('thead-light'); "
+            onmouseleave="this.classList.remove('thead-light');"
+          >
             <th>Arbeitgeber</th>
             <th>
               <img
                 src="{{ url_for('views.profile.profile_image', user_id=job.employer.id) }}"
                 alt="Profilbild"
-                class="w-100 hover-overlay"
-                data-mdb-ripple-color="light"
+                class="w-100"
               />
             </th>
           </tr>

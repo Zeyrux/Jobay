@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<div class="container-fluid justify-content-center mt-4">
+  <div class="row">
+    <div class="col-4">
+      <img
+        src="{{ url_for('views.profile.profile_image', user_id=profile.id) }}"
+        alt="Profilbild"
+        class="w-100"
+      />
+    </div>
+    <div class="col">
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <th>{{ profile.first_name }} {{ profile.last_name }}</th>
+          </tr>
+          <tr>
+            <th>{{ user.location.post_code }} {{user.location.city.name }}</th>
+          </tr>
+          <tr>
+            <th>tags mit dem script vom profile generieren</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

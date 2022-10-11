@@ -20,7 +20,7 @@ def connect():
 @login_required
 def disconnect():
     print("Disconnect")
-    del online_users[current_user.id]
+    online_users.pop(current_user.id, None)
 
 
 @auth.route("/login", methods=["GET", "POST"])
