@@ -8,3 +8,7 @@ website/static/images
 # files
 website/database.db
 test.py
+bootstrap.min.js
+jquery-3.2.1.slim.min.js
+popper.min.js
+socket.io.js
