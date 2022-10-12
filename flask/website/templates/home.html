@@ -6,7 +6,6 @@
     <div class="container-fluid">
       <div
         class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-sx-1"
-        style="gap: 1vw;"
       >
         {% for job in jobs %}
         <div
@@ -25,10 +24,13 @@
           <table class="table table-striped table-no-border m-0">
             <thead>
               <tr>
-                <th colspan="2" class="text-center" style="border-top: none;">{{ job.name }}</th>
+                <th colspan="2" class="text-center" style="border-top: none">
+                  {{ job.name }}
+                </th>
               </tr>
             </thead>
             <tbody>
+              <tr>
                 <th>Arbeitgeber</th>
                 <th class="d-inline-flex">
                   <img
