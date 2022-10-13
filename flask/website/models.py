@@ -57,7 +57,7 @@ class Job(db.Model):
     )
     name = db.Column(VARCHAR(32), nullable=False)
     duration = db.Column(SMALLINT(unsigned=True), nullable=False)
-    time_start = db.Column(FLOAT(unsigned=True), nullable=False)
+    time_start = db.Column(INTEGER(unsigned=True), nullable=False)
     payment = db.Column(SMALLINT(unsigned=True), nullable=False)
     rating = db.Column(FLOAT(unsigned=True), nullable=False)
     id_employer = db.Column(

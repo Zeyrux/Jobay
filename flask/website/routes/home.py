@@ -24,4 +24,5 @@ def home():
         jobs=jobs,
         datetime=datetime,
         int=int,
+        str=str,
     )

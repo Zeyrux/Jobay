@@ -21,11 +21,17 @@
           >
             <th>Arbeitgeber</th>
             <th>
-              <img
-                src="{{ url_for('views.profile.profile_image', user_id=job.employer.id) }}"
-                alt="Profilbild"
-                class="w-100"
-              />
+              <div class="d-inline-flex">
+                <img
+                  src="{{ url_for('views.profile.profile_image', user_id=job.employer.id) }}"
+                  alt="Profilbild"
+                  class="hover-overlay rounded-circle"
+                  style="width: 3vh; height: 3vh"
+                />
+                <p class="mb-0 ml-2">
+                  {{ job.employer.first_name }} {{ job.employer.last_name }}
+                </p>
+              </div>
             </th>
           </tr>
           <tr>

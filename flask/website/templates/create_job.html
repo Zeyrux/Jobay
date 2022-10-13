@@ -121,6 +121,7 @@ block content %}
         {% endfor %}
       </div>
       <script>
+        // input logic
         let div_tags = document.getElementById("div_tags").children;
         for (let i = 1; i < div_tags.length; i += 2) {
           let button = div_tags[i];
@@ -137,6 +138,8 @@ block content %}
             }
           });
         }
+        // last input rounded
+        div_tags[div_tags.length - 2].classList.add("rounded-right");
       </script>
     </div>
     <button type="submit" class="btn btn-primary">Angebot Erstellen</button>

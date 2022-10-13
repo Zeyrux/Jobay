@@ -5,36 +5,34 @@
 >
   <h1 class="text-center">Profil</h1>
   <div class="">
+    <!-- Profile Image -->
     <div class="row">
       <div class="col-3 pr-0">
         <img
           src="{{ url_for('views.profile.profile_image') }}"
-          alt="Profilbild"
+          alt="Kein Profilbild gefunden!"
           class="mw-100 mh-100"
         />
         <form method="post" enctype="multipart/form-data">
-          <div class="input-group d-flex flex-column">
-            <div class="custom-file">
-              <input
-                id="input_profile_image"
-                type="file"
-                name="profile_image"
-                class="d-none"
-              />
-              <label
-                class="input-group-text text-center w-100"
-                for="input_profile_image"
-                >Neues Profilbild wählen</label
-              >
-            </div>
-            <div class="input-group-append">
-              <input
-                type="submit"
-                value="Profilbild ändern"
-                class="btn btn-outline-secondary w-100"
-              />
-            </div>
-          </div>
+          <input
+            id="input_profile_image"
+            type="file"
+            name="profile_image"
+            class="d-none"
+          />
+          <label
+            class="input-group-text w-100 justify-content-center rounded-0 border border-top-0 border-bottom-0 border-secondary"
+            for="input_profile_image"
+            onmouseover="this.classList.add('bg-secondary', 'text-white')"
+            onmouseleave="this.classList.remove('bg-secondary', 'text-white')"
+            >Neues Profilbild wählen</label
+          >
+          <input
+            type="submit"
+            value="Profilbild ändern"
+            class="btn btn-outline-secondary border-top-0 rounded-bottom w-100"
+            style="border-top-left-radius: 0; border-top-right-radius: 0"
+          />
         </form>
       </div>
       <div class="col pl-0">

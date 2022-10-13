@@ -41,6 +41,7 @@ def create_job():
             for argument in request.form.items()
             if "tag_" in argument[0] and argument[1] in current_app.config["TAGS"]
         ]
+        print(time_start)
         if not name:
             flash("Bitte Name des Jobs einfügen!", category="error")
         elif not duration_hour and not duration_minute:
