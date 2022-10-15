@@ -13,18 +13,28 @@
       <table class="table table-striped">
         <tbody>
           <tr>
+            <th>Name</th>
             <th>{{ profile.first_name }} {{ profile.last_name }}</th>
           </tr>
           <tr>
+            <th>Ort</th>
             <th>{{ user.location.post_code }} {{user.location.city.name }}</th>
           </tr>
           <tr>
-            <th id="tag_item"></th>
+            <th>Tags</th>
+            <th
+              id="tag_item"
+              class="d-inline-flex flex-wrap justify-content-around w-100"
+            ></th>
             <script
               id="script_create_tags"
               src="{{ url_for('static', filename='scripts/create_tags.js') }}"
               user_tags="{{ profile_tags }}"
             ></script>
+          </tr>
+          <tr>
+            <th>Beschreibung</th>
+            <th>{{ user.description }}</th>
           </tr>
         </tbody>
       </table>

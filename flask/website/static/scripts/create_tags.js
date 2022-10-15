@@ -1,4 +1,4 @@
-function create_tags() {
+function create_tags(with_delete) {
   let user_tags = JSON.parse(
     document.getElementById("script_create_tags").getAttribute("user_tags")
   );

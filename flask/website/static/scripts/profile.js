@@ -153,7 +153,6 @@ function display_edit_timeblock() {
 }
 
 function create_tag_options() {
-  // create options
   let all_tags = JSON.parse(
     document.getElementById("script").getAttribute("all_tags")
   );
@@ -174,11 +173,11 @@ function create_tag_options() {
 }
 
 function init() {
+  create_tag_options();
   create_timeblocks();
   display_edit_timeblock();
   create_add_buttons();
   create_submit_for_description();
-  create_tag_options();
 }
 
 init();

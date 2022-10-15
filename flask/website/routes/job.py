@@ -33,12 +33,13 @@ def job():
         "job.html",
         user=current_user,
         job=job,
-        datetime=datetime,
-        count=count,
-        len=len,
         msgs_send=[msg.to_dict() for msg in msgs_send],
         msgs_receive=[msg.to_dict() for msg in msgs_receive],
         cnt_msgs=len(msgs_send) + len(msgs_receive),
+        datetime=datetime,
+        count=count,
+        len=len,
+        str=str,
     )
 
 

@@ -4,10 +4,12 @@
   <h3 class="text-center">{{ job.name }}</h3>
   <div class="row">
     <div class="col-6">
-      <table class="table">
+      <table class="table table-striped">
         <thead>
           <tr>
-            <th colspan="2" class="text-center">Infos</th>
+            <th colspan="2" class="border-top-0 text-center">
+              <h4>Informationen</h4>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -36,11 +38,16 @@
           </tr>
           <tr>
             <th>Dauer</th>
-            <th>{{ job.duration // 60 }}:{{ job.duration % 60}}</th>
+            <th>
+              {{ job.duration // 60 }}:{{ str(job.duration % 60).rjust(2, "0")}}
+            </th>
           </tr>
           <tr>
             <th>Bezahlung</th>
-            <th>{{ job.payment // 100 }},{{ job.payment % 100 }}€</th>
+            <th>
+              {{ job.payment // 100 }},{{ str(job.payment % 100).rjust(2, "0")
+              }}€
+            </th>
           </tr>
           <tr>
             <th>Start Zeit</th>
@@ -62,40 +69,22 @@
           </script>
           <script>
             let msgs_box = document.getElementById("msgs_box");
-            function create_msg(msg, send) {
-              let div_outer = document.createElement("div");
-              let div_inner = document.createElement("div");
-              let p = document.createElement("p");
-              p.innerHTML = msg;
-              div_inner.appendChild(p);
-              div_outer.appendChild(div_inner);
-              div_inner.classList.add("border-secondary", "border", "rounded");
-              div_outer.classList.add("d-flex");
-              p.classList.add("m-0", "pr-2", "pl-2");
-              if (send) {
-                div_inner.style = "background-color: #7186a8;";
-              } else {
-                div_outer.classList.add("justify-content-end");
-                div_inner.style = "background-color: #3665b3;";
-              }
-              msgs_box.appendChild(div_outer);
-            }
             while (true) {
               if (msgs_send.length == 0) {
                 msgs_receive.forEach((msg) => {
-                  create_msg(msg.content, false);
+                  create_msg(msg.content, msgs_box, false);
                 });
                 break;
               } else if (msgs_receive.length == 0) {
                 msgs_send.forEach((msg) => {
-                  create_msg(msg.content, true);
+                  create_msg(msg.content, msgs_box, true);
                 });
                 break;
               }
               if (msgs_send[0].time < msgs_receive[0].time) {
-                create_msg(msgs_send.shift().content, true);
+                create_msg(msgs_send.shift().content, msgs_box, true);
               } else {
-                create_msg(msgs_receive.shift().content, false);
+                create_msg(msgs_receive.shift().content, msgs_box, false);
               }
             }
           </script>
@@ -133,13 +122,13 @@
                   input.value,
                   submit.getAttribute("employer_id")
                 );
-                create_msg(input.value, true);
+                create_msg(input.value, msgs_box, true);
                 input.value = "";
               }
             });
             // receive msg
             socket.on("receive_msg", function (msg) {
-              create_msg(msg, false);
+              create_msg(msg, msgs_box, false);
             });
           </script>
         </div>

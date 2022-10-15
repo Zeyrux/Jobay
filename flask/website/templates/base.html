@@ -28,20 +28,52 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
+        {% if user.is_authenticated %}
+        <!-- other pages -->
         <div class="navbar-nav">
-          {% if user.is_authenticated %}
           <a class="nav-item nav-link" href="/">Home</a>
           <a class="nav-item nav-link" href="/profile">Profil</a>
           <a class="nav-item nav-link" href="/create-job">Angebot Erstellen</a>
           <a class="nav-item nav-link" href="/settings">Einstellungen</a>
           <a class="nav-item nav-link" href="/logout">Logout</a>
-          {% else %}
+        </div>
+        <!-- messages -->
+        <div class="navbar-nav ml-auto">
+          <div class="dropdown nav-item">
+            <div class="d-flex flex-inline" style="position: relative">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenu2"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                ✉
+              </button>
+              <div style="position: absolute; left: -1vw; top: -1vw">
+                <p
+                  id="nav_p_msgs_cnt"
+                  class="font-weight-bold rounded-circle bg-warning pr-2 pl-2"
+                >
+                  2
+                </p>
+              </div>
+            </div>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <div id="nav_div_msgs" class="dropdown-item">messages lol</div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <!-- login pages -->
+        <div class="navbar-nav">
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="signUp" href="/sign-up"
             >Registrieren</a
           >
-          {% endif %}
         </div>
+        {% endif %}
       </div>
     </nav>
 
@@ -79,11 +111,36 @@
       socket.on("connect", function (socket) {
         console.log("socket connected");
       });
+      function create_msg(msg, div, send) {
+        let div_outer = document.createElement("div");
+        let div_inner = document.createElement("div");
+        let p = document.createElement("p");
+        p.innerHTML = msg;
+        div_inner.appendChild(p);
+        div_outer.appendChild(div_inner);
+        div_inner.classList.add("border-secondary", "border", "rounded");
+        div_outer.classList.add("d-flex");
+        p.classList.add("flex-wrap", "m-0", "pr-2", "pl-2");
+        if (send) {
+          div_inner.style = "background-color: #7186a8;";
+        } else {
+          div_outer.classList.add("justify-content-end");
+          div_inner.style = "background-color: #3665b3;";
+        }
+        div.appendChild(div_outer);
+      }
+      let nav_div_msgs = document.getElementById("nav_div_msgs");
+      let nav_p_msgs_cnt = document.getElementById("nav_p_msgs_cnt");
+      socket.on("receive_msg", function (msg) {
+        create_msg(msg, nav_div_msgs, false);
+        nav_p_msgs_cnt.innerHTML += 1;
+      });
     </script>
 
     <!-- Subblock -->
     {% block content %} {% endblock %}
-    <script
+    <!-- for development without internet connection
+      <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
       crossorigin="anonymous"
@@ -98,6 +155,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+  -->
     <script
       src="{{url_for('static', filename='scripts/jquery-3.2.1.slim.min.js')}}"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

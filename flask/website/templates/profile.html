@@ -4,14 +4,14 @@
   class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1 p-0"
 >
   <h1 class="text-center">Profil</h1>
-  <div class="">
+  <div>
     <!-- Profile Image -->
-    <div class="row">
-      <div class="col-3 pr-0">
+    <div class="row w-100 m-0">
+      <div class="col-3 p-0 mr-3 border border-secondary rounded h-100">
         <img
           src="{{ url_for('views.profile.profile_image') }}"
           alt="Kein Profilbild gefunden!"
-          class="mw-100 mh-100"
+          class="mw-100 mh-100 rounded"
         />
         <form method="post" enctype="multipart/form-data">
           <input
@@ -21,7 +21,7 @@
             class="d-none"
           />
           <label
-            class="input-group-text w-100 justify-content-center rounded-0 border border-top-0 border-bottom-0 border-secondary"
+            class="input-group-text w-100 justify-content-center"
             for="input_profile_image"
             onmouseover="this.classList.add('bg-secondary', 'text-white')"
             onmouseleave="this.classList.remove('bg-secondary', 'text-white')"
@@ -30,13 +30,12 @@
           <input
             type="submit"
             value="Profilbild ändern"
-            class="btn btn-outline-secondary border-top-0 rounded-bottom w-100"
-            style="border-top-left-radius: 0; border-top-right-radius: 0"
+            class="btn btn-outline-secondary border w-100"
           />
         </form>
       </div>
-      <div class="col pl-0">
-        <table class="table table-striped mb-0">
+      <div class="col pl-0 border border-secondary rounded p-0">
+        <table class="table table-striped m-0">
           <tbody>
             <!-- Name -->
             <tr>
@@ -90,9 +89,9 @@
                 <form id="tag_form" method="post"></form>
                 <div class="dropdown">
                   <button
-                    class="btn btn-secondary dropdown-toggle ml-2"
+                    class="btn btn-secondary dropdown-toggle"
                     type="button"
-                    id="dropdownMenuButton"
+                    id="dropdown_button"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -102,10 +101,20 @@
                   <div
                     id="tag_dropdown"
                     class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
+                    aria-labelledby="dropdown_button"
                   ></div>
                 </div>
               </td>
+            </tr>
+            <!-- rating -->
+            <tr>
+              <td><h4>Rating</h4></td>
+              <td>{{ user.rating }}</td>
+            </tr>
+            <!-- completed jobs -->
+            <tr>
+              <td><h4>Vollbrachte Jobs</h4></td>
+              <td>{{ user.completed_jobs }}</td>
             </tr>
             <!-- description-->
             <tr>
@@ -120,7 +129,11 @@
     method="post"
     onsubmit="document.getElementsByName('description')[0].value = document.getElementById('description').value;"
   >
-    <textarea id="description" class="form-control" rows="5">
+    <textarea
+      id="description"
+      class="form-control border border-secondary rounded mt-3"
+      rows="5"
+    >
 {{ user.description }}</textarea
     >
   </form>
