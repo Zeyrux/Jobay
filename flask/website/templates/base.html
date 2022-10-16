@@ -44,14 +44,14 @@
               <button
                 class="btn btn-secondary dropdown-toggle"
                 type="button"
-                id="dropdownMenu2"
+                id="nav_msgs_button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
                 ✉
               </button>
-              <div style="position: absolute; left: -1vw; top: -1vw">
+              <div style="position: absolute; left: -1vh; top: -1vh">
                 <p
                   id="nav_p_msgs_cnt"
                   class="font-weight-bold rounded-circle bg-warning pr-2 pl-2"
@@ -60,7 +60,7 @@
                 </p>
               </div>
             </div>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <div class="dropdown-menu" aria-labelledby="nav_msgs_button">
               <div id="nav_div_msgs" class="dropdown-item">messages lol</div>
             </div>
           </div>
@@ -96,11 +96,11 @@
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
     <!-- socket io -->
-    <script
+    <!-- <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
       integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
       crossorigin="anonymous"
-    ></script>
+    ></script>-->
     <script
       src="{{url_for('static', filename='scripts/socket.io.js')}}"
       integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
