@@ -40,28 +40,28 @@
         <!-- messages -->
         <div class="navbar-nav ml-auto">
           <div class="dropdown nav-item">
-            <div class="d-flex flex-inline" style="position: relative">
-              <button
-                class="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="nav_msgs_button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="nav_msgs_button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              ✉
+            </button>
+            <div style="position: absolute; left: -1vh; top: -1vh">
+              <p
+                id="nav_p_msgs_cnt"
+                class="d-none font-weight-bold rounded-circle bg-warning pr-2 pl-2"
               >
-                ✉
-              </button>
-              <div style="position: absolute; left: -1vh; top: -1vh">
-                <p
-                  id="nav_p_msgs_cnt"
-                  class="font-weight-bold rounded-circle bg-warning pr-2 pl-2"
-                >
-                  2
-                </p>
-              </div>
+                0
+              </p>
             </div>
             <div class="dropdown-menu" aria-labelledby="nav_msgs_button">
-              <div id="nav_div_msgs" class="dropdown-item">messages lol</div>
+              <div id="nav_div_msgs" class="dropdown-item">
+                <div class="">chat lol</div>
+              </div>
             </div>
           </div>
         </div>
@@ -118,9 +118,15 @@
         p.innerHTML = msg;
         div_inner.appendChild(p);
         div_outer.appendChild(div_inner);
-        div_inner.classList.add("border-secondary", "border", "rounded");
+        div_inner.classList.add(
+          "mw-100",
+          "border-secondary",
+          "border",
+          "rounded"
+        );
         div_outer.classList.add("d-flex");
-        p.classList.add("flex-wrap", "m-0", "pr-2", "pl-2");
+        p.classList.add("m-0", "pr-2", "pl-2");
+        p.style.wordWrap = "break-word";
         if (send) {
           div_inner.style = "background-color: #7186a8;";
         } else {
@@ -133,7 +139,10 @@
       let nav_p_msgs_cnt = document.getElementById("nav_p_msgs_cnt");
       socket.on("receive_msg", function (msg) {
         create_msg(msg, nav_div_msgs, false);
-        nav_p_msgs_cnt.innerHTML += 1;
+        nav_p_msgs_cnt.innerHTML = parseInt(nav_p_msgs_cnt.innerHTML) + 1;
+        if (nav_p_msgs_cnt.classList.contains("d-none")) {
+          nav_p_msgs_cnt.classList.remove("d-none");
+        }
       });
     </script>
 
