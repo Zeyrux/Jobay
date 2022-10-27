@@ -2,6 +2,7 @@ from json import dumps
 
 from ..models import User
 from .. import online_users
+from .base import generate_args_base_template
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
@@ -24,6 +25,7 @@ def view_profile():
     online = profile.id in online_users
     return render_template(
         "view_profile.html",
+        **generate_args_base_template(current_user),
         user=current_user,
         profile=profile,
         online=online,

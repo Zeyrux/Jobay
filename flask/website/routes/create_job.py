@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from ..models import create_job_db
+from .base import generate_args_base_template
 
 from flask import (
     Blueprint,
@@ -79,5 +80,8 @@ def create_job():
             flash("Job erstellt", category="success")
             return redirect(url_for("views.home.home"))
     return render_template(
-        "create_job.html", user=current_user, tags=current_app.config["TAGS"]
+        "create_job.html",
+        **generate_args_base_template(current_user),
+        user=current_user,
+        tags=current_app.config["TAGS"]
     )

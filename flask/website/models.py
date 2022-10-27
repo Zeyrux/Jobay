@@ -1,9 +1,18 @@
 from datetime import datetime
+from email.policy import default
 
 from . import db
 
 from flask_login import UserMixin
-from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, SMALLINT, FLOAT, TINYINT, BIGINT
+from sqlalchemy.dialects.mysql import (
+    INTEGER,
+    VARCHAR,
+    SMALLINT,
+    FLOAT,
+    TINYINT,
+    BIGINT,
+    BOOLEAN,
+)
 
 
 job_tag = db.Table(
@@ -91,6 +100,7 @@ class Message(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
     content = db.Column(VARCHAR(2048), nullable=False)
     time = db.Column(BIGINT(unsigned=True), nullable=False)
+    received = db.Column(BOOLEAN(), default=False)
     id_user_send = db.Column(
         INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
     )

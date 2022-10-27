@@ -10,45 +10,14 @@ from ..models import (
     create_location,
     create_timeblock,
 )
+from .base import generate_args_base_template
 
-from flask import (
-    Blueprint,
-    render_template,
-    request,
-    flash,
-    current_app,
-    send_file,
-)
+from flask import Blueprint, render_template, request, flash, current_app
 from validate_email_address import validate_email
 from flask_login import current_user, login_required
 
 profile_bp = Blueprint("profile", __name__)
 ALLOWED_FILE_EXTENSIONS = ["jpg", "jpeg", "png", "ico"]
-
-
-@profile_bp.route("/profile-image", methods=["GET"])
-@login_required
-def profile_image():
-    user_id = request.args.get("user_id", "")
-    if user_id:
-        if user_id.isdigit():
-            user_id = int(user_id)
-        else:
-            flash("Fehler bei der Benutzer ID!", category="error")
-            return send_file(current_app.config["PROFILE_IMAGE_EMPTY"])
-    else:
-        user_id = current_user.id
-    if Path(
-        current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE_WEBSITE"],
-        f"{user_id}.png",
-    ).exists():
-        return send_file(
-            Path(
-                current_app.config["UPLOAD_FOLDER_PROFILE_IMAGE"],
-                f"{user_id}.png",
-            )
-        )
-    return send_file(current_app.config["PROFILE_IMAGE_EMPTY"])
 
 
 @profile_bp.route("/profile", methods=["GET", "POST"])
@@ -226,6 +195,7 @@ def profile():
                 flash("Profilbild gespeichern!", category="success")
     return render_template(
         "profile.html",
+        **generate_args_base_template(current_user),
         user=current_user,
         timeblocks=dumps(
             [timeblock.to_dict() for timeblock in current_user.timeblocks]

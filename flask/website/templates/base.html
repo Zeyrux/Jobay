@@ -17,6 +17,32 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
+    <script>
+      function create_msg(msg, div, send) {
+        let div_outer = document.createElement("div");
+        let div_inner = document.createElement("div");
+        let p = document.createElement("p");
+        p.innerHTML = msg;
+        div_inner.appendChild(p);
+        div_outer.appendChild(div_inner);
+        div_inner.classList.add(
+          "mw-100",
+          "border-secondary",
+          "border",
+          "rounded"
+        );
+        div_outer.classList.add("d-flex");
+        p.classList.add("m-0", "pr-2", "pl-2");
+        p.style.wordWrap = "break-word";
+        if (send) {
+          div_inner.style = "background-color: #7186a8;";
+        } else {
+          div_outer.classList.add("justify-content-end", "text-right");
+          div_inner.style = "background-color: #3665b3;";
+        }
+        div.appendChild(div_outer);
+      }
+    </script>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button
@@ -58,9 +84,62 @@
                 0
               </p>
             </div>
-            <div class="dropdown-menu" aria-labelledby="nav_msgs_button">
-              <div id="nav_div_msgs" class="dropdown-item">
-                <div class="">chat lol</div>
+            <div
+              id="message_dropdown_menu"
+              class="dropdown-menu p-0"
+              aria-labelledby="nav_msgs_button"
+              style="position: absolute; left: -25vw"
+            >
+              <script>
+                let resize_message_dropdown_menu = function () {
+                  document.getElementById("message_dropdown_menu").style.width =
+                    document.getElementById("nav_msgs_button").offsetWidth +
+                    window.innerWidth * 0.25 +
+                    "px";
+                };
+                window.addEventListener("resize", resize_message_dropdown_menu);
+                resize_message_dropdown_menu();
+              </script>
+              <div id="nav_div_msgs" class="dropdown-item p-0 rounded">
+                {% for user_id, chat in unread_chats.items() %}
+                <form
+                  id="form_chat_{{ user_id }}"
+                  action="{{url_for('views.chat.chat', id=user_id)}}"
+                  method="get"
+                ></form>
+                <div
+                  id="div_chat_{{ user_id }}"
+                  class="pl-3 pr-2 rounded"
+                  onmouseover="this.classList.add('bg-secondary')"
+                  onmouseleave="this.classList.remove('bg-secondary')"
+                  onclick="document
+                  .getElementById('form_chat_{{ user_id }}')
+                  .submit();"
+                >
+                  <div class="d-inline-flex mt-1 mb-1">
+                    <div class="mr-5" style="position: relative">
+                      <img
+                        src="{{ url_for('views.base.profile_image', user_id=user_id) }}"
+                        alt="Profilbild"
+                        class="hover-overlay rounded-circle"
+                        style="position: absolute; width: 3vh; height: 3vh"
+                        data-mdb-ripple-color="light"
+                      />
+                      <div style="position: absolute; top: -9px; left: -9px">
+                        <p
+                          id="nav_p_msgs_cnt"
+                          class="font-weight-bold rounded-circle bg-warning pr-2 pl-2"
+                        >
+                          {{ chat.messages.__len__() }}
+                        </p>
+                      </div>
+                    </div>
+                    <p class="mt-1 mb-1">
+                      {{ chat.user_first_name }} {{ chat.user_last_name }}
+                    </p>
+                  </div>
+                </div>
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -111,30 +190,6 @@
       socket.on("connect", function (socket) {
         console.log("socket connected");
       });
-      function create_msg(msg, div, send) {
-        let div_outer = document.createElement("div");
-        let div_inner = document.createElement("div");
-        let p = document.createElement("p");
-        p.innerHTML = msg;
-        div_inner.appendChild(p);
-        div_outer.appendChild(div_inner);
-        div_inner.classList.add(
-          "mw-100",
-          "border-secondary",
-          "border",
-          "rounded"
-        );
-        div_outer.classList.add("d-flex");
-        p.classList.add("m-0", "pr-2", "pl-2");
-        p.style.wordWrap = "break-word";
-        if (send) {
-          div_inner.style = "background-color: #7186a8;";
-        } else {
-          div_outer.classList.add("justify-content-end");
-          div_inner.style = "background-color: #3665b3;";
-        }
-        div.appendChild(div_outer);
-      }
       let nav_div_msgs = document.getElementById("nav_div_msgs");
       let nav_p_msgs_cnt = document.getElementById("nav_p_msgs_cnt");
       socket.on("receive_msg", function (msg) {

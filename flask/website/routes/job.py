@@ -1,9 +1,9 @@
 from datetime import datetime
 from itertools import count
-from json import dumps
 
 from ..models import Job, Message, User
 from .. import socket, db, online_users
+from .base import generate_args_base_template
 
 from flask import Blueprint, request, flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
@@ -31,6 +31,7 @@ def job():
     ).all()
     return render_template(
         "job.html",
+        **generate_args_base_template(current_user),
         user=current_user,
         job=job,
         msgs_send=[msg.to_dict() for msg in msgs_send],
