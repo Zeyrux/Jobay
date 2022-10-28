@@ -54,7 +54,7 @@ class City(db.Model):
     locations = db.relationship("Location", backref="city", lazy="dynamic")
 
     def to_dict(self) -> dict:
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict.pop("_sa_instance_state", "")
         return dict
 
@@ -78,7 +78,7 @@ class Job(db.Model):
     tags = db.relationship("Tag", secondary=job_tag, backref="jobs", lazy="dynamic")
 
     def to_dict(self) -> dict:
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict.pop("_sa_instance_state", "")
         return dict
 
@@ -91,7 +91,7 @@ class Location(db.Model):
     jobs = db.relationship("Job", backref="location", lazy="dynamic")
 
     def to_dict(self) -> dict:
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict.pop("_sa_instance_state", "")
         return dict
 
@@ -109,7 +109,7 @@ class Message(db.Model):
     )
 
     def to_dict(self) -> dict:
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict.pop("_sa_instance_state", "")
         return dict
 
@@ -121,7 +121,7 @@ class Status(db.Model):
     jobs = db.relationship("Job", backref="status", lazy="dynamic")
 
     def to_dict(self) -> dict:
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict.pop("_sa_instance_state", "")
         return dict
 
@@ -132,7 +132,7 @@ class Tag(db.Model):
     description = db.Column(VARCHAR(1024), default="")
 
     def to_dict(self) -> dict:
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict.pop("_sa_instance_state", "")
         return dict
 
@@ -143,7 +143,7 @@ class Timeblock(db.Model):
     end = db.Column(INTEGER(unsigned=True), nullable=False)
 
     def to_dict(self) -> dict:
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict.pop("_sa_instance_state", "")
         return dict
 
@@ -180,7 +180,7 @@ class User(db.Model, UserMixin):
     employs = db.relationship("Job", backref="employer", lazy="dynamic")
 
     def to_dict(self) -> dict:
-        dict = self.__dict__
+        dict = self.__dict__.copy()
         dict.pop("_sa_instance_state")
         return dict
 

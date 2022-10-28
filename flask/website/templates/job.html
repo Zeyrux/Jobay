@@ -118,7 +118,7 @@
                 alert("Nachricht darf maximal 2048 Zeichen groß sein!");
               } else {
                 socket.emit(
-                  "job_msg_send",
+                  "msg_send",
                   input.value,
                   submit.getAttribute("employer_id")
                 );
@@ -128,7 +128,7 @@
             });
             // receive msg
             socket.on("receive_msg", function (msg) {
-              create_msg(msg, msgs_box, false);
+              create_msg(msg.content, msgs_box, false);
             });
           </script>
         </div>

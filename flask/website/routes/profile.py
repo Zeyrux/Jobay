@@ -196,7 +196,6 @@ def profile():
     return render_template(
         "profile.html",
         **generate_args_base_template(current_user),
-        user=current_user,
         timeblocks=dumps(
             [timeblock.to_dict() for timeblock in current_user.timeblocks]
         ),

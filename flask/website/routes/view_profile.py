@@ -26,7 +26,6 @@ def view_profile():
     return render_template(
         "view_profile.html",
         **generate_args_base_template(current_user),
-        user=current_user,
         profile=profile,
         online=online,
         profile_tags=dumps([tag.to_dict() for tag in profile.tags]),

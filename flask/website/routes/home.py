@@ -22,7 +22,6 @@ def home():
     return render_template(
         "home.html",
         **generate_args_base_template(current_user),
-        user=current_user,
         jobs=jobs,
         datetime=datetime,
         int=int,

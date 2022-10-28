@@ -101,46 +101,67 @@
                 resize_message_dropdown_menu();
               </script>
               <div id="nav_div_msgs" class="dropdown-item p-0 rounded">
-                {% for user_id, chat in unread_chats.items() %}
-                <form
-                  id="form_chat_{{ user_id }}"
-                  action="{{url_for('views.chat.chat', id=user_id)}}"
-                  method="get"
-                ></form>
-                <div
-                  id="div_chat_{{ user_id }}"
-                  class="pl-3 pr-2 rounded"
-                  onmouseover="this.classList.add('bg-secondary')"
-                  onmouseleave="this.classList.remove('bg-secondary')"
-                  onclick="document
-                  .getElementById('form_chat_{{ user_id }}')
+                {% for chat_partner_id, chat in unread_chats.items() %}
+                <div>
+                  <form
+                    id="form_chat_{{ chat_partner_id }}"
+                    action="{{url_for('views.chat.chat', id=chat_partner_id)}}"
+                    method="get"
+                  >
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ chat_partner_id }}"
+                    />
+                  </form>
+                  <div
+                    id="div_chat_{{ chat_partner_id }}"
+                    class="pl-3 pr-2 rounded"
+                    onmouseover="this.classList.add('bg-secondary')"
+                    onmouseleave="this.classList.remove('bg-secondary')"
+                    onclick="document
+                  .getElementById('form_chat_{{ chat_partner_id }}')
                   .submit();"
-                >
-                  <div class="d-inline-flex mt-1 mb-1">
-                    <div class="mr-5" style="position: relative">
-                      <img
-                        src="{{ url_for('views.base.profile_image', user_id=user_id) }}"
-                        alt="Profilbild"
-                        class="hover-overlay rounded-circle"
-                        style="position: absolute; width: 3vh; height: 3vh"
-                        data-mdb-ripple-color="light"
-                      />
-                      <div style="position: absolute; top: -9px; left: -9px">
-                        <p
-                          id="nav_p_msgs_cnt"
-                          class="font-weight-bold rounded-circle bg-warning pr-2 pl-2"
-                        >
-                          {{ chat.messages.__len__() }}
-                        </p>
+                  >
+                    <div class="d-inline-flex mt-1 mb-1">
+                      <div class="mr-5" style="position: relative">
+                        <img
+                          src="{{ url_for('views.base.profile_image', user_id=chat_partner_id) }}"
+                          alt="Profilbild"
+                          class="hover-overlay rounded-circle"
+                          style="position: absolute; width: 3vh; height: 3vh"
+                          data-mdb-ripple-color="light"
+                        />
+                        <div style="position: absolute; top: -9px; left: -9px">
+                          <p
+                            id="nav_dropdown_p_msgs_cnt_{{ chat_partner_id }}"
+                            class="nav_dropdown_p_msgs_cnt font-weight-bold rounded-circle bg-warning pr-2 pl-2"
+                          >
+                            {{ chat.messages.__len__() }}
+                          </p>
+                        </div>
                       </div>
+                      <p class="mt-1 mb-1">
+                        {{ chat.user_first_name }} {{ chat.user_last_name }}
+                      </p>
                     </div>
-                    <p class="mt-1 mb-1">
-                      {{ chat.user_first_name }} {{ chat.user_last_name }}
-                    </p>
                   </div>
                 </div>
                 {% endfor %}
               </div>
+              <script>
+                let cnt_nav_dropdown_msgs = 0;
+                for (let p of document.getElementsByClassName(
+                  "nav_dropdown_p_msgs_cnt"
+                )) {
+                  cnt_nav_dropdown_msgs += parseInt(p.innerHTML);
+                }
+                document.getElementById("nav_p_msgs_cnt").innerHTML =
+                  cnt_nav_dropdown_msgs;
+                if (cnt_nav_dropdown_msgs > 0) {
+                  nav_p_msgs_cnt.classList.remove("d-none");
+                }
+              </script>
             </div>
           </div>
         </div>
@@ -190,13 +211,23 @@
       socket.on("connect", function (socket) {
         console.log("socket connected");
       });
-      let nav_div_msgs = document.getElementById("nav_div_msgs");
-      let nav_p_msgs_cnt = document.getElementById("nav_p_msgs_cnt");
       socket.on("receive_msg", function (msg) {
-        create_msg(msg, nav_div_msgs, false);
+        let nav_p_msgs_cnt = document.getElementById("nav_p_msgs_cnt");
         nav_p_msgs_cnt.innerHTML = parseInt(nav_p_msgs_cnt.innerHTML) + 1;
         if (nav_p_msgs_cnt.classList.contains("d-none")) {
           nav_p_msgs_cnt.classList.remove("d-none");
+        }
+        let nav_div_msgs = document.getElementById("nav_div_msgs");
+        console.log(nav_div_msgs);
+        for (let div of nav_div_msgs.children) {
+          if (div.children[0].children[0].value == msg.id_user_receive) {
+            let p_msgs_cnt = document.getElementById(
+              "nav_dropdown_p_msgs_cnt_" + msg.id_user_receive
+            );
+            p_msgs_cnt.innerHTML = parseInt(p_msgs_cnt.innerHTML) + 1;
+            return;
+          }
+          // TODO: add another chat to dropdown if necessary
         }
       });
     </script>
