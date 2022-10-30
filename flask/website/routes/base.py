@@ -1,6 +1,5 @@
 from datetime import datetime
 from pathlib import Path
-from json import dumps
 
 from .. import socket, db, online_users
 from ..models import User, Message
@@ -8,24 +7,31 @@ from ..models import User, Message
 from flask import Blueprint, request, flash, send_file, current_app, send_from_directory
 from flask_login import login_required, current_user
 from flask_socketio import emit
+from sqlalchemy import desc
 
 
 base_bp = Blueprint("base", __name__)
 
 
-def generate_args_base_template(user) -> dict:
-    unread_msgs = user.messages_receive.filter_by(received=False).all()
-    unread_chats = {}
+def generate_args_base_template(user: User) -> dict:
+    unread_msgs = (
+        user.messages_receive.filter_by(received=False)
+        .order_by(desc(Message.time))
+        .all()
+    )
+    unread_chats = []
     for msg in unread_msgs:
-        if unread_chats.get(msg.id_user_send):
-            unread_chats[msg.id_user_send]["messages"].append(msg.to_dict())
+        try:
+            i = unread_chats.index(msg.id_user_send)
+        except ValueError:
+            i = None
+        if i == None:
+            unread_chats.append(msg.id_user_send)
+            unread_chats.append(1)
+            unread_chats.append(f"{msg.user_send.first_name} {msg.user_send.last_name}")
         else:
-            user = User.query.filter_by(id=msg.id_user_send).first()
-            unread_chats[msg.id_user_send] = {
-                "user_first_name": user.first_name,
-                "user_last_name": user.last_name,
-                "messages": [msg.to_dict()],
-            }
+            unread_chats[i + 1] += 1
+    print(unread_chats)
     return {"unread_chats": unread_chats, "user": user}
 
 

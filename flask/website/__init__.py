@@ -67,7 +67,7 @@ def create_app():
 
 def create_database(app: Flask):
     if len(db.engine.table_names()) == 0:
-        db.create_all(app=app)
+        db.create_all()
         print("Created Database!")
     fill_db()
     print("Filled Database!")

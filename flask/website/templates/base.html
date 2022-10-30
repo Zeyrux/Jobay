@@ -101,32 +101,32 @@
                 resize_message_dropdown_menu();
               </script>
               <div id="nav_div_msgs" class="dropdown-item p-0 rounded">
-                {% for chat_partner_id, chat in unread_chats.items() %}
+                {% for i in range(0, unread_chats.__len__(), 3) %}
                 <div>
                   <form
-                    id="form_chat_{{ chat_partner_id }}"
-                    action="{{url_for('views.chat.chat', id=chat_partner_id)}}"
+                    id="form_chat_{{ unread_chats[i] }}"
+                    action="{{url_for('views.chat.chat', id=unread_chats[i])}}"
                     method="get"
                   >
                     <input
                       type="hidden"
                       name="id"
-                      value="{{ chat_partner_id }}"
+                      value="{{ unread_chats[i] }}"
                     />
                   </form>
                   <div
-                    id="div_chat_{{ chat_partner_id }}"
+                    id="div_chat_{{ unread_chats[i] }}"
                     class="pl-3 pr-2 rounded"
                     onmouseover="this.classList.add('bg-secondary')"
                     onmouseleave="this.classList.remove('bg-secondary')"
                     onclick="document
-                  .getElementById('form_chat_{{ chat_partner_id }}')
+                  .getElementById('form_chat_{{ unread_chats[i] }}')
                   .submit();"
                   >
                     <div class="d-inline-flex mt-1 mb-1">
                       <div class="mr-5" style="position: relative">
                         <img
-                          src="{{ url_for('views.base.profile_image', user_id=chat_partner_id) }}"
+                          src="{{ url_for('views.base.profile_image', user_id=unread_chats[i]) }}"
                           alt="Profilbild"
                           class="hover-overlay rounded-circle"
                           style="position: absolute; width: 3vh; height: 3vh"
@@ -134,16 +134,14 @@
                         />
                         <div style="position: absolute; top: -9px; left: -9px">
                           <p
-                            id="nav_dropdown_p_msgs_cnt_{{ chat_partner_id }}"
+                            id="nav_dropdown_p_msgs_cnt_{{ unread_chats[i] }}"
                             class="nav_dropdown_p_msgs_cnt font-weight-bold rounded-circle bg-warning pr-2 pl-2"
                           >
-                            {{ chat.messages.__len__() }}
+                            {{ unread_chats[i+1] }}
                           </p>
                         </div>
                       </div>
-                      <p class="mt-1 mb-1">
-                        {{ chat.user_first_name }} {{ chat.user_last_name }}
-                      </p>
+                      <p class="mt-1 mb-1">{{ unread_chats[i+2] }}</p>
                     </div>
                   </div>
                 </div>
@@ -228,6 +226,7 @@
             return;
           }
           // TODO: add another chat to dropdown if necessary
+          // TODO: alternative solution: add every chat sorted by the last message send
         }
       });
     </script>
