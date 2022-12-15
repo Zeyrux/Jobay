@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
-<div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
-  <form method="post">
+<div class="d-flex align-itmes-center justify-content-end h-100 container">
+  <form method="post" class="w-75">
     <h3 class="text-center">Login</h3>
     <!-- Email -->
     <div class="form-group">
@@ -32,7 +32,13 @@
       </div>
     </div>
     <button type="submit" class="btn btn-primary">Einloggen</button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      onclick="window.location.href = "{{url_for('auth.sign_up')}}"
+    >
+      Noch nicht Registriert?
+    </button>
   </form>
-  <!-- TODO: add register button here -->
 </div>
 {% endblock %}

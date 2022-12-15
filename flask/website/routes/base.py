@@ -31,7 +31,6 @@ def generate_args_base_template(user: User) -> dict:
             unread_chats.append(f"{msg.user_send.first_name} {msg.user_send.last_name}")
         else:
             unread_chats[i + 1] += 1
-    print(unread_chats)
     return {"unread_chats": unread_chats, "user": user}
 
 
