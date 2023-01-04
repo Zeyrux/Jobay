@@ -12,7 +12,7 @@
           <div
             id="job-{{ job.id }}"
             class="border border-secondary p-0 h-100 w-100"
-            style="border-radius: 10%"
+            style="border-radius: 2%"
           >
             <script>
               document
@@ -50,7 +50,7 @@
                   <th>Dauer</th>
                   <th>
                     {{ job.duration // 60 }}:{{ str(job.duration % 60).rjust(2,
-                    "0")}}
+                    "0")}} 
                   </th>
                 </tr>
                 <tr>
@@ -61,10 +61,9 @@
                   </th>
                 </tr>
                 <tr>
-                  <th>Start Zeit</th>
+                  <th>Zeit</th>
                   <th>
-                    {{ datetime.fromtimestamp(job.time_start).strftime("%H:%M
-                    %d.%m.%Y") }}
+                    {{ datetime.fromtimestamp(job.time_start).strftime("%d.%m.%Y") }} - {{ datetime.fromtimestamp(job.time_start).strftime("%H:%M") }}                    
                   </th>
                 </tr>
               </tbody>

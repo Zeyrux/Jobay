@@ -1,19 +1,40 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
-<div class="d-flex align-itmes-center justify-content-end h-100 container">
-  <form method="post" class="w-75">
+<img
+  src="static\images\web\login_background_top.jpeg"
+  class="position-absolute"
+  style="height: 40vw; width: 40vw; z-index: -1"
+/>
+<img
+  src="static\images\web\login_background_bottom.jpeg"
+  class="position-absolute fixed-bottom fixed-right"
+  style="right: 0; left: auto; height: 40vw; width: 40vw; z-index: -1"
+/>
+<div
+  class="d-flex justify-content-center align-items-center container m-auto mt-lg-5 mt-md-3 mt-sm-1 h-75"
+>
+  <form
+    method="post"
+    class="w-75 border border-primary rounded"
+    style="
+      border-width: 0.25vw !important;
+      background-color: rgb(240, 24ß, 240);
+      padding: 2vw 5vw;
+    "
+  >
     <h3 class="text-center">Login</h3>
     <!-- Email -->
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-prepend">
-          <span class="input-group-text">Email</span>
+          <span class="input-group-text" style="font-size: larger">Email</span>
         </div>
         <input
           type="email"
           class="form-control"
           name="email"
           placeholder="Enter email"
+          style="font-size: larger"
         />
       </div>
     </div>
@@ -21,18 +42,27 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-prepend">
-          <span class="input-group-text">Passwort</span>
+          <span class="input-group-text" style="font-size: larger"
+            >Passwort</span
+          >
         </div>
         <input
           type="password"
           class="form-control"
           name="password"
           placeholder="Passwort"
+          style="font-size: larger"
         />
       </div>
     </div>
     <button type="submit" class="btn btn-primary">Einloggen</button>
-    <a class="btn btn-primary" href="/sign-up">Noch nicht Registriert?</a>
+    <button
+      type="button"
+      class="btn btn-primary"
+      onclick="window.location.href = "{{url_for('auth.sign_up')}}"
+    >
+      Noch nicht Registriert?
+    </button>
   </form>
 </div>
 {% endblock %}
