@@ -20,7 +20,7 @@ def chat():
     if not chat_partner:
         flash("Chat Partner konnte nicht gefunden werden", category="error")
         return redirect(url_for("views.home.home"))
-    msgs_send, msgs_receive = get_chat(current_user.id, chat_partner.id)
+    msgs_send, msgs_receive = get_chat(current_user.id, chat_partner.id, set_read=True)
     return render_template(
         "chat.html",
         **generate_args_base_template(current_user),

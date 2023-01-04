@@ -32,13 +32,7 @@
       </div>
     </div>
     <button type="submit" class="btn btn-primary">Einloggen</button>
-    <button
-      type="button"
-      class="btn btn-primary"
-      onclick="window.location.href = "{{url_for('auth.sign_up')}}"
-    >
-      Noch nicht Registriert?
-    </button>
+    <a class="btn btn-primary" href="/sign-up">Noch nicht Registriert?</a>
   </form>
 </div>
 {% endblock %}

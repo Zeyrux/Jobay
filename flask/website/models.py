@@ -263,9 +263,7 @@ def get_rating_job(payment: int, duration: int, employer: User) -> float:
         salery = 1
     elif salery > 50:
         salery = 50
-    employer_rating = employer.rating
-    if employer_rating < 1:
-        employer_rating = 1
+    employer_rating = 1 if employer.rating < 1 else employer.rating
     employer_score = employer_rating * (10 + employer.cnt_ratings)
     return salery * employer_score
 

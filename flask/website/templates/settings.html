@@ -1,2 +1,14 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%} {% endblock%}
+%}
+<div class="container-fluid justify-content-center mt-4 w-75">
+  <h3 class="text-center">Einstellungen</h3>
+  <div class="input-group mb-3">
+    <p class="form-control">Dunkler Modus</p>
+    <div class="input-group-append">
+      <div class="input-group-text">
+        <input type="checkbox" aria-label="Checkbox for following text input" />
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock%}

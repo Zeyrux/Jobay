@@ -35,8 +35,16 @@ def generate_args_base_template(user: User) -> dict:
 
 
 def get_chat(
-    user_first_id: User, user_second_id: User
+    user_first_id: User, user_second_id: User, set_read: bool = False
 ) -> tuple[list[Message], list[Message]]:
+    if set_read:
+        msgs_unread = Message.query.filter_by(
+            id_user_send=user_second_id, id_user_receive=user_first_id, received=False
+        ).all()
+        for msg in msgs_unread:
+            msg.received = True
+        if len(msgs_unread) > 0:
+            db.session.commit()
     msgs_first = Message.query.filter_by(
         id_user_send=user_first_id, id_user_receive=user_second_id
     ).all()
