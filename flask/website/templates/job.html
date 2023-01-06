@@ -142,8 +142,7 @@
           </button>
           <script>
             // send msg
-            let submit = document.getElementById("send_msg_submit");
-            submit.addEventListener("click", function () {
+            let send_msg = function () {
               let input = document.getElementById("input_msg");
               if (input.value.length < 0) {
                 alert("Nachricht muss mindestens ein Zeichen beinhalten!");
@@ -153,12 +152,22 @@
                 socket.emit(
                   "msg_send",
                   input.value,
-                  submit.getAttribute("employer_id")
+                  document
+                    .getElementById("send_msg_submit")
+                    .getAttribute("employer_id")
                 );
                 create_msg(input.value, msgs_box, true);
                 input.value = "";
               }
-            });
+            };
+            document
+              .getElementById("send_msg_submit")
+              .addEventListener("click", send_msg);
+            document
+              .getElementById("input_msg")
+              .addEventListener("keypress", function (e) {
+                if (13 == e.keyCode) send_msg();
+              });
             // receive msg
             socket.on("receive_msg", function (msg) {
               create_msg(msg.content, msgs_box, false);
