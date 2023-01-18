@@ -3,7 +3,7 @@
 <div class="container-fluid justify-content-center mt-4">
   <h3 class="text-center">{{ job.name }}</h3>
   <div class="row">
-    <div class="col-6">
+    <div id="super_div_information" class="col-6 w-100">
       <table class="table table-striped">
         <thead>
           <tr>
@@ -59,8 +59,41 @@
         </tbody>
       </table>
     </div>
-    <div class="col-6">
+    <button
+      id="button_show_msgs"
+      class="btn btn-outline-dark d-none position-absolute"
+      style="right: 1vw"
+    >
+      +
+    </button>
+    <div id="msgs_super_div" class="col-6">
       <div class="h-100 w-100 border">
+        <button
+          id="button_collapse_msgs"
+          class="btn btn-outline-dark position-absolute"
+        >
+          -
+        </button>
+        <script>
+          let button_collapse = document.getElementById("button_collapse_msgs");
+          let button_show = document.getElementById("button_show_msgs");
+          button_collapse.addEventListener("click", function () {
+            document.getElementById("msgs_super_div").classList.add("d-none");
+            document
+              .getElementById("super_div_information")
+              .classList.remove("col-6");
+            button_show.classList.remove("d-none");
+          });
+          button_show.addEventListener("click", function () {
+            document
+              .getElementById("msgs_super_div")
+              .classList.remove("d-none");
+            document
+              .getElementById("super_div_information")
+              .classList.add("col-6");
+            button_show.classList.add("d-none");
+          });
+        </script>
         <div id="msgs_box" class="d-flex-column">
           <script>
             // prettier-ignore
