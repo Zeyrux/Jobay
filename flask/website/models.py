@@ -59,15 +59,17 @@ class City(db.Model):
         return dict
 
 
+# TODO: add Job description
 class Job(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
     id_status = db.Column(
         TINYINT(unsigned=True), db.ForeignKey("status.id"), nullable=False
     )
     name = db.Column(VARCHAR(32), nullable=False)
+    description = db.Column(VARCHAR(2000), nullable=False)
     duration = db.Column(SMALLINT(unsigned=True), nullable=False)
     time_start = db.Column(INTEGER(unsigned=True), nullable=False)
-    payment = db.Column(SMALLINT(unsigned=True), nullable=False)
+    payment = db.Column(INTEGER(unsigned=True), nullable=False)
     rating = db.Column(FLOAT(unsigned=True), nullable=False)
     id_employer = db.Column(
         INTEGER(unsigned=True), db.ForeignKey("user.id"), nullable=False
@@ -98,7 +100,7 @@ class Location(db.Model):
 
 class Message(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
-    content = db.Column(VARCHAR(2048), nullable=False)
+    content = db.Column(VARCHAR(2000), nullable=False)
     time = db.Column(BIGINT(unsigned=True), nullable=False)
     received = db.Column(BOOLEAN(), default=False)
     id_user_send = db.Column(
@@ -117,7 +119,7 @@ class Message(db.Model):
 class Status(db.Model):
     id = db.Column(TINYINT(unsigned=True), primary_key=True)
     name = db.Column(VARCHAR(16), nullable=False)
-    description = db.Column(VARCHAR(1024), default="")
+    description = db.Column(VARCHAR(1000), default="")
     jobs = db.relationship("Job", backref="status", lazy="dynamic")
 
     def to_dict(self) -> dict:
@@ -129,7 +131,7 @@ class Status(db.Model):
 class Tag(db.Model):
     id = db.Column(TINYINT(unsigned=True), primary_key=True)
     name = db.Column(VARCHAR(16), nullable=False)
-    description = db.Column(VARCHAR(1024), default="")
+    description = db.Column(VARCHAR(1000), default="")
 
     def to_dict(self) -> dict:
         dict = self.__dict__.copy()
@@ -152,7 +154,7 @@ class User(db.Model, UserMixin):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
     email = db.Column(VARCHAR(64), nullable=False, unique=True)
     first_name = db.Column(VARCHAR(32), nullable=False)
-    last_name = db.Column(VARCHAR(16), nullable=False)
+    last_name = db.Column(VARCHAR(32), nullable=False)
     password = db.Column(VARCHAR(88), nullable=False)
     id_location = db.Column(
         INTEGER(unsigned=True), db.ForeignKey("location.id"), nullable=False
@@ -160,7 +162,7 @@ class User(db.Model, UserMixin):
     completed_jobs = db.Column(INTEGER(unsigned=True), default=0)
     rating = db.Column(FLOAT(unsigned=True), default=0.0)
     cnt_ratings = db.Column(INTEGER(unsigned=True), default=0)
-    description = db.Column(VARCHAR(2048), default="")
+    description = db.Column(VARCHAR(2000), default="")
     timeblocks = db.relationship(
         "Timeblock", secondary=available_timeblock, backref="users", lazy="dynamic"
     )

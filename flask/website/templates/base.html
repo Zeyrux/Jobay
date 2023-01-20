@@ -205,7 +205,7 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      socket = io();
+      var socket = io();
       socket.on("connect", function (socket) {
         console.log("socket connected");
       });

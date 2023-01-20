@@ -3,6 +3,18 @@
 <div class="container-fluid justify-content-center mt-4">
   <div>
     <h3 class="text-center">Jobs für dich</h3>
+    <div>
+      <input type="text" id="input_search" />
+      <script>
+        let input_search = document.getElementById("input_search");
+        input_search.addEventListener("change", function () {
+          socket.emit("search", input_search.value);
+        });
+        socket.on("search", function (jobs) {
+          conosle.log(jobs);
+        });
+      </script>
+    </div>
     <div class="container-fluid">
       <div
         class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-sx-1"
@@ -50,7 +62,7 @@
                   <th>Dauer</th>
                   <th>
                     {{ job.duration // 60 }}:{{ str(job.duration % 60).rjust(2,
-                    "0")}} 
+                    "0")}}
                   </th>
                 </tr>
                 <tr>
@@ -63,7 +75,10 @@
                 <tr>
                   <th>Zeit</th>
                   <th>
-                    {{ datetime.fromtimestamp(job.time_start).strftime("%d.%m.%Y") }} - {{ datetime.fromtimestamp(job.time_start).strftime("%H:%M") }}                    
+                    {{
+                    datetime.fromtimestamp(job.time_start).strftime("%d.%m.%Y")
+                    }} - {{
+                    datetime.fromtimestamp(job.time_start).strftime("%H:%M") }}
                   </th>
                 </tr>
               </tbody>
