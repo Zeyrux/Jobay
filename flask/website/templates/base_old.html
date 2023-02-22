@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="h-100 w-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+    />
+    <title>{% block title %}Home{% endblock %}</title>
+  </head>
+  <body class="h-75 w-100" style="background-color: rgb(247, 247, 247)">
+    <script>
+      function create_msg(msg, div, send) {
+        let div_outer = document.createElement("div");
+        let div_inner = document.createElement("div");
+        let p = document.createElement("p");
+        p.innerHTML = msg;
+        div_inner.appendChild(p);
+        div_outer.appendChild(div_inner);
+        div_inner.classList.add(
+          "mw-100",
+          "border-secondary",
+          "border",
+          "rounded"
+        );
+        div_outer.classList.add("d-flex");
+        p.classList.add("m-0", "pr-2", "pl-2");
+        p.style.wordWrap = "break-word";
+        if (send) {
+          div_inner.style = "background-color: #7186a8;";
+        } else {
+          div_outer.classList.add("justify-content-end", "text-right");
+          div_inner.style = "background-color: #3665b3;";
+        }
+        div.appendChild(div_outer);
+      }
+    </script>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        {% if user.is_authenticated %}
+        <!-- other pages -->
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/">Home</a>
+          <a class="nav-item nav-link" href="/profile">Profil</a>
+          <a class="nav-item nav-link" href="/create-job">Angebot Erstellen</a>
+          <a class="nav-item nav-link" href="/settings">Einstellungen</a>
+          <a class="nav-item nav-link" href="/logout">Logout</a>
+        </div>
+        <!-- messages -->
+        <div class="navbar-nav ml-auto">
+          <div class="dropdown nav-item">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="nav_msgs_button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              ✉
+            </button>
+            <div style="position: absolute; left: -1vh; top: -1vh">
+              <p
+                id="nav_p_msgs_cnt"
+                class="d-none font-weight-bold rounded-circle bg-warning pr-2 pl-2"
+              >
+                0
+              </p>
+            </div>
+            <div
+              id="message_dropdown_menu"
+              class="dropdown-menu p-0"
+              aria-labelledby="nav_msgs_button"
+              style="position: absolute; left: -25vw"
+            >
+              <script>
+                let resize_message_dropdown_menu = function () {
+                  document.getElementById("message_dropdown_menu").style.width =
+                    document.getElementById("nav_msgs_button").offsetWidth +
+                    window.innerWidth * 0.25 +
+                    "px";
+                };
+                window.addEventListener("resize", resize_message_dropdown_menu);
+                resize_message_dropdown_menu();
+              </script>
+              <div id="nav_div_msgs" class="dropdown-item p-0 rounded">
+                {% for i in range(0, unread_chats.__len__(), 3) %}
+                <div>
+                  <form
+                    id="form_chat_{{ unread_chats[i] }}"
+                    action="{{url_for('views.chat.chat', id=unread_chats[i])}}"
+                    method="get"
+                  >
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ unread_chats[i] }}"
+                    />
+                  </form>
+                  <div
+                    id="div_chat_{{ unread_chats[i] }}"
+                    class="pl-3 pr-2 rounded"
+                    onmouseover="this.classList.add('bg-secondary')"
+                    onmouseleave="this.classList.remove('bg-secondary')"
+                    onclick="document
+                  .getElementById('form_chat_{{ unread_chats[i] }}')
+                  .submit();"
+                  >
+                    <div class="d-inline-flex mt-1 mb-1">
+                      <div class="mr-5" style="position: relative">
+                        <img
+                          src="{{ url_for('views.base.profile_image', user_id=unread_chats[i]) }}"
+                          alt="Profilbild"
+                          class="hover-overlay rounded-circle"
+                          style="position: absolute; width: 3vh; height: 3vh"
+                          data-mdb-ripple-color="light"
+                        />
+                        <div style="position: absolute; top: -9px; left: -9px">
+                          <p
+                            id="nav_dropdown_p_msgs_cnt_{{ unread_chats[i] }}"
+                            class="nav_dropdown_p_msgs_cnt font-weight-bold rounded-circle bg-warning pr-2 pl-2"
+                          >
+                            {{ unread_chats[i+1] }}
+                          </p>
+                        </div>
+                      </div>
+                      <p class="mt-1 mb-1">{{ unread_chats[i+2] }}</p>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <script>
+                let cnt_nav_dropdown_msgs = 0;
+                for (let p of document.getElementsByClassName(
+                  "nav_dropdown_p_msgs_cnt"
+                )) {
+                  cnt_nav_dropdown_msgs += parseInt(p.innerHTML);
+                }
+                document.getElementById("nav_p_msgs_cnt").innerHTML =
+                  cnt_nav_dropdown_msgs;
+                if (cnt_nav_dropdown_msgs > 0) {
+                  nav_p_msgs_cnt.classList.remove("d-none");
+                }
+              </script>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <!-- login pages -->
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" id="login" href="/login">Login</a>
+          <a class="nav-item nav-link" id="signUp" href="/sign-up"
+            >Registrieren</a
+          >
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+
+    <!-- Flashes -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+    <!-- socket io -->
+    <!-- <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"
+    ></script>-->
+    <script
+      src="{{url_for('static', filename='scripts/socket.io.js')}}"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var socket = io();
+      socket.on("connect", function (socket) {
+        console.log("socket connected");
+      });
+      socket.on("receive_msg", function (msg) {
+        let nav_p_msgs_cnt = document.getElementById("nav_p_msgs_cnt");
+        nav_p_msgs_cnt.innerHTML = parseInt(nav_p_msgs_cnt.innerHTML) + 1;
+        if (nav_p_msgs_cnt.classList.contains("d-none")) {
+          nav_p_msgs_cnt.classList.remove("d-none");
+        }
+        let nav_div_msgs = document.getElementById("nav_div_msgs");
+        console.log(nav_div_msgs);
+        for (let div of nav_div_msgs.children) {
+          if (div.children[0].children[0].value == msg.id_user_receive) {
+            let p_msgs_cnt = document.getElementById(
+              "nav_dropdown_p_msgs_cnt_" + msg.id_user_receive
+            );
+            p_msgs_cnt.innerHTML = parseInt(p_msgs_cnt.innerHTML) + 1;
+            return;
+          }
+          // TODO: add another chat to dropdown if necessary
+          // TODO: alternative solution: add every chat sorted by the last message send
+        }
+      });
+    </script>
+
+    <!-- Subblock -->
+    {% block content %} {% endblock %}
+    <!-- for development without internet connection
+      <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  -->
+    <script
+      src="{{url_for('static', filename='scripts/jquery-3.2.1.slim.min.js')}}"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="{{url_for('static', filename='scripts/popper.min.js')}}"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="{{url_for('static', filename='scripts/bootstrap.min.js')}}"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

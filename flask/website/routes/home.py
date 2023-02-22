@@ -5,7 +5,7 @@ from ..models import Job, User, user_tag, job_tag
 from .. import db, socket
 from .base import generate_args_base_template
 
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, request, flash
 from flask_login import login_required, current_user
 
 
@@ -16,10 +16,25 @@ def get_jobs_for_user(user: User) -> list[Job]:
     return Job.query.all()
 
 
+def get_search_jobs(user: User, search: str) -> list[Job]:
+    return Job.query.filter_by(Job.name.contains(search))
+
+
 @home_bp.route("/", methods=["GET", "POST"])
 @login_required
 def home():
-    jobs = get_jobs_for_user(current_user)
+    jobs = None
+    if request.method == "POST":
+        search = request.form.get("search_input", "")
+        if not search:
+            flash(
+                "Bitte füge etwas in die Suche ein um dannach zu filtern",
+                category="error",
+            )
+        else:
+            jobs = get_search_jobs(current_user, search)
+    if jobs is None:
+        jobs = get_jobs_for_user(current_user)
     return render_template(
         "home.html",
         **generate_args_base_template(current_user),
@@ -28,9 +43,3 @@ def home():
         int=int,
         str=str,
     )
-
-
-@socket.on("search")
-def search(search):
-    print(search)
-    socket.emit(dumps([job.to_dict() for job in get_jobs_for_user(current_user)]))

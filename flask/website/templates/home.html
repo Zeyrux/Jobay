@@ -4,16 +4,19 @@
   <div>
     <h3 class="text-center">Jobs für dich</h3>
     <div>
-      <input type="text" id="input_search" />
-      <script>
-        let input_search = document.getElementById("input_search");
-        input_search.addEventListener("change", function () {
-          socket.emit("search", input_search.value);
-        });
-        socket.on("search", function (jobs) {
-          conosle.log(jobs);
-        });
-      </script>
+      <form action="/" method="post">
+        <div class="input-group mb-3">
+          <input
+            name="search_input"
+            type="text"
+            class="form-control"
+            placeholder="Suche..."
+          />
+          <div class="input-group-append">
+            <input type="submit" value="🔎" / class="btn btn-outline-secondary">
+          </div>
+        </div>
+      </form>
     </div>
     <div class="container-fluid">
       <div

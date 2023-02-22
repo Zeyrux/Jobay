@@ -1,68 +1,47 @@
-{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
-%}
-<img
-  src="static\images\web\login_background_top.jpeg"
-  class="position-absolute"
-  style="height: 40vw; width: 40vw; z-index: -1"
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{url_for('static', filename='styles/login.css')}}"
 />
+{% endblock %} {% block content %}
 <img
-  src="static\images\web\login_background_bottom.jpeg"
-  class="position-absolute fixed-bottom fixed-right"
-  style="right: 0; left: auto; height: 40vw; width: 40vw; z-index: -1"
+  id="background_image"
+  src="{{url_for('static', filename='images/design/login_background.png')}}"
+  alt="Hintergrund"
 />
-<div
-  class="d-flex justify-content-center align-items-center container m-auto mt-lg-5 mt-md-3 mt-sm-1 h-75"
->
-  <form
-    method="post"
-    class="w-75 border border-primary rounded"
-    style="
-      border-width: 0.25vw !important;
-      background-color: rgb(240, 24ß, 240);
-      padding: 2vw 5vw;
-    "
-  >
-    <h3 class="text-center">Login</h3>
-    <!-- Email -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" style="font-size: larger">Email</span>
-        </div>
-        <input
-          type="email"
-          class="form-control"
-          name="email"
-          placeholder="Enter email"
-          style="font-size: larger"
-        />
-      </div>
+<div id="super_div">
+  <h1>Login</h1>
+  <form method="post">
+    <div class="div_input">
+      <img
+        class="img_input_icon"
+        src="{{url_for('static', filename='images/design/login_background.png')}}"
+        alt="Hintergrund"
+      />
+      <img
+        class="img_input_line"
+        src="{{url_for('static', filename='images/design/login_background.png')}}"
+        alt="Hintergrund"
+      />
+      <input type="email" name="email" placeholder="Email" />
     </div>
-    <!-- Password -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" style="font-size: larger"
-            >Passwort</span
-          >
-        </div>
-        <input
-          type="password"
-          class="form-control"
-          name="password"
-          placeholder="Passwort"
-          style="font-size: larger"
-        />
-      </div>
+    <div class="div_input">
+      <img
+        class="img_input_icon"
+        src="{{url_for('static', filename='images/design/login_background.png')}}"
+        alt="Hintergrund"
+      />
+      <img
+        class="img_input_line"
+        src="{{url_for('static', filename='images/design/login_background.png')}}"
+        alt="Hintergrund"
+      />
+      <input type="password" name="password" placeholder="Email" />
     </div>
-    <button type="submit" class="btn btn-primary">Einloggen</button>
-    <button
-      type="button"
-      class="btn btn-primary"
-      onclick="window.location.href = "{{url_for('auth.sign_up')}}"
-    >
-      Noch nicht Registriert?
-    </button>
+    <a href="">Passwort vergessen</a>
+    <a href="{{url_for('auth.sign_up')}}">Noch nicht registiret?</a>
+    <input type="submit" value="LOGIN" />
   </form>
 </div>
+<script src="{{url_for('static', filename='scripts/login.js')}}"></script>
 {% endblock %}
