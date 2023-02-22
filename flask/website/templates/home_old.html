@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<div class="container-fluid justify-content-center mt-4">
+  <div>
+    <h3 class="text-center">Jobs für dich</h3>
+    <div>
+      <form action="/" method="post">
+        <div class="input-group mb-3">
+          <input
+            name="search_input"
+            type="text"
+            class="form-control"
+            placeholder="Suche..."
+          />
+          <div class="input-group-append">
+            <input type="submit" value="🔎" / class="btn btn-outline-secondary">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="container-fluid">
+      <div
+        class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-sx-1"
+      >
+        {% for job in jobs %}
+        <div class="col p-2">
+          <div
+            id="job-{{ job.id }}"
+            class="border border-secondary p-0 h-100 w-100"
+            style="border-radius: 2%"
+          >
+            <script>
+              document
+                .getElementById("job-{{ job.id }}")
+                .addEventListener("click", function () {
+                  window.location.href =
+                    "{{ url_for('views.job.job', id=job.id) }}";
+                });
+            </script>
+            <table class="table table-striped table-no-border m-0">
+              <thead>
+                <tr>
+                  <th colspan="2" class="text-center" style="border-top: none">
+                    {{ job.name }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Arbeitgeber</th>
+                  <th class="d-flex flex-row">
+                    <img
+                      src="{{ url_for('views.base.profile_image', user_id=job.employer.id) }}"
+                      alt="Profilbild"
+                      class="hover-overlay rounded-circle mr-2"
+                      style="width: 3vh; height: 3vh"
+                      data-mdb-ripple-color="light"
+                    />
+                    <p class="m-0">
+                      {{ job.employer.first_name }} {{ job.employer.last_name }}
+                    </p>
+                  </th>
+                </tr>
+                <tr>
+                  <th>Dauer</th>
+                  <th>
+                    {{ job.duration // 60 }}:{{ str(job.duration % 60).rjust(2,
+                    "0")}}
+                  </th>
+                </tr>
+                <tr>
+                  <th>Bezahlung</th>
+                  <th>
+                    {{ job.payment // 100 }},{{ str(job.payment % 100).rjust(2,
+                    "0") }}€
+                  </th>
+                </tr>
+                <tr>
+                  <th>Zeit</th>
+                  <th>
+                    {{
+                    datetime.fromtimestamp(job.time_start).strftime("%d.%m.%Y")
+                    }} - {{
+                    datetime.fromtimestamp(job.time_start).strftime("%H:%M") }}
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+<!-- TODO: add location to job "info" -->
+<!-- TODO: Suchleiste (mit Filter) -->
