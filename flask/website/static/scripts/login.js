@@ -5,7 +5,7 @@ function handle_resize() {
   if (ratio_img > ratio_window) {
     img.height = window.innerHeight;
     img.style.width = "auto";
-    img.style.width.removeProperty("height");
+    img.style.removeProperty("height");
   } else {
     img.width = window.innerWidth;
     img.style.height = "auto";
@@ -15,6 +15,7 @@ function handle_resize() {
 
 function init() {
   window.addEventListener("resize", handle_resize);
+  window.addEventListener("load", handle_resize);
 }
 
 init();

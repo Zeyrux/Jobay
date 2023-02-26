@@ -8,5 +8,22 @@
   src="{{url_for('static', filename='images/design/home_background.png')}}"
   alt="Hintergrundbild"
 />
+<div id="super_div">
+  <h1>Der Minijob für dich</h1>
+  <div id="search_div">
+    <img
+      id="search_icon"
+      src="{{url_for('static', filename='images/design/home_search.png')}}"
+      alt="Hintergrundbild"
+    />
+    <img
+      id="line_img"
+      src="{{url_for('static', filename='images/design/line.png')}}"
+      alt="Hintergrundbild"
+    />
+    <input type="text" name="search" />
+    <input type="submit" value="Suchen" />
+  </div>
+</div>
 <script src="{{url_for('static', filename='scripts/home.js')}}"></script>
 {% endblock %} {% block content %} {% endblock %}
