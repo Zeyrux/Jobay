@@ -5,42 +5,47 @@
 />
 {% endblock %} {% block content %}
 <img
-  id="background_image"
+  class="background_img"
   src="{{url_for('static', filename='images/design/login_background.png')}}"
   alt="Hintergrund"
 />
-<div id="super_div">
-  <h1>Login</h1>
-  <form method="post">
-    <div class="div_input">
+<div class="super_div">
+  <h1 class="h">Login</h1>
+  <form method="post" class="form">
+    <div class="input_div">
       <img
-        class="img_input_icon"
+        class="input_icon"
         src="{{url_for('static', filename='images/design/login_user.png')}}"
         alt="Hintergrund"
       />
       <img
-        class="img_input_line"
+        class="input_line"
         src="{{url_for('static', filename='images/design/line.png')}}"
         alt="Hintergrund"
       />
-      <input type="email" name="email" placeholder="Email" />
+      <input type="email" name="email" placeholder="Email" class="input" />
     </div>
-    <div class="div_input">
+    <div class="input_div">
       <img
-        class="img_input_icon"
+        class="input_icon"
         src="{{url_for('static', filename='images/design/login_lock.png')}}"
         alt="Hintergrund"
       />
       <img
-        class="img_input_line"
+        class="input_line"
         src="{{url_for('static', filename='images/design/line.png')}}"
         alt="Hintergrund"
       />
-      <input type="password" name="password" placeholder="Email" />
+      <input
+        type="password"
+        name="password"
+        placeholder="Email"
+        class="input"
+      />
     </div>
-    <a href="">Passwort vergessen</a>
-    <a href="{{url_for('auth.sign_up')}}">Noch nicht registiret?</a>
-    <input type="submit" value="LOGIN" />
+    <a href="" class="a">Passwort vergessen</a>
+    <a href="{{url_for('auth.sign_up')}}" class="a">Noch nicht registiret?</a>
+    <input type="submit" value="LOGIN" class="submit" />
   </form>
 </div>
 <script src="{{url_for('static', filename='scripts/login.js')}}"></script>

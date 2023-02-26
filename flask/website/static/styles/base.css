@@ -1,7 +1,3 @@
-.body {
-  overflow: hidden;
-}
-
 .background_img {
   position: absolute;
   top: 50%;
@@ -14,10 +10,21 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 3vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
 }
 
 .h {
   text-align: center;
+  font-weight: bold;
+  color: #3d3d3e;
 }
 
 .icon {
@@ -26,4 +33,39 @@
 }
 
 .input_div {
+  display: flex;
+  padding: 1vh 1vw;
+  border-radius: 2vw;
+  background: rgb(232, 240, 254);
+}
+
+.input_icon {
+  display: none;
+}
+
+.input_line {
+  display: none;
+}
+
+.input {
+  padding: 0.5vw;
+  border: none;
+  border-top-right-radius: 1vw;
+  border-bottom-right-radius: 1vw;
+  background: rgb(232, 240, 254);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.submit {
+  border: none;
+  border-radius: 1vw;
+  font-weight: bold;
+}
+
+.a {
+  color: black;
+  text-align: center;
 }

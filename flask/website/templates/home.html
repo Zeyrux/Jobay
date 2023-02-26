@@ -2,28 +2,33 @@
 <link
   rel="stylesheet"
   href="{{url_for('static', filename='styles/home.css')}}"
-/>
+/>{% endblock %} {% block content %}
 <img
-  id="background_image"
+  class="background_img"
   src="{{url_for('static', filename='images/design/home_background.png')}}"
   alt="Hintergrundbild"
 />
-<div id="super_div">
-  <h1>Der Minijob für dich</h1>
-  <div id="search_div">
+<div class="super_div">
+  <h1 class="h">Der Minijob für dich</h1>
+  <div class="input_div">
     <img
-      id="search_icon"
+      class="input_icon"
       src="{{url_for('static', filename='images/design/home_search.png')}}"
       alt="Hintergrundbild"
     />
     <img
-      id="line_img"
+      class="input_line"
       src="{{url_for('static', filename='images/design/line.png')}}"
       alt="Hintergrundbild"
     />
-    <input type="text" name="search" />
-    <input type="submit" value="Suchen" />
+    <input
+      type="text"
+      name="search"
+      placeholder="Wonach suchst du?"
+      class="input"
+    />
+    <input type="submit" value="Suchen" class="submit" />
   </div>
 </div>
 <script src="{{url_for('static', filename='scripts/home.js')}}"></script>
-{% endblock %} {% block content %} {% endblock %}
+{% endblock %}

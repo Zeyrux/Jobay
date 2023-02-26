@@ -15,26 +15,31 @@
       crossorigin="anonymous"
     />
     <title>{% block title %} {% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='styles/base.css')}}"
+    />
     {% block head %} {% endblock %}
   </head>
   <body>
     <!-- socket io -->
-    <!-- <script
+    <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
       integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
       crossorigin="anonymous"
-    ></script>-->
-    <script
+    ></script>
+    <!-- <script
       src="{{url_for('static', filename='scripts/socket.io.js')}}"
       integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
       crossorigin="anonymous"
-    ></script>
+    ></script> -->
     <script>
       var socket = io();
       socket.on("connect", function (socket) {
         console.log("socket connected");
       });
     </script>
+    <script src="{{url_for('static', filename='scripts/base.js')}}"></script>
     {% block content %} {% endblock %}
   </body>
 </html>
