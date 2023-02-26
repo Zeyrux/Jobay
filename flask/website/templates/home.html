@@ -10,25 +10,27 @@
 />
 <div class="super_div">
   <h1 class="h">Der Minijob für dich</h1>
-  <div class="input_div">
-    <img
-      class="input_icon"
-      src="{{url_for('static', filename='images/design/home_search.png')}}"
-      alt="Hintergrundbild"
-    />
-    <img
-      class="input_line"
-      src="{{url_for('static', filename='images/design/line.png')}}"
-      alt="Hintergrundbild"
-    />
-    <input
-      type="text"
-      name="search"
-      placeholder="Wonach suchst du?"
-      class="input"
-    />
-    <input type="submit" value="Suchen" class="submit" />
-  </div>
+  <form method="post">
+    <div class="input_div">
+      <img
+        class="input_icon"
+        src="{{url_for('static', filename='images/design/home_search.png')}}"
+        alt="Hintergrundbild"
+      />
+      <img
+        class="input_line"
+        src="{{url_for('static', filename='images/design/line.png')}}"
+        alt="Hintergrundbild"
+      />
+      <input
+        type="text"
+        name="search"
+        placeholder="Wonach suchst du?"
+        class="input"
+      />
+      <input type="submit" value="Suchen" class="submit" />
+    </div>
+  </form>
 </div>
 <script src="{{url_for('static', filename='scripts/home.js')}}"></script>
 {% endblock %}
