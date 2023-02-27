@@ -17,7 +17,7 @@ def get_jobs_for_user(user: User) -> list[Job]:
 
 
 def get_search_jobs(user: User, search: str) -> list[Job]:
-    return Job.query.filter_by(Job.name.contains(search))
+    return Job.query.filter_by(Job.name.contains(search)).limit(10).all()
 
 
 @home_bp.route("/", methods=["GET", "POST"])
@@ -42,4 +42,12 @@ def home():
         datetime=datetime,
         int=int,
         str=str,
+    )
+
+
+@socket.on("request_jobs")
+def request_jobs():
+    socket.emit(
+        "answer_request_jobs",
+        dumps([job.to_dict(short=True) for job in get_jobs_for_user(current_user)]),
     )

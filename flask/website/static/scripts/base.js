@@ -7,6 +7,37 @@ function get_height(element) {
   );
 }
 
+function double_digits(number) {
+  if (number < 10) {
+    number = "0" + number;
+  }
+  return number;
+}
+
+function unix_to_str(unix) {
+  let date = new Date(unix * 1000);
+  console.log(date);
+  return (
+    double_digits(date.getDate()) +
+    "." +
+    double_digits(date.getMonth() + 1) +
+    "." +
+    date.getFullYear() +
+    " - " +
+    double_digits(date.getHours()) +
+    ":" +
+    double_digits(date.getMinutes())
+  );
+}
+
+function payment_to_str(payment) {
+  return Math.ceil(payment / 100) + ",00€";
+}
+
+function duration_to_str(duration) {
+  return Math.ceil(duration / 60) + ":" + double_digits(duration % 60);
+}
+
 class Manager {
   constructor() {
     window.addEventListener("load", this.init);

@@ -1,5 +1,5 @@
 body {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .h {
@@ -20,4 +20,34 @@ body {
   color: white;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+.job_super_div {
+  position: absolute;
+  top: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.job_div {
+  display: flex;
+  flex-direction: column;
+  margin: 10vw;
+  border: 0.2vw solid black;
+  border-radius: 1.5vw;
+  padding: 1vw;
+  background-color: #cccccc;
+}
+
+.h2 {
+  font-size: medium;
+}
+
+.table {
+  width: 100%;
+}
+
+td {
+  padding: 1vw;
 }

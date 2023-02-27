@@ -79,9 +79,19 @@ class Job(db.Model):
     )
     tags = db.relationship("Tag", secondary=job_tag, backref="jobs", lazy="dynamic")
 
-    def to_dict(self) -> dict:
-        dict = self.__dict__.copy()
-        dict.pop("_sa_instance_state", "")
+    def to_dict(self, short=False) -> dict:
+        if short:
+            dict = {
+                "id": self.id,
+                "name": self.name,
+                "duration": self.duration,
+                "payment": self.payment,
+                "time_start": self.time_start,
+                "tags": [tag.name for tag in self.tags],
+            }
+        else:
+            dict = self.__dict__.copy()
+            dict.pop("_sa_instance_state", "")
         return dict
 
 
@@ -291,6 +301,7 @@ def create_job_db(
         employer=employer,
         name=name,
         duration=duration,
+        description="",
         time_start=time_start,
         payment=payment,
         rating=get_rating_job(payment, duration, employer),
