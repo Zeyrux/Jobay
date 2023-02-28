@@ -17,11 +17,15 @@ def create_app():
     # app
     app.config["SECRET_KEY"] = token_urlsafe(25)
     app.config["UPLOAD_FOLDER_PROFILE_IMAGE"] = Path("static", "images", "profile")
+    app.config["UPLOAD_FOLDER_JOB_IMAGE"] = Path("static", "images", "job")
     app.config["UPLOAD_FOLDER_PROFILE_IMAGE_WEBSITE"] = Path(
         "website", "static", "images", "profile"
     )
     app.config["PROFILE_IMAGE_EMPTY"] = Path(
         app.config["UPLOAD_FOLDER_PROFILE_IMAGE"], "black.jpg"
+    )
+    app.config["JOB_IMAGE_EMPTY"] = Path(
+        app.config["UPLOAD_FOLDER_JOB_IMAGE"], "default.png"
     )
     db_credentials = load(
         open(Path("website", "db_credentials", "db_credentials.json"), "r")

@@ -19,7 +19,7 @@
       />
       <img
         class="input_line"
-        src="{{url_for('static', filename='images/design/line.png')}}"
+        src="{{url_for('static', filename='images/design/line_border.png')}}"
         alt="Hintergrundbild"
       />
       <input
@@ -32,6 +32,15 @@
     </div>
   </form>
 </div>
-<div class="job_super_div"></div>
+<img
+  class="background_img second_bg_img"
+  src="{{url_for('static', filename='images/design/login_background.png')}}"
+  alt="Hintergrund"
+/>
+<div
+  class="job_super_div"
+  job_img="{{url_for('views.base.job_image')}}"
+  job_url="{{url_for('views.job.job')}}"
+></div>
 <script src="{{url_for('static', filename='scripts/home.js')}}"></script>
 {% endblock %}

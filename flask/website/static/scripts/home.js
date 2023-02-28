@@ -1,6 +1,8 @@
 class JobCreator {
   constructor() {
     this.super_div = document.getElementsByClassName("job_super_div")[0];
+    this.job_img_url = this.super_div.getAttribute("job_img");
+    this.job_url = this.super_div.getAttribute("job_url");
     let self = this;
     socket.on("answer_request_jobs", function (jobs) {
       JSON.parse(jobs).forEach((job) => {
@@ -16,16 +18,36 @@ class JobCreator {
   }
 
   add_job(job) {
+    let self = this;
     let div = document.createElement("div");
     div.classList.add("job_div");
+    div.addEventListener("click", function () {
+      console.log(self.job_url + "?id=" + job.id);
+      // TODO: REWORK (remove localhost:5004)
+      let url = new URL("http://localhost:5004" + self.job_url);
+      url.searchParams.append("id", job.id);
+      window.location.href = url;
+    });
     let heading = document.createElement("h1");
     heading.innerHTML = job.name;
     heading.classList.add("h2");
-    let job_image = document.createElement("img");
     let table = document.createElement("table");
     let row = document.createElement("tr");
-    let td = document.createElement("td");
-    let img = document.createElement("img")
+    let td_tags = document.createElement("td");
+    td_tags.classList.add("td_tags");
+    let td_img = document.createElement("td");
+    job.tags.forEach((tag) => {
+      let p = document.createElement("p");
+      p.innerHTML = tag;
+      td_tags.appendChild(p);
+    });
+    let img = document.createElement("img");
+    img.src = this.job_img_url;
+    img.classList.add("input_icon");
+    td_img.appendChild(img);
+    row.appendChild(td_img);
+    row.appendChild(td_tags);
+    table.appendChild(row);
     [
       ["Dauer", duration_to_str(job.duration)],
       ["Bezahlung", payment_to_str(job.payment)],
@@ -42,7 +64,6 @@ class JobCreator {
       table.appendChild(row);
     });
     div.appendChild(heading);
-    div.appendChild(job_image);
     div.appendChild(table);
     this.super_div.appendChild(div);
   }
@@ -53,6 +74,7 @@ function init() {
   manager.add_resizable_bg_img();
 
   let job_creator = new JobCreator();
+  setInterval(manager.init, 20);
 }
 
 init();

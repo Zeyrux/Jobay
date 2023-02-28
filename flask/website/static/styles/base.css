@@ -33,11 +33,6 @@
   color: #3d3d3e;
 }
 
-.icon {
-  width: 3vw;
-  height: 3vw;
-}
-
 .input_div {
   display: flex;
   padding: 1vh 1vw;
