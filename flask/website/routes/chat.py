@@ -1,3 +1,5 @@
+from json import dumps
+
 from ..models import User
 from .base import generate_args_base_template, get_chat
 
@@ -25,6 +27,6 @@ def chat():
         "chat.html",
         **generate_args_base_template(current_user),
         chat_partner=chat_partner,
-        msgs_send=msgs_send,
-        msgs_receive=msgs_receive
+        msgs_send=dumps(msgs_send),
+        msgs_receive=dumps(msgs_receive)
     )

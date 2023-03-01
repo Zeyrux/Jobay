@@ -1,0 +1,150 @@
+{% extends "base.html" %} {% block title %}Angebot Erstellen{% endblock %} {%
+block content %}
+<div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
+  <form method="post">
+    <h3 class="text-center">Angebot Erstellen</h3>
+    <!-- name -->
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Tätigkeit</span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          placeholder="Name"
+        />
+      </div>
+    </div>
+    <!-- duration -->
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Dauer</span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          name="duration_hour"
+          placeholder="Stunden"
+        />
+        <div class="input-group-prepend">
+          <span class="input-group-text">H</span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          name="duration_minute"
+          placeholder="Minuten"
+        />
+        <div class="input-group-prepend">
+          <span class="input-group-text">M</span>
+        </div>
+      </div>
+    </div>
+    <!-- time start -->
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Start Datum</span>
+        </div>
+        <input
+          type="datetime-local"
+          class="form-control"
+          name="time_start"
+          placeholder="Start Zeit"
+        />
+      </div>
+    </div>
+    <!-- payment -->
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Bezahlung</span>
+        </div>
+        <input
+          type="number"
+          class="form-control"
+          name="payment_euro"
+          placeholder="Euro"
+        />
+        <div class="input-group-prepend">
+          <span class="input-group-text">€</span>
+        </div>
+        <input
+          type="number"
+          class="form-control"
+          name="payment_cent"
+          placeholder="Cent"
+        />
+        <div class="input-group-prepend">
+          <span class="input-group-text">ct</span>
+        </div>
+      </div>
+    </div>
+    <!-- Location -->
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Ort</span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          name="post_code"
+          placeholder="Postleitzahl"
+          value="{{ user.location.post_code }}"
+        />
+        <input
+          type="text"
+          class="form-control"
+          name="city"
+          placeholder="Stadt"
+          value="{{ user.location.city.name }}"
+        />
+      </div>
+    </div>
+    <!-- tags -->
+    <div class="form-group">
+      <div id="div_tags" class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Wähle die passenden Tags</span>
+        </div>
+        {% for tag in tags %}
+        <input
+          type="button"
+          value="{{ tag }}"
+          class="btn-outline-secondary form-control"
+        />
+        <input type="hidden" name="" value="{{ tag }}" />
+        {% endfor %}
+      </div>
+      <script>
+        // input logic
+        let div_tags = document.getElementById("div_tags").children;
+        for (let i = 1; i < div_tags.length; i += 2) {
+          let button = div_tags[i];
+          let hidden = div_tags[i + 1];
+          button.addEventListener("click", function () {
+            if (button.classList.contains("btn-outline-secondary")) {
+              button.classList.remove("btn-outline-secondary");
+              button.classList.add("btn-secondary");
+              hidden.name = "tag_" + button.value;
+            } else {
+              button.classList.remove("btn-secondary");
+              button.classList.add("btn-outline-secondary");
+              hidden.name = "";
+            }
+          });
+        }
+        // last input rounded
+        div_tags[div_tags.length - 2].classList.add("rounded-right");
+      </script>
+    </div>
+    <button type="submit" class="btn btn-primary">Angebot Erstellen</button>
+  </form>
+</div>
+{% endblock %}
+<!-- TODO: add jobs that are weekly or so 
+TODO: add description of job -->

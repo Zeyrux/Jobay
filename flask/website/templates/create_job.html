@@ -1,150 +1,78 @@
-{% extends "base.html" %} {% block title %}Angebot Erstellen{% endblock %} {%
-block content %}
-<div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
-  <form method="post">
-    <h3 class="text-center">Angebot Erstellen</h3>
-    <!-- name -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Tätigkeit</span>
-        </div>
-        <input
-          type="text"
-          class="form-control"
-          name="name"
-          placeholder="Name"
-        />
-      </div>
+{% extends "base.html" %} {% block title %}Chat{% endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{url_for('static', filename='styles/create_job.css')}}"
+/>{% endblock %} {% block content %}
+<img
+  class="background_img"
+  src="{{url_for('static', filename='images/design/background.png')}}"
+  alt="Hintergrundbild"
+/>
+<div class="super_div">
+  <h1 class="h">Angebot Erstellen</h1>
+  <form class="job_input_form" method="post">
+    <div class="input_div">
+      <p class="input input_p">Tätigkeit</p>
+      <input type="text" name="name" class="input" placeholder="Name" />
     </div>
-    <!-- duration -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Dauer</span>
-        </div>
-        <input
-          type="text"
-          class="form-control"
-          name="duration_hour"
-          placeholder="Stunden"
-        />
-        <div class="input-group-prepend">
-          <span class="input-group-text">H</span>
-        </div>
-        <input
-          type="text"
-          class="form-control"
-          name="duration_minute"
-          placeholder="Minuten"
-        />
-        <div class="input-group-prepend">
-          <span class="input-group-text">M</span>
-        </div>
-      </div>
+    <div class="input_div">
+      <p class="input input_p">Dauer</p>
+      <input
+        type="text"
+        name="duration_hour"
+        class="input input_middle"
+        placeholder="Stunden"
+      />
+      <input
+        type="text"
+        name="duration_minute"
+        class="input"
+        placeholder="Minuten"
+      />
     </div>
-    <!-- time start -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Start Datum</span>
-        </div>
-        <input
-          type="datetime-local"
-          class="form-control"
-          name="time_start"
-          placeholder="Start Zeit"
-        />
-      </div>
+    <div class="input_div">
+      <p class="input input_p">Start Datum</p>
+      <input
+        type="datetime-local"
+        name="time_start"
+        class="input"
+        placeholder="Start Zeit"
+      />
     </div>
-    <!-- payment -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Bezahlung</span>
-        </div>
-        <input
-          type="number"
-          class="form-control"
-          name="payment_euro"
-          placeholder="Euro"
-        />
-        <div class="input-group-prepend">
-          <span class="input-group-text">€</span>
-        </div>
-        <input
-          type="number"
-          class="form-control"
-          name="payment_cent"
-          placeholder="Cent"
-        />
-        <div class="input-group-prepend">
-          <span class="input-group-text">ct</span>
-        </div>
-      </div>
+    <div class="input_div">
+      <p class="input input_p">Bezahlung</p>
+      <input
+        type="number"
+        name="payment_euro"
+        class="input"
+        placeholder="Euro"
+      />
+      <input type="hidden" name="payment_cent" value="0" />
     </div>
-    <!-- Location -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Ort</span>
-        </div>
-        <input
-          type="text"
-          class="form-control"
-          name="post_code"
-          placeholder="Postleitzahl"
-          value="{{ user.location.post_code }}"
-        />
-        <input
-          type="text"
-          class="form-control"
-          name="city"
-          placeholder="Stadt"
-          value="{{ user.location.city.name }}"
-        />
-      </div>
+    <div class="input_div">
+      <p class="input input_p">Ort</p>
+      <input
+        type="text"
+        name="post_code"
+        class="input input_middle"
+        placeholder="Postleitzahl"
+        value="{{user.location.post_code}}"
+      />
+      <input
+        type="text"
+        name="city"
+        class="input"
+        value="{{user.location.city.name}}"
+      />
     </div>
-    <!-- tags -->
-    <div class="form-group">
-      <div id="div_tags" class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Wähle die passenden Tags</span>
-        </div>
-        {% for tag in tags %}
-        <input
-          type="button"
-          value="{{ tag }}"
-          class="btn-outline-secondary form-control"
-        />
-        <input type="hidden" name="" value="{{ tag }}" />
-        {% endfor %}
-      </div>
-      <script>
-        // input logic
-        let div_tags = document.getElementById("div_tags").children;
-        for (let i = 1; i < div_tags.length; i += 2) {
-          let button = div_tags[i];
-          let hidden = div_tags[i + 1];
-          button.addEventListener("click", function () {
-            if (button.classList.contains("btn-outline-secondary")) {
-              button.classList.remove("btn-outline-secondary");
-              button.classList.add("btn-secondary");
-              hidden.name = "tag_" + button.value;
-            } else {
-              button.classList.remove("btn-secondary");
-              button.classList.add("btn-outline-secondary");
-              hidden.name = "";
-            }
-          });
-        }
-        // last input rounded
-        div_tags[div_tags.length - 2].classList.add("rounded-right");
-      </script>
+    <div class="tags_div">
+      {% for tag in tags %}
+      <input type="button" value="{{tag}}" class="input tag" />
+      <input type="hidden" name="" value="{{tag}}" />
+      {% endfor %}
     </div>
-    <button type="submit" class="btn btn-primary">Angebot Erstellen</button>
+    <input type="submit" value="Erstellen" class="submit" />
   </form>
 </div>
+<script src="{{url_for('static', filename='scripts/create_job.js')}}"></script>
 {% endblock %}
-<!-- TODO: add jobs that are weekly or so 
-TODO: add description of job -->

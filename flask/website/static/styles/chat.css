@@ -1,0 +1,61 @@
+body {
+  overflow: hidden;
+}
+
+.super_div {
+  background-color: white;
+  min-height: 50vh;
+}
+
+.h {
+  color: white;
+  width: 100%;
+  margin: 0;
+  background-color: black;
+  border-top-right-radius: 3vh;
+  border-top-left-radius: 3vh;
+}
+
+.chat_div {
+  width: 60vw;
+  max-height: 60vh;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5vh;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75vw 1vw;
+  border: black solid 0.1vw;
+  border-right: none;
+  border-radius: 0;
+  border-bottom-left-radius: 3vh;
+}
+
+.submit {
+  border: black solid 0.1vw;
+  border-radius: 0;
+  border-bottom-right-radius: 3vh;
+}
+
+.input_div {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 0;
+  border-bottom-left-radius: 5vh;
+  border-bottom-right-radius: 5vh;
+}
+
+.msg {
+  background-color: rgb(158, 158, 158);
+  border-radius: 0.5vw;
+  width: fit-content;
+  padding: 0.5vh 0.5vw;
+}
+
+.received {
+  margin-left: auto;
+}
