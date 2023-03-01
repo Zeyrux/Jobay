@@ -15,27 +15,46 @@ class Messager {
     let pointer_send = 0;
     let pointer_received = 0;
     let finished_send = false;
-    if (msgs_send.lenght == 0) {
+    if (msgs_send.length == 0) {
       finished_send = true;
     }
     let finished_received = false;
     if (msgs_received.length == 0) {
       finished_received = true;
     }
+    console.log(msgs_send);
+    console.log(msgs_received);
+    console.log(finished_send);
+    console.log(finished_received);
     while (!(finished_send && finished_received)) {
+      let added = false;
       console.log("Send");
       console.log(msg_send);
       console.log(msg_received);
-      if (msg_send["time"] <= msg_received["time"] && !finished_send) {
-        self.create_msg(msg_send["content"], true);
-        if (pointer_send == msgs_send.length - 1) {
-          finished_send = true;
-        } else {
-          pointer_send += 1;
-          msg_send = msgs_send[pointer_send];
+      if (!finished_send) {
+        // same start
+        if (msg_received == undefined) {
+          self.create_msg(msg_send["content"], true);
+          if (pointer_send == msgs_send.length - 1) {
+            finished_send = true;
+          } else {
+            pointer_send += 1;
+            msg_send = msgs_send[pointer_send];
+          }
+          added = true;
+        } // same start
+        else if (msg_send["time"] <= msg_received["time"]) {
+          self.create_msg(msg_send["content"], true);
+          if (pointer_send == msgs_send.length - 1) {
+            finished_send = true;
+          } else {
+            pointer_send += 1;
+            msg_send = msgs_send[pointer_send];
+          }
+          added = true;
         }
-      } else {
-        console.log("hi");
+      }
+      if (!added) {
         self.create_msg(msg_received["content"], false);
         if (pointer_received == msgs_received.length - 1) {
           finished_received = true;
@@ -47,7 +66,7 @@ class Messager {
     }
     self.div.scrollTop = self.div.scrollHeight;
     self.submit.addEventListener("click", function () {
-      if (self.input.value.lenght != 0) {
+      if (self.input.value.length != 0) {
         self.create_msg(self.input.value, true);
         socket.emit(
           "msg_send",

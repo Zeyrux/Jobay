@@ -1,106 +1,63 @@
-{% extends "base.html" %} {% block title %}Sign Up{% endblock %} {% block
-content %}
-
+{% extends "base.html" %} {% block title %}Chat{% endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{url_for('static', filename='styles/sign_up.css')}}"
+/>{% endblock %} {% block content %}
 <img
-  src="static\images\web\login_background_top.jpeg"
-  class="position-absolute"
-  style="height: 40vw; width: 40vw; z-index: -1"
+  class="background_img"
+  src="{{url_for('static', filename='images/design/background.png')}}"
+  alt="Hintergrundbild"
 />
-<img
-  src="static\images\web\login_background_bottom.jpeg"
-  class="position-absolute fixed-bottom fixed-right"
-  style="right: 0; left: auto; height: 40vw; width: 40vw; z-index: -1"
-/>
-<div
-  class="d-flex justify-content-center align-items-center container m-auto mt-lg-5 mt-md-3 mt-sm-1 h-75"
->
-  <form
-    method="post"
-    class="w-75 border border-primary rounded"
-    style="
-      border-width: 0.25vw !important;
-      background-color: rgb(240, 240, 240);
-      padding: 2vw 5vw;
-    "
-  >
-<div class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1">
-  <form method="POST">
-    <h3 class="text-center">Account Erstellen</h3>
-    <!-- Email -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Email</span>
-        </div>
-        <input
-          type="email"
-          class="form-control"
-          name="email"
-          placeholder="Enter email"
-        />
-      </div>
+<div class="super_div">
+  <h1 class="h">Account Erstellen</h1>
+  <!-- email name (first_name, last_name) password post_code, city -->
+  <form method="post" class="account_input_form">
+    <div class="input_div">
+      <p class="input input_p">Email</p>
+      <input type="email" name="email" class="input" placeholder="Email" />
     </div>
-    <!-- Name -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Vorname(n) und Nachname</span>
-        </div>
-        <input
-          type="text"
-          class="form-control"
-          name="first_name"
-          placeholder="Vorname(n)"
-        />
-        <input
-          type="text"
-          class="form-control"
-          name="last_name"
-          placeholder="Nachname"
-        />
-      </div>
+    <div class="input_div">
+      <p class="input input_p">Name</p>
+      <input
+        type="text"
+        name="first_name"
+        class="input input_middle"
+        placeholder="Vorname(n)"
+      />
+      <input
+        type="text"
+        name="last_name"
+        class="input"
+        placeholder="Nachname"
+      />
     </div>
-    <!-- Password -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Passwort</span>
-        </div>
-        <input
-          type="password"
-          class="form-control"
-          name="password"
-          placeholder="Passwort"
-        />
-        <input
-          type="password"
-          class="form-control"
-          name="password_confirm"
-          placeholder="Passwort Bestätigen"
-        />
-      </div>
+    <div class="input_div">
+      <p class="input input_p">Passwort</p>
+      <input
+        type="password"
+        name="password"
+        class="input input_middle"
+        placeholder="Passwort"
+      />
+      <input
+        type="password"
+        name="password_confirm"
+        class="input"
+        placeholder="Passwort bestätigen"
+      />
     </div>
-    <!-- Location -->
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Wohnort</span>
-        </div>
-        <input
-          type="text"
-          class="form-control"
-          name="post_code"
-          placeholder="Postleitzahl"
-        />
-        <input
-          type="text"
-          class="form-control"
-          name="city"
-          placeholder="Stadt"
-        />
-      </div>
+    <div class="input_div">
+      <p class="input input_p">Ort</p>
+      <input
+        type="text"
+        name="post_code"
+        class="input input_middle"
+        placeholder="Postleitzahl"
+      />
+      <input type="text" name="city" class="input" placeholder="Stadt" />
     </div>
-    <button type="submit" class="btn btn-primary">Account Erstellen</button>
+    <input type="submit" value="Erstellen" class="submit" />
   </form>
 </div>
+<script src="{{url_for('static', filename='scripts/sign_up.js')}}"></script>
 {% endblock %}

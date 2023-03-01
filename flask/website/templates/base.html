@@ -52,7 +52,7 @@
         <form action="" method="get">
           <input type="submit" value="Einstellungen" class="account_submit" />
         </form>
-        <form action="" method="get">
+        <form action="{{url_for('auth.logout')}}" method="get">
           <input type="submit" value="Ausloggen" class="account_submit" />
         </form>
         <form action="{{url_for('views.create_job.create_job')}}" method="get">
