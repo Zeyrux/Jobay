@@ -55,6 +55,21 @@ class Manager {
       icon.height = get_height(icon.parentNode);
       icon.style.display = "inline";
     }
+    // account
+    let account_img = document.getElementsByClassName("account_img");
+    if (account_img.length != 0) {
+      account_img = account_img[0];
+      let account_sub_div =
+        document.getElementsByClassName("account_sub_div")[0];
+      account_img.addEventListener("click", function () {
+        account_sub_div.style.visibility = "visible";
+      });
+      window.addEventListener("click", function (e) {
+        if (!e.target.classList.contains("account_img")) {
+          account_sub_div.style.visibility = "hidden";
+        }
+      });
+    }
   }
 
   get_margin_top_bottom(element) {

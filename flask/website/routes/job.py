@@ -1,7 +1,7 @@
 from datetime import datetime
 from itertools import count
 
-from ..models import Job
+from ..models import Job, User
 from .base import generate_args_base_template, get_chat
 
 from flask import Blueprint, request, flash, redirect, render_template, url_for
@@ -26,6 +26,7 @@ def job():
         "job.html",
         **generate_args_base_template(current_user),
         job=job,
+        employer=f"{job.employer.first_name} {job.employer.last_name}",
         msgs_send=msgs_send,
         msgs_receive=msgs_receive,
         cnt_msgs=len(msgs_send) + len(msgs_receive),

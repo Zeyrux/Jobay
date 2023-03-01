@@ -34,8 +34,9 @@ class JobCreator {
     let table = document.createElement("table");
     let row = document.createElement("tr");
     let td_tags = document.createElement("td");
-    td_tags.classList.add("td_tags");
+    td_tags.classList.add(["td_tags", "td"]);
     let td_img = document.createElement("td");
+    td_img.classList.add("td");
     job.tags.forEach((tag) => {
       let p = document.createElement("p");
       p.innerHTML = tag;
@@ -57,8 +58,10 @@ class JobCreator {
       row.classList.add("job_row");
       let td_title = document.createElement("td");
       td_title.innerHTML = data[0];
+      td_title.classList.add("td");
       let td_data = document.createElement("td");
       td_data.innerHTML = data[1];
+      td_data.classList.add("td");
       row.appendChild(td_title);
       row.appendChild(td_data);
       table.appendChild(row);

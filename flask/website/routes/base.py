@@ -92,6 +92,16 @@ def job_image():
         return send_file(current_app.config["JOB_IMAGE_EMPTY"])
 
 
+@base_bp.route("/username", methods=["GET"])
+@login_required
+def username():
+    user_id = request.args.get("id", "")
+    if user_id:
+        if user_id.isdigit():
+            user_id = int(user_id)
+            return User.query.filter_by(id=user_id).first().name
+
+
 @base_bp.route("/favicon.ico", methods=["GET"])
 def favicon():
     return send_from_directory(

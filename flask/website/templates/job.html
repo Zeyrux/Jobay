@@ -8,32 +8,37 @@
   src="{{url_for('static', filename='images/design/login_background.png')}}"
   alt="Hintergrund"
 />
-<div class="super_div">
-  <h1 class="h">{{job.id}}</h1>
+<div class="super_div job_div">
+  <h1 class="h">{{job.name}}</h1>
   <table class="table">
     <tr>
-      <td>Arbeitgeber</td>
-      <td>
+      <td class="td">Arbeitgeber</td>
+      <td class="td">
         <img
           src="{{url_for('views.base.job_image', id=job.id)}}"
           class="input_icon"
           alt="Profilbild"
         />
+        {{employer}}
       </td>
     </tr>
     <tr>
-      <td>Dauer</td>
-      <td>{{job.duration}}</td>
+      <td class="td">Dauer</td>
+      <td class="td">{{job.duration}}</td>
     </tr>
     <tr>
-      <td>Bezahlung</td>
-      <td>{{job.payment}}</td>
+      <td class="td">Bezahlung</td>
+      <td class="td">{{job.payment}}</td>
     </tr>
     <tr>
-      <td>Start Zeit</td>
-      <td>{{job.time_start}}</td>
+      <td class="td">Start Zeit</td>
+      <td class="td">{{job.time_start}}</td>
     </tr>
   </table>
+  <form method="get" action="{{url_for('views.chat.chat')}}">
+    <input type="submit" value="Nachricht Senden" class="submit" />
+    <input type="hidden" name="id" value="{{job.employer.id}}" />
+  </form>
 </div>
 <script src="{{url_for('static', filename='scripts/job.js')}}"></script>
 {% endblock %}

@@ -22,7 +22,7 @@ def create_app():
         "website", "static", "images", "profile"
     )
     app.config["PROFILE_IMAGE_EMPTY"] = Path(
-        app.config["UPLOAD_FOLDER_PROFILE_IMAGE"], "black.jpg"
+        app.config["UPLOAD_FOLDER_PROFILE_IMAGE"], "default.png"
     )
     app.config["JOB_IMAGE_EMPTY"] = Path(
         app.config["UPLOAD_FOLDER_JOB_IMAGE"], "default.png"

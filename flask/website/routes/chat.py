@@ -11,8 +11,8 @@ chat_bp = Blueprint("chat", __name__)
 @chat_bp.route("chat", methods=["GET", "POST"])
 @login_required
 def chat():
-    request.args.get("id", "")
     id = request.args.get("id", "")
+    print(request.args)
     if not id or not id.isdigit():
         flash("Chat nicht gefunden!", category="error")
         return redirect(url_for("views.home.home"))

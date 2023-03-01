@@ -41,6 +41,22 @@
     </script>
     <script src="{{url_for('static', filename='scripts/base.js')}}"></script>
     <script src="{{url_for('static', filename='scripts/classes.js')}}"></script>
-    {% block content %} {% endblock %}
+    {% block content %} {% endblock %} {% if user.is_authenticated %}
+    <div class="account_div">
+      <img
+        class="account_img"
+        src="{{url_for('views.base.profile_image')}}"
+        alt="Profilbild"
+      />
+      <div class="account_sub_div">
+        <form action="" method="get">
+          <input type="submit" value="Einstellungen" class="account_submit" />
+        </form>
+        <form action="" method="get">
+          <input type="submit" value="Ausloggen" class="account_submit" />
+        </form>
+      </div>
+    </div>
+    {% endif %}
   </body>
 </html>
