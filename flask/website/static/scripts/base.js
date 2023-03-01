@@ -39,12 +39,18 @@ function duration_to_str(duration) {
 }
 
 class Manager {
-  constructor() {
+  constructor(back_url) {
     window.addEventListener("load", this.init);
     window.addEventListener("resize", this.init);
   }
 
   init() {
+    // arrow back
+    document
+      .getElementsByClassName("arrow_back_img")[0]
+      .addEventListener("click", function () {
+        history.back();
+      });
     // input line
     for (let line of document.getElementsByClassName("input_line")) {
       line.height = get_height(line.parentNode);

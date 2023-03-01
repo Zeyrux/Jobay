@@ -106,11 +106,21 @@
   top: 3vw;
 }
 
+.arrow_back {
+  right: auto;
+  left: 3vw;
+}
+
 .account_img {
   height: 3vw;
   width: 3vw;
   border-radius: 50%;
   border: #3d3d3e solid 0.1vw;
+  cursor: pointer;
+}
+
+.arrow_back_img {
+  border: none;
 }
 
 .account_sub_div {
