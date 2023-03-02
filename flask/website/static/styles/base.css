@@ -76,12 +76,16 @@
 
 .job_div {
   display: flex;
+  font-size: 1.5vw;
   flex-direction: column;
-  border: 0.2vw solid rgb(78, 78, 78);
   border-radius: 1.5vw;
   padding: 1vw;
-  background-color: #cccccc;
+  background-color: #c0c0c0;
   width: 30vw;
+}
+
+.job_div h1 {
+  font-size: 2vw;
 }
 
 .a {
@@ -94,7 +98,15 @@
 }
 
 .td {
-  padding: 1vw;
+  padding: 2vw;
+}
+
+.td_right {
+  padding-right: 4vw;
+}
+
+.td_left {
+  padding-left: 4vw;
 }
 
 .account_div {
@@ -137,4 +149,10 @@
   background-color: #cccccc;
   border: none;
   margin: 0.5vw 0;
+  transition: 250ms;
+  border-radius: 1vw;
+}
+
+.account_submit:hover {
+  background-color: #999999;
 }

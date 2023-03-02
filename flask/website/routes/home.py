@@ -17,28 +17,35 @@ def get_jobs_for_user(user: User) -> list[Job]:
 
 
 def get_search_jobs(user: User, search: str) -> list[Job]:
+    jobs = Job.query.all()
+    result = []
+    for job in jobs:
+        if str(search) in str(job.name):
+            result.append(job)
+    return result
     return Job.query.filter_by(Job.name.contains(search)).limit(10).all()
 
 
 @home_bp.route("/", methods=["GET", "POST"])
 @login_required
 def home():
-    jobs = None
+    jobs = []
     if request.method == "POST":
-        search = request.form.get("search_input", "")
+        search = request.form.get("search", "")
         if not search:
             flash(
                 "Bitte füge etwas in die Suche ein um dannach zu filtern",
                 category="error",
             )
+            print("not there")
         else:
             jobs = get_search_jobs(current_user, search)
-    if jobs is None:
+    if len(jobs) == 0:
         jobs = get_jobs_for_user(current_user)
     return render_template(
         "home.html",
         **generate_args_base_template(current_user),
-        jobs=jobs,
+        jobs=dumps([job.to_dict(short=True) for job in jobs]),
         datetime=datetime,
         int=int,
         str=str,

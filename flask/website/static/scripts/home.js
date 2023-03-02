@@ -3,14 +3,18 @@ class JobCreator {
     this.super_div = document.getElementsByClassName("job_super_div")[0];
     this.job_img_url = this.super_div.getAttribute("job_img");
     this.job_url = this.super_div.getAttribute("job_url");
+    this.jobs = this.super_div.getAttribute("jobs");
     let self = this;
     socket.on("answer_request_jobs", function (jobs) {
       JSON.parse(jobs).forEach((job) => {
         self.add_job(new Job(job));
       });
     });
+    JSON.parse(this.jobs).forEach((job) => {
+      self.add_job(new Job(job));
+    });
 
-    this.request_jobs();
+    // this.request_jobs();
   }
 
   request_jobs() {
@@ -34,9 +38,9 @@ class JobCreator {
     let table = document.createElement("table");
     let row = document.createElement("tr");
     let td_tags = document.createElement("td");
-    td_tags.classList.add(["td_tags", "td"]);
+    td_tags.classList.add("td_tags", "td", "td_right");
     let td_img = document.createElement("td");
-    td_img.classList.add("td");
+    td_img.classList.add("td", "td_left");
     job.tags.forEach((tag) => {
       let p = document.createElement("p");
       p.innerHTML = tag;
@@ -58,10 +62,10 @@ class JobCreator {
       row.classList.add("job_row");
       let td_title = document.createElement("td");
       td_title.innerHTML = data[0];
-      td_title.classList.add("td");
+      td_title.classList.add("td", "td_left");
       let td_data = document.createElement("td");
       td_data.innerHTML = data[1];
-      td_data.classList.add("td");
+      td_data.classList.add("td", "td_right");
       row.appendChild(td_title);
       row.appendChild(td_data);
       table.appendChild(row);

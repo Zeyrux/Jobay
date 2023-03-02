@@ -9,6 +9,7 @@ body {
 
 .h {
   color: white;
+  padding: 0.5vw;
   width: 100%;
   margin: 0;
   background-color: black;
@@ -38,6 +39,8 @@ body {
   border: black solid 0.1vw;
   border-radius: 0;
   border-bottom-right-radius: 3vh;
+  background: #fff200;
+  color: black;
 }
 
 .input_div {
@@ -50,7 +53,7 @@ body {
 }
 
 .msg {
-  background-color: rgb(158, 158, 158);
+  background-color: rgb(50, 154, 223);
   border-radius: 0.5vw;
   width: fit-content;
   padding: 0.5vh 0.5vw;

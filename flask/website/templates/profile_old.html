@@ -1,0 +1,189 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
+%}
+<div
+  class="justify-content-center container m-auto mt-lg-5 mt-md-3 mt-sm-1 p-0"
+>
+  <h1 class="text-center">Profil</h1>
+  <div>
+    <!-- Profile Image -->
+    <div class="row w-100 m-0">
+      <div class="col-3 p-0 mr-3 border border-secondary rounded h-100">
+        <img
+          src="{{ url_for('views.base.profile_image') }}"
+          alt="Kein Profilbild gefunden!"
+          class="mw-100 mh-100 rounded"
+        />
+        <form method="post" enctype="multipart/form-data">
+          <input
+            id="input_profile_image"
+            type="file"
+            name="profile_image"
+            class="d-none"
+          />
+          <label
+            class="input-group-text w-100 justify-content-center"
+            for="input_profile_image"
+            onmouseover="this.classList.add('bg-secondary', 'text-white')"
+            onmouseleave="this.classList.remove('bg-secondary', 'text-white')"
+            >Neues Profilbild wählen</label
+          >
+          <input
+            type="submit"
+            value="Profilbild ändern"
+            class="btn btn-outline-secondary border w-100"
+          />
+        </form>
+      </div>
+      <div class="col pl-0 border border-secondary rounded p-0">
+        <table class="table table-striped m-0">
+          <tbody>
+            <!-- Name -->
+            <tr>
+              <td><h4>Name</h4></td>
+              <td>
+                <form method="post" class="form-inline flex-nowrap">
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control-plaintext"
+                    value="{{ user.first_name }} {{ user.last_name }}"
+                  />
+                </form>
+              </td>
+            </tr>
+            <!-- Email -->
+            <tr>
+              <td><h4>Email</h4></td>
+              <td>
+                <form method="post" class="form-inline flex-nowrap">
+                  <input
+                    type="text"
+                    name="email"
+                    class="form-control-plaintext"
+                    value="{{ user.email }}"
+                  />
+                </form>
+              </td>
+            </tr>
+            <!-- Location -->
+            <tr>
+              <td><h4>Wohnort</h4></td>
+              <td>
+                <form method="post" class="form-inline flex-nowrap">
+                  <input
+                    type="text"
+                    name="location"
+                    class="form-control-plaintext"
+                    value="{{ user.location.post_code }} {{user.location.city.name }}"
+                  />
+                </form>
+              </td>
+            </tr>
+            <!-- Tags -->
+            <tr>
+              <td><h4>Deine Tags</h4></td>
+              <td
+                id="tag_item"
+                class="d-inline-flex flex-wrap justify-content-around w-100"
+              >
+                <form id="tag_form" method="post"></form>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdown_button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    ➕
+                  </button>
+                  <div
+                    id="tag_dropdown"
+                    class="dropdown-menu"
+                    aria-labelledby="dropdown_button"
+                  ></div>
+                </div>
+              </td>
+            </tr>
+            <!-- rating -->
+            <tr>
+              <td><h4>Rating</h4></td>
+              <td>{{ user.rating }}</td>
+            </tr>
+            <!-- completed jobs -->
+            <tr>
+              <td><h4>Vollbrachte Jobs</h4></td>
+              <td>{{ user.completed_jobs }}</td>
+            </tr>
+            <!-- description-->
+            <tr>
+              <td colspan="2"><h4>Deine Beschreibung</h4></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <form
+    method="post"
+    onsubmit="document.getElementsByName('description')[0].value = document.getElementById('description').value;"
+  >
+    <textarea
+      id="description"
+      class="form-control border border-secondary rounded mt-3"
+      rows="5"
+    >
+{{ user.description }}</textarea
+    >
+  </form>
+  <!-- timeblocks -->
+  <!-- days -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <td scope="col">Montag</td>
+        <td scope="col">Dienstag</td>
+        <td scope="col">Mittwoch</td>
+        <td scope="col">Donnerstag</td>
+        <td scope="col">Freitag</td>
+        <td scope="col">Samstag</td>
+        <td scope="col">Sonntag</td>
+      </tr>
+    </thead>
+    <!-- timeblocks form db-->
+    <tbody id="timeblock_body"></tbody>
+    <!-- edit timeblocks -->
+    <tfoot id="timeblock_foot">
+      <tr>
+        {% for i in range(1, 8) %}
+        <td class="d-none">
+          <form method="post" class="d-flex flex-column">
+            <label for="start">Start Zeit</label>
+            <input type="time" name="start" />
+            <label for="start">End Zeit</label>
+            <input type="time" name="end" />
+            <input type="hidden" name="day" value="{{ i }}" />
+            <button type="submit" class="btn btn-secondary">Hinzufügen</button>
+          </form>
+        </td>
+        {% endfor %}
+      </tr>
+    </tfoot>
+  </table>
+  <button id="timeblock_edit" class="btn btn-primary">Editieren</button>
+  <script
+    id="script_create_tags"
+    src="{{ url_for('static', filename='scripts/create_tags.js') }}"
+    user_tags="{{ user_tags }}"
+  ></script>
+  <script
+    src="{{ url_for('static', filename='scripts/profile.js') }}"
+    id="script"
+    type="text/javascript"
+    timeblocks="{{ timeblocks }}"
+    all_tags="{{ all_tags }}"
+  ></script>
+</div>
+{% endblock %}
+<!-- TODO: change profile image with one click -->

@@ -35,7 +35,7 @@ function payment_to_str(payment) {
 }
 
 function duration_to_str(duration) {
-  return Math.ceil(duration / 60) + ":" + double_digits(duration % 60);
+  return Math.ceil(duration / 60) + ":" + double_digits(duration % 60) + "h";
 }
 
 class Manager {

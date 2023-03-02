@@ -52,6 +52,21 @@
         <form action="" method="get">
           <input type="submit" value="Einstellungen" class="account_submit" />
         </form>
+        <!-- TODO: Reworke-->
+        <div
+          id="form_profile"
+          path="{{url_for('views.profile.profile', id=user.id)}}"
+          method="get"
+        >
+          <input
+            type="submit"
+            value="Profile"
+            class="account_submit"
+            onclick="window.location.href = document.getElementById(
+            'form_profile'
+          ).getAttribute('path')"
+          />
+        </div>
         <form action="{{url_for('auth.logout')}}" method="get">
           <input type="submit" value="Ausloggen" class="account_submit" />
         </form>
