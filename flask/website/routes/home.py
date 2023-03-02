@@ -20,7 +20,7 @@ def get_search_jobs(user: User, search: str) -> list[Job]:
     jobs = Job.query.all()
     result = []
     for job in jobs:
-        if str(search) in str(job.name):
+        if str(search).lower() in str(job.name).lower():
             result.append(job)
     return result
     return Job.query.filter_by(Job.name.contains(search)).limit(10).all()
