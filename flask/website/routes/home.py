@@ -17,13 +17,10 @@ def get_jobs_for_user(user: User) -> list[Job]:
 
 
 def get_search_jobs(user: User, search: str) -> list[Job]:
-    jobs = Job.query.all()
-    result = []
-    for job in jobs:
-        if str(search).lower() in str(job.name).lower():
-            result.append(job)
-    return result
-    return Job.query.filter_by(Job.name.contains(search)).limit(10).all()
+    return Job.query.filter(Job.name.like(f"%{search}%")).limit(10).all()
+
+
+# https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_orm_filter_operators.htm
 
 
 @home_bp.route("/", methods=["GET", "POST"])
