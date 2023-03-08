@@ -1,4 +1,4 @@
-from json import load, dumps
+from json import load
 from pathlib import Path
 from secrets import token_urlsafe
 
@@ -6,15 +6,38 @@ from flask_socketio import SocketIO
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_mail import Mail
 
 db = SQLAlchemy()
 app = Flask(__name__)
+mail = Mail(app)
 socket = SocketIO(app)
 online_users = {}
 
 
+def get_app_config() -> None:
+    db_credentials = load(
+        open(Path("website", "db_credentials", "db_credentials.json"), "r")
+    )
+    return {
+        "SECRET_KEY": token_urlsafe(25),
+        "db_uri": (
+            f"mysql+pymysql://{db_credentials['username']}:{db_credentials['password']}"
+            + f"@{db_credentials['location']}:{db_credentials['port']}/"
+            + f"{db_credentials['db_name']}"
+        ),
+        "profile_img_dir": Path("static", "images", "profile"),
+        "job_img_dir": Path("static", "images", "job"),
+        "website_profile_img_dir": Path("website", "static", "images", "profile"),
+        "website_job_img_dir": Path("website", "static", "images", "job"),
+        "profile_img_default": Path("static", "images", "profile", "default.png"),
+        "job_img_default": Path("static", "images", "job", "default.png"),
+    }
+
+
 def create_app():
     # app
+    app.config.update(get_app_config())  # TODO: Remove from here on
     app.config["SECRET_KEY"] = token_urlsafe(25)
     app.config["UPLOAD_FOLDER_PROFILE_IMAGE"] = Path("static", "images", "profile")
     app.config["UPLOAD_FOLDER_JOB_IMAGE"] = Path("static", "images", "job")
